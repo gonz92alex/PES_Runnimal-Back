@@ -1,1 +1,3 @@
-Runnimal - PRE server
+# Runnimal
+
+Always do npm install --save [MODULE]
