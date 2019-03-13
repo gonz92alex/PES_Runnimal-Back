@@ -1,0 +1,8 @@
+{
+	"db": {
+		"host":"mongodb://localhost/Runnimal"
+	 },
+	 "server": {
+	 	"port":3000
+	 }
+}

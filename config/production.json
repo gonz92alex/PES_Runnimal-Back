@@ -1,0 +1,8 @@
+{
+	"db": {
+		"host":"mongodb://10.4.41.182/Runnimal"
+	 },
+	 "configAuth": {
+
+	 }
+}
