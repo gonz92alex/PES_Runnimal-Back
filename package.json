@@ -11,6 +11,12 @@
     "ejs": "^2.6.1",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
+    "mongodb": "^3.1.13",
+    "mongoose": "^5.4.19",
+    "mongose": "0.0.2-security",
     "morgan": "~1.9.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
   }
 }
