@@ -3,25 +3,17 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-//const MongoClient = require('mongodb').MongoClient;
-//const Server = require('mongodb').Server;
 
 var runnimalDb;
 
-/*
-MongoClient.connect('mongodb://nidorana.fib.upc.edu/runnimal' { useNewUrlParser: true }, (err, database) => {
-  if(err) return console.log(err);
-  else runnimalDb = database;
-});
-*/
 var mongoose = require('mongoose');
-//mongodb://'+DATABASEUSERNAME+':'+DATABASEPASSWORD+'@'+DATABASEHOST+':'DATABASEPORT+'/'+DATABASENAME
 mongoose.connect('mongodb://runnimal:Runnimal06@nidorana.fib.upc.edu:27017/runnimal',  
                   { useNewUrlParser: true }).catch(function (reason) {
   console.log('Unable to connect to the mongodb instance. Error: ', reason);
 });
 
-var  indexRoutes = require('./routes/apiRoutes');
+var  indexRoutes = require('./routes/indexRoutes');
+var  apiRoutes = require('./api/routes/apiRoutes');
 
 var app = express();
 
@@ -37,6 +29,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRoutes);
+apiRoutes(app);
 
 
 // catch 404 and forward to error handler
