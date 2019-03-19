@@ -4,6 +4,7 @@ module.exports = function(app) {
 
 
   app.get('/api/users',users.list);
+  app.post('/api/users',users.newUser);
 
 }
 
