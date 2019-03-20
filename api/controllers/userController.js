@@ -43,5 +43,18 @@ exports.newUser = function(req,res) {
                     return res.json(usr);
                 });
             }
-        });
+        });        
+};
+
+exports.getOne = function(req,res) {
+    var email = req.params.email;
+    if (!email) return res.status(432).send("Bad request, no email provided");
+    
+    email = email.trim();
+    Users.findOne({'email': email}).exec((err,user) => {
+        if (err)
+            res.send(err);
+        else
+            res.json(user);
+    });
 };
