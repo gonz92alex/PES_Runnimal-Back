@@ -58,3 +58,19 @@ exports.getOne = function(req,res) {
             res.json(user);
     });
 };
+
+exports.deleteOne = function(req,res) {
+    var email = req.params.email;
+    if (!email) return res.status(432).send("Bad request, no email provided");
+    
+    email = email.trim();
+    Users.findOne({'email': email}).exec((err,user) => {
+        if (err)
+            res.send(err);
+        else
+            Users.remove({_id:user._id}, function(err){
+                if (!err) res.send('{"result":"OK"}');
+                else res.send('{"result":"KO"}');
+            });
+    });
+};
