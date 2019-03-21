@@ -8,7 +8,7 @@ var PetsModel = new mongoose.Schema({
     size: Number, 
     race: String,
     birth: Number,
-    owner: {type: Schema.Types.ObjectId, ref: 'Users'}
+    owner: {type: mongoose.Schema.Types.ObjectId, ref: 'Users'}
 });
 
 module.exports = mongoose.model('pets',PetsModel);
