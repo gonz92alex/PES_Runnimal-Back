@@ -98,6 +98,46 @@
         });
     };
     
+    exports.editPet = function(req, res) {
+        var name = req.params.name; 
+        var owner = req.params.owner; 
+
+        var weight = req.body.weight;
+        var description = req.body.description;
+        var size = req.body.size;
+        var race = req.body.race;
+        var birth = req.body.birth;
+
+        if (!name) return res.status(400).send("Bad request, no name provided");
+        if (!owner) return res.status(400).send("Bad request, no owner provided");
+        if (weight) weight = weight.trim();  
+        if (description) description = description.trim(); 
+        if (size) size = size.trim();
+        if (race) race = trace.trim(); 
+        if (birth) birth = birth.trim();  
+
+        Users.findOne({'email' :owner}).exec((error, user) => {
+            if(user) {
+                Pets.findOne({'name' : name, 'owner' :ObjectId(user._id)}).exec((error, pet) => {
+                if(pet){
+                    pet.size = size; 
+                    pet.race = race; 
+                    pet.birth = birth; 
+                    pet.description = description; 
+
+                    pet.save(function(err) {
+                        return res.json(pet)
+                    }); 
+                }
+                })
+
+            }
+        }); 
+
+        
+    }
+
+
     exports.deleteOne = function(req,res) {
         var name = req.params.name;
         var owner = req.params.owner;

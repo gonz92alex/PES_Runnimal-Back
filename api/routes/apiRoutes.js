@@ -10,6 +10,7 @@ module.exports = function(app) {
   app.delete('/api/user/:email', users.deleteOne);
   app.get('/api/pets',pets.list);
   app.post('/api/pets', pets.newPet);
+  app.put('/api/pets/:owner/:name', pets.editPet)
   app.get('/api/pet/:owner/:name', pets.getOne);
   app.delete('/api/pet/:owner/:name', pets.deleteOne);
 }
