@@ -3,11 +3,10 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
-var runnimalDb;
-
+var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://runnimal:Runnimal06@nidorana.fib.upc.edu:27017/runnimal',  
+//mongoose.connect('mongodb://runnimal:Runnimal06@localhost:27017/runnimal',  
                   { useNewUrlParser: true }).catch(function (reason) {
   console.log('Unable to connect to the mongodb instance. Error: ', reason);
 });
@@ -21,7 +20,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-
+app.use(bodyParser.json());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
