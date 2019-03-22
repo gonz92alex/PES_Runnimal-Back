@@ -1,0 +1,180 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Runnimal",
+		"_postman_id": "a6884049-596d-88ab-a0fd-ded878fb53c4",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"description": "",
+			"item": [
+				{
+					"name": "POST User",
+					"request": {
+						"url": "localhost:3000/api/users",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"alias\":\"Misty\",\n\"email\":\"misty@pokemon.com\",\n\"password\":\"psyduck\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GET Users",
+					"request": {
+						"url": "localhost:3000/api/users",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"alias\":\"pepe\",\n\"email\":\"pepe@marron.com\",\n\"password\":\"NaNaNa\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GET user",
+					"request": {
+						"url": "localhost:3000/api/user/misty@pokemon.co",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"alias\":\"pepe\",\n\"email\":\"pepe@marron.com\",\n\"password\":\"NaNaNa\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE users",
+					"request": {
+						"url": "localhost:3000/api/user/misty@pokemon.com",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pets",
+			"description": "",
+			"item": [
+				{
+					"name": "DELETE pet",
+					"request": {
+						"url": "localhost:3000/api/pet/ash@pokemon.com/Pikachu",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"alias\":\"pepe\",\n\"email\":\"pepe@marron.com\",\n\"password\":\"NaNaNa\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GET Pets",
+					"request": {
+						"url": "localhost:3000/api/pets",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"alias\":\"pepe\",\n\"email\":\"pepe@marron.com\",\n\"password\":\"NaNaNa\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "POST Pet",
+					"request": {
+						"url": "localhost:3000/api/pets",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"name\": \"Pikachu\",\r\n\t\"weight\":3,\r\n\t\"race\":\"Electrico\",\r\n\t\"birth\":1996,\r\n\t\"description\":\"No le gusta la pokeball\",\r\n\t\"size\":5,\r\n\t\"owner\":\"ash@pokemon.com\"\r\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GET pet",
+					"request": {
+						"url": "localhost:3000/api/pet/ash@pokemon.com/Pikachu",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"alias\":\"pepe\",\n\"email\":\"pepe@marron.com\",\n\"password\":\"NaNaNa\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
