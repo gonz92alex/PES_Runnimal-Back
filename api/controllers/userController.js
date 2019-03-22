@@ -20,8 +20,8 @@ exports.newUser = function(req,res) {
     var email = req.body.email;
     var password = req.body.password;
     if (!alias) return res.status(400).send("Bad request, no alias provided");
-    if (!email) return res.status(432).send("Bad request, no email provided");
-    if (!password) return res.status(432).send("Bad request, no password provided");
+    if (!email) return res.status(400).send("Bad request, no email provided");
+    if (!password) return res.status(400).send("Bad request, no password provided");
     
     alias = alias.trim();
     email = email.trim();
