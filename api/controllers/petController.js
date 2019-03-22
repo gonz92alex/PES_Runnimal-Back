@@ -10,6 +10,7 @@
     var mongoose = require('mongoose').set('debug',true);
     var Pets = require('../models/Pets');
     var Users = require('../models/Users');
+    var ObjectId = require('mongodb').ObjectID;
     
     
     
@@ -44,7 +45,7 @@
         size = size;
         owner = owner.trim();
         Users.findOne({'email': owner}).exec((error, user) =>{
-            if (error) res.status(400).send("Bad request, no owner provided");
+            if (error) res.status(400).send("Owner doesn't exis");
             else{
                 Pets.findOne({'name': name, 'owner':user.id})
                     .exec((err, result) => {
@@ -67,36 +68,59 @@
                     }
                 });   
             }
-        });
-        //console.log(alias+', '+email+', '+password)
-             
+        });          
     };
     
     exports.getOne = function(req,res) {
-        var email = req.params.email;
-        if (!email) return res.status(432).send("Bad request, no email provided");
-        
-        email = email.trim();
-        Users.findOne({'email': email}).exec((err,user) => {
-            if (err)
-                res.send(err);
-            else
-                res.json(user);
+        var name = req.params.name;
+        var owner = req.params.owner;
+        if (!name) return res.status(400).send("Bad request, no name provided");
+        if (!owner) return res.status(400).send("Bad request, no owner provided");
+        name = name.trim();
+        owner = owner.trim();
+        Users.findOne({'email': owner}).exec((error, user) =>{
+            if (error) res.status(400).send("Owner doesn't exist");
+            else{
+                Pets.findOne({'name': name, 'owner':ObjectId(user._id)})
+                    .exec((err, pet) => {
+                        console.log(pet)
+                        console.log(err);
+                        console.log(name)
+                        console.log(user.id);
+                    if (pet) {
+                        return res.json(pet);
+                    }
+                    else {
+                        return res.json(err);
+                    }
+                });   
+            }
         });
     };
     
     exports.deleteOne = function(req,res) {
-        var email = req.params.email;
-        if (!email) return res.status(432).send("Bad request, no email provided");
-        
-        email = email.trim();
-        Users.findOne({'email': email}).exec((err,user) => {
-            if (err)
-                res.send(err);
-            else
-                Users.remove({_id:user._id}, function(err){
-                    if (!err) res.send('{"result":"OK"}');
-                    else res.send('{"result":"KO"}');
-                });
+        var name = req.params.name;
+        var owner = req.params.owner;
+        if (!name) return res.status(400).send("Bad request, no name provided");
+        if (!owner) return res.status(400).send("Bad request, no owner provided");
+        name = name.trim();
+        owner = owner.trim();
+        Users.findOne({'email': owner}).exec((error, user) =>{
+            if (error) res.status(400).send("Owner doesn't exist");
+            else{
+                Pets.findOne({'name': name, 'owner':ObjectId(user._id)})
+                    .exec((err, pet) => {
+                    if (pet) {
+                        Users.remove({_id:ObjectId(pet._id)}, function(err){
+                            if (!err) res.send('{"result":"OK"}');
+                            else res.send('{"result":"KO"}');
+                        });
+                    }
+                    else {
+                        if (err) res.json(err);
+                        else res.status(400).send("Pet doesn't exist");
+                    }
+                });   
+            }
         });
     };

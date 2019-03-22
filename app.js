@@ -5,8 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-//mongoose.connect('mongodb://runnimal:Runnimal06@nidorana.fib.upc.edu:27017/runnimal',  
-mongoose.connect('mongodb://runnimal:Runnimal06@localhost:27017/runnimal',  
+mongoose.connect('mongodb://runnimal:Runnimal06@nidorana.fib.upc.edu:27017/runnimal',  
+//mongoose.connect('mongodb://runnimal:Runnimal06@localhost:27017/runnimal',  
                   { useNewUrlParser: true }).catch(function (reason) {
   console.log('Unable to connect to the mongodb instance. Error: ', reason);
 });
