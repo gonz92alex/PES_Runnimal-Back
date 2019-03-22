@@ -15,8 +15,6 @@ exports.list = function(req,res) {
 
 exports.save = function(name, description){
 	var training = new Training({name: name, description: description});
-	
-	training.save(function(){
-		res.render("trainingSaved");
-	});
+
+	training.save();
 };

@@ -26,6 +26,8 @@ module.exports = function(app) {
 	var description = req.body.description;
 		
 	training.save(name, description);
+
+	res.render("trainingSaved");
   });
 }
 
