@@ -11,7 +11,7 @@ exports.list = function(req,res) {
     });
 };
 
-exports.newTrainning = function(req, res){
+exports.newTraining = function(req, res){
     var name = req.body.name;
     var description = req.body.description;
     var training = new Training(name, description);

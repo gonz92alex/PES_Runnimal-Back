@@ -23,6 +23,6 @@ module.exports = function(app) {
   /*app.get('/api/trainings/new', function(req, res){
   	res.render("newTrainingForm");
   });*/  
-  app.post('/api/trainings', training.newTrainning);
+  app.post('/api/trainings', training.newTraining);
 }
 
