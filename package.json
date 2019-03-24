@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "NODE_ENV=production forever start -w ./bin/server.js",
-    "test": "NODE_ENV=test forever start -w ./bin/server.js",
+    "start": "sudo NODE_ENV=production forever start -w ./bin/server.js",
+    "test": "sudo NODE_ENV=test forever start -w ./bin/server.js",
     "debug": "NODE_ENV=develop forever start -w ./bin/server.js",
     "local": "NODE_ENV=local forever start -w ./bin/server.js"
   },
