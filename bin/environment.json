@@ -4,14 +4,14 @@
       "DBSCHEMA": "test",
       "DBUSER":"runnimal",
       "DBPWD":"Runnimal06",
-      "PORT": 8080
+      "PORT": 80
     },
     "production": {
       "DBURL": "nidorana.fib.upc.edu:27017/",
       "DBSCHEMA": "runnimal",
       "DBUSER":"runnimal",
       "DBPWD":"Runnimal06",
-      "PORT": 8080
+      "PORT": 80
     },
     "develop": {
       "DBURL": "nidorana.fib.upc.edu:27017/",
