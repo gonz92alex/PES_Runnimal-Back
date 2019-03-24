@@ -17,12 +17,12 @@ module.exports = function(app) {
   app.delete('/api/pet/:owner/:name', pets.deleteOne);
 
   //TRAININGS//
-  app.get('/api/trainnings', training.list);
+  app.get('/api/trainings', training.list);
 
 
   /*app.get('/api/trainings/new', function(req, res){
   	res.render("newTrainingForm");
   });*/  
-  app.post('/api/trainnings', training.newTrainning);
+  app.post('/api/trainings', training.newTrainning);
 }
 
