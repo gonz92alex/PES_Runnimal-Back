@@ -1,0 +1,26 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'run', 'test' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.32
+4 verbose run-script [ 'pretest', 'test', 'posttest' ]
+5 info pretest runnimal@0.0.0
+6 info test runnimal@0.0.0
+7 verbose unsafe-perm in lifecycle true
+8 info runnimal@0.0.0 Failed to exec test script
+9 error runnimal@0.0.0 test: `NODE_ENV=test forever start -w ./bin/server.js`
+9 error Exit status 127
+10 error Failed at the runnimal@0.0.0 test script.
+10 error This is most likely a problem with the runnimal package,
+10 error not with npm itself.
+10 error Tell the author that this fails on your system:
+10 error     NODE_ENV=test forever start -w ./bin/server.js
+10 error You can get their info via:
+10 error     npm owner ls runnimal
+10 error There is likely additional logging output above.
+11 error System Linux 4.4.0-22-generic
+12 error command "/usr/local/bin/node" "/usr/local/bin/npm" "run" "test"
+13 error cwd /home/alumne/PES_Runnimal-Back
+14 error node -v v0.10.32
+15 error npm -v 1.4.28
+16 error code ELIFECYCLE
+17 verbose exit [ 1, true ]
