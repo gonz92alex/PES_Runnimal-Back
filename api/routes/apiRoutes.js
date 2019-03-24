@@ -5,7 +5,7 @@ module.exports = function(app) {
 
   var users = require('../controllers/userController');
   var training = require('../controllers/trainingController');
-  app.set('view engine', 'jade');
+  //app.set('view engine', 'jade');
 
   app.get('/api/users',users.list);
   app.post('/api/users',users.newUser);
@@ -17,17 +17,12 @@ module.exports = function(app) {
   app.delete('/api/pet/:owner/:name', pets.deleteOne);
 
   //TRAININGS//
-  app.get('/api/trainings', training.list);
-  app.get('/api/trainings/new', function(req, res){
-  	res.render("newTrainingForm");
-  });  
-  app.post('/api/trainings/save', function(req, res){
-	var name = req.body.name;
-	var description = req.body.description;
-		
-	training.save(name, description);
+  app.get('/api/trainnings', training.list);
 
-	res.render("trainingSaved");
-  });
+
+  /*app.get('/api/trainings/new', function(req, res){
+  	res.render("newTrainingForm");
+  });*/  
+  app.post('/api/trainnings', training.newTrainning);
 }
 
