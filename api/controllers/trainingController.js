@@ -1,6 +1,4 @@
 'use strict';
-
-var mongoose = require('mongoose').set('debug',true);
 var Training = require('../models/Training');
 
 
@@ -12,6 +10,18 @@ exports.list = function(req,res) {
             res.json(trainings);
     });
 };
+
+exports.newTrainning = function(req, res){
+    var name = req.body.name;
+    var description = req.body.description;
+    var training = new Training(name, description);
+        
+    training.save(function(err) {
+        return res.json(training);
+    });
+
+
+}
 
 exports.save = function(name, description){
 	var training = new Training({name: name, description: description});
