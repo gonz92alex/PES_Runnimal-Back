@@ -6,6 +6,7 @@ module.exports = function(app) {
 
   app.get('/api/users',users.list);
   app.post('/api/users',users.newUser);
+  app.put('/api/user/:email',users.editUser); 
   app.get('/api/user/:email', users.getOne);
   app.delete('/api/user/:email', users.deleteOne);
   app.get('/api/pets',pets.list);
