@@ -107,7 +107,7 @@
         var size = req.body.size;
         var race = req.body.race;
         var birth = req.body.birth;
-        //Rentaría mover esta parte a a otra capa. 
+        //Rentaría mover esta parte a a otra capa. Pedir Explicación al profesor.
         Users.findOne({'email' :owner}).exec((err, user) => {
             if(user) {
                 Pets.findOne({'name' : name, 'owner' :ObjectId(user._id)}).exec((error, pet) => {
