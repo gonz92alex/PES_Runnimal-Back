@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 //var Users = requiere('./Users')
 
-var sizes = ["Pequeno", "Mediano", "Grande"];
+var sizes = ["Small", "Medium", "Big"];
 
 var PetsModel = new mongoose.Schema({
     name: String,
