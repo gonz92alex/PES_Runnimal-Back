@@ -1,0 +1,30 @@
+{
+    "test": {
+      "DBURL": "localhost:27017",
+      "DBSCHEMA": "test",
+      "DBUSER":"runnimal",
+      "DBPWD":"Runnimal06",
+      "PORT": 8080
+    },
+    "production": {
+      "DBURL": "nidorana.fib.upc.edu:27017",
+      "DBSCHEMA": "runnimal",
+      "DBUSER":"runnimal",
+      "DBPWD":"Runnimal06",
+      "PORT": 8080
+    },
+    "develop": {
+      "DBURL": "nidorana.fib.upc.edu:27017",
+      "DBSCHEMA": "test",
+      "DBUSER":"runnimal",
+      "DBPWD":"Runnimal06",
+      "PORT": 3000
+    },
+    "local": {
+      "DBURL": "localhost:27017",
+      "DBSCHEMA": "runnimal",
+      "DBUSER":"runnimal",
+      "DBPWD":"Runnimal06",
+      "PORT": 3000
+    }
+  }

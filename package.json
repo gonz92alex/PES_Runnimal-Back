@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "NODE_ENV=production forever start -w ./bin/server.js",
+    "test": "NODE_ENV=test forever start -w ./bin/server.js",
+    "debug": "NODE_ENV=develop forever start -w ./bin/server.js",
+    "local": "NODE_ENV=local forever start -w ./bin/server.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -12,10 +15,12 @@
     "ejs": "^2.6.1",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
+    "jade": "^1.11.0",
     "mongodb": "^3.1.13",
     "mongoose": "^5.4.19",
     "mongose": "0.0.2-security",
-    "morgan": "~1.9.0"
+    "morgan": "~1.9.0",
+    "pug": "^2.0.3"
   },
   "devDependencies": {
     "nodemon": "^1.18.10"

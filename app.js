@@ -5,9 +5,13 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://runnimal:Runnimal06@nidorana.fib.upc.edu:27017/runnimal',  
-//mongoose.connect('mongodb://runnimal:Runnimal06@localhost:27017/runnimal',  
-                  { useNewUrlParser: true }).catch(function (reason) {
+var env_vars = require('./bin/config-env').config();
+var dburl = env_vars["DBURL"];
+var dbschema = env_vars["DBSCHEMA"];
+var dbuser = env_vars["DBUSER"];
+var dbpassw = env_vars["DBPWD"];
+var mongoConnect = 'mongodb://'+dbuser+':'+dbpassw+'@'+dburl+'/'+dbschema;
+mongoose.connect(mongoConnect, { useNewUrlParser: true }).catch(function (reason) {
   console.log('Unable to connect to the mongodb instance. Error: ', reason);
 });
 
@@ -40,7 +44,7 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get('env') !== 'production' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
