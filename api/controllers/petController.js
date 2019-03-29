@@ -50,7 +50,7 @@
                 Pets.findOne({'name': name, 'owner':user.id})
                     .exec((err, result) => {
                     if (result) {
-                        return res.json(result);
+                        return res.status(400).send("Pet already exists");
                     }
                     else {
                         var pet = new Pets({

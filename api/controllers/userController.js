@@ -31,7 +31,7 @@ exports.newUser = function(req,res) {
     Users.findOne({'email': email})
         .exec((err, result) => {
             if (result) {
-                return res.json(result);
+                return res.status(400).send("Pet already exists");
             }
             else {
                 var usr = new Users({
