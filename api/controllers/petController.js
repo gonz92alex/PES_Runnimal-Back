@@ -98,6 +98,38 @@
         });
     };
     
+    exports.editPet = function(req, res) {
+        var name = req.params.name; 
+        var owner = req.params.owner; 
+
+        var weight = req.body.weight;
+        var description = req.body.description;
+        var size = req.body.size;
+        var race = req.body.race;
+        var birth = req.body.birth;
+        //Rentaría mover esta parte a a otra capa. Pedir Explicación al profesor.
+        Users.findOne({'email' :owner}).exec((err, user) => {
+            if(user) {
+                Pets.findOne({'name' : name, 'owner' :ObjectId(user._id)}).exec((error, pet) => {
+                if(pet){
+                    if(size) pet.size = size; 
+                    if(weight) pet.weight = weight; 
+                    if(race) pet.race = race.trim(); 
+                    if(birth) pet.birth = birth; 
+                    if(description) pet.description = description.trim(); 
+                    pet.save(function(err) {
+                        return res.json(pet);
+                    }); 
+                    } else {
+                        return res.status(404).send("Pet " + name  + " not found for user " + owner); 
+                        }
+                    })
+                } else {
+                 return res.status(404).send("User " + owner + " not found." ); 
+            }
+        }); 
+    }
+
     exports.deleteOne = function(req,res) {
         var name = req.params.name;
         var owner = req.params.owner;

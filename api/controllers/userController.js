@@ -46,6 +46,30 @@ exports.newUser = function(req,res) {
         });        
 };
 
+exports.editUser = function(req,res){
+    //Aquí irían los atributos de user a editar, de momento sólo podremos cambiar el alias.
+    var email = req.params.email; 
+    var alias = req.body.alias.trim(); 
+    if(!email) return res.status(432).send("Bad request, no email provided");
+
+
+
+    //A partir de aquí habría que desacoplar en otra capa. 
+    Users.findOne({'email': email}).exec((err,user) => {
+            if (user){ 
+                user.alias = alias; 
+                user.save(function(err){
+                    return res.json(user);
+                })
+            }
+            else {
+                res.status(404).send("User " + email + " not found.");
+            };
+    });
+};
+
+
+
 exports.getOne = function(req,res) {
     var email = req.params.email;
     if (!email) return res.status(432).send("Bad request, no email provided");
