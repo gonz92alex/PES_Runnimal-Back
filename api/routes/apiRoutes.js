@@ -10,10 +10,12 @@ module.exports = function(app) {
   app.get('/api/users',users.list);
   app.post('/api/users',users.newUser);
   app.get('/api/user/:email', users.getOne);
+  app.put('/api/user/:email',users.editUser); 
   app.delete('/api/user/:email', users.deleteOne);
   app.get('/api/pets',pets.list);
   app.post('/api/pets', pets.newPet);
   app.get('/api/pet/:owner/:name', pets.getOne);
+  app.put('/api/pets/:owner/:name', pets.editPet)
   app.delete('/api/pet/:owner/:name', pets.deleteOne);
 
   //TRAININGS//
