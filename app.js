@@ -16,9 +16,12 @@ mongoose.connect(mongoConnect, { useNewUrlParser: true }).catch(function (reason
 });
 
 var  indexRoutes = require('./routes/indexRoutes');
-var  apiRoutes = require('./api/routes/apiRoutes');
+//var  apiRoutes = require('./api/routes/apiRoutes');
+var  apiRouter = require('./api/routes/apiRouter');
+
 
 var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,8 +35,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRoutes);
-apiRoutes(app);
+//apiRoutes(app);
 
+app.use("/api", apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -3,9 +3,6 @@
 var mongoose = require('mongoose').set('debug',true);
 var Users = require('../models/Users');
 
-
-
-
 exports.list = function(req,res) {
     Users.find().exec((err,users) => {
         if (err)
@@ -31,7 +28,7 @@ exports.newUser = function(req,res) {
     Users.findOne({'email': email})
         .exec((err, result) => {
             if (result) {
-                return res.status(400).send("Pet already exists");
+                return res.json(result);
             }
             else {
                 var usr = new Users({
@@ -46,32 +43,8 @@ exports.newUser = function(req,res) {
         });        
 };
 
-exports.editUser = function(req,res){
-    //Aquí irían los atributos de user a editar, de momento sólo podremos cambiar el alias.
-    var email = req.params.email; 
-    var alias = req.body.alias.trim(); 
-    if(!email) return res.status(432).send("Bad request, no email provided");
+exports.getOne = function(req,res, email) {
 
-
-
-    //A partir de aquí habría que desacoplar en otra capa. 
-    Users.findOne({'email': email}).exec((err,user) => {
-            if (user){ 
-                user.alias = alias; 
-                user.save(function(err){
-                    return res.json(user);
-                })
-            }
-            else {
-                res.status(404).send("User " + email + " not found.");
-            };
-    });
-};
-
-
-
-exports.getOne = function(req,res) {
-    var email = req.params.email;
     if (!email) return res.status(432).send("Bad request, no email provided");
     
     email = email.trim();
@@ -83,7 +56,7 @@ exports.getOne = function(req,res) {
     });
 };
 
-exports.deleteOne = function(req,res) {
+exports.deleteOne = function(req,res, email) {
     var email = req.params.email;
     if (!email) return res.status(432).send("Bad request, no email provided");
     
