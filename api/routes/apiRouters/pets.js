@@ -10,18 +10,10 @@ petsRouter.get("/new", function(req, res){
 
 petsRouter.route("/")
   .get(pets.list)
-  .post( function(req, res){
-  	res.send(req.body);
-  	//trainning.newTrainning(req, res);
-  });
+  .post(pets.newPet);
 
-/*petsRouter.route("/:id")
-  .get(trainning.list)
-  .put(function(req, res){
-
-  })
-  .delete(function(req, res){
-
-  });*/
+petsRouter.route("/:owner/:name")
+  .get(pets.getOne)
+  .delete(pets.deleteOne);
 
 module.exports = petsRouter;

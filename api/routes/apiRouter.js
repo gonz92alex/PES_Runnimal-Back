@@ -28,14 +28,6 @@ module.exports = router;
 
 /*
 
-var apiRouter = express.Router();
-
-apiRouter.use(bodyParser.urlencoded());
-apiRouter.use(bodyParser.json());
-
-//USERS
-
-
 //PETS
 apiRouter.get('/pets',pets.list);
 apiRouter.post('/pets', pets.newPet);
