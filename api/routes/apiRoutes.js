@@ -2,7 +2,7 @@
 module.exports = function(app) {
   var users = require('../controllers/userController');
   var pets = require('../controllers/petController');
-
+  var points = require('../controllers/pointController');
   var users = require('../controllers/userController');
   var training = require('../controllers/trainingController');
   //app.set('view engine', 'jade');
@@ -26,5 +26,9 @@ module.exports = function(app) {
   	res.render("newTrainingForm");
   });*/  
   app.post('/api/trainings', training.newTraining);
+
+//Coordinates//
+  app.get('/api/points', points.list);
+  app.post('/api/points', points.newPoint);
 }
 
