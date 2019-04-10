@@ -10,18 +10,10 @@ trainningsRouter.get("/new", function(req, res){
 
 trainningsRouter.route("/")
   .get(trainning.list)
-  .post( function(req, res){
-  	res.send(req.body);
-  	//trainning.newTrainning(req, res);
-  });
+  .post(trainning.newTrainning);
 
-/*trainningsRouter.route("/:id")
-  .get(trainning.list)
-  .put(function(req, res){
-
-  })
-  .delete(function(req, res){
-
-  });*/
+trainningsRouter.route("/:id")
+  .get(trainning.getOne)
+  .delete(trainning.deleteOne);
 
 module.exports = trainningsRouter;

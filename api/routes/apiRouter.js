@@ -9,17 +9,14 @@ router.use(bodyParser.json());
 
 //##################USERS#####################
 var usersRouter = require('./apiRouters/users');
-
 router.use("/users", usersRouter);
 
 //###################PETS#####################
 var petsRouter = require('./apiRouters/pets');
-
 router.use("/pets", petsRouter);
 
 //###############TRAINNINGS###################
 var trainningRouter = require('./apiRouters/trainnings');
-
 router.use("/trainnings", trainningRouter);
 
 //##################EXPORTS###################
@@ -27,12 +24,6 @@ router.use("/trainnings", trainningRouter);
 module.exports = router;
 
 /*
-
-//PETS
-apiRouter.get('/pets',pets.list);
-apiRouter.post('/pets', pets.newPet);
-apiRouter.get('/pet/:owner/:name', pets.getOne);
-apiRouter.delete('/pet/:owner/:name', pets.deleteOne);
 
 //TRAININGS//
 apiRouter.get('/trainnings', trainning.list);
