@@ -37,7 +37,9 @@ exports.newUser = function(req,res) {
                     password: password
                 });
                 usr.save(function(err) {
-                    return res.json(usr);
+                    return res
+                        .status(200)
+                        .json(usr);
                 });
             }
         });        
@@ -52,7 +54,9 @@ exports.getOne = function(req,res, email) {
         if (err)
             res.send(err);
         else
-            res.json(user);
+            res
+                .status(200)
+                .json(user);
     });
 };
 
