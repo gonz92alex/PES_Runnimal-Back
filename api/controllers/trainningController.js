@@ -20,6 +20,7 @@ exports.list = function(req,res) {
 exports.newTrainning = function(req,res) {
     var name = req.body.name;
     var description = req.body.description;
+    var steps = req.body.steps;
 
     if (!name) return res.status(400).send("Bad request, no name provided");
 
@@ -34,7 +35,8 @@ exports.newTrainning = function(req,res) {
         else {
             var trainning = new Trainning({
                 name: name,
-                description:description
+                description:description,
+                steps: steps
             });
             trainning.save(function(err) {
                 return res.json(trainning);
