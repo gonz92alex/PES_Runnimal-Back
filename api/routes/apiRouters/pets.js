@@ -14,6 +14,7 @@ petsRouter.route("/")
 
 petsRouter.route("/:owner/:name")
   .get(pets.getOne)
+  .put(pets.editPet)
   .delete(pets.deleteOne);
 
 module.exports = petsRouter;
