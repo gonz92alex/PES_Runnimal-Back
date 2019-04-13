@@ -19,6 +19,10 @@ router.use("/pets", petsRouter);
 var trainningRouter = require('./apiRouters/trainnings');
 router.use("/trainnings", trainningRouter);
 
+//#############FRIEND_REQUESTS################
+var friendRequestsRouter = require('./apiRouters/friendRequests');
+router.use("/friendRequests", friendRequestsRouter);
+
 //##################EXPORTS###################
 
 module.exports = router;
