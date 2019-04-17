@@ -41,27 +41,25 @@ exports.new = function(req, res) {
 			FriendRequests.find({requestingId: requestingUser.id, requestedId: requestedUser.id})
 				.exec(function (err, requests){
 					if (err) res.status(400).send(err);
-					if (requests.length) res.status(400).send("Friend request already exists")
-					else {
-						FriendRequests.find({requestingId: requestedId, requestedId: requestingId})
-							.exec(function (err, requests){
+					if(!requests.length) {
+						FriendRequests.find({requestingId: requestedUser.id, requestedId: requestingUser.id})
+							.exec(function (err, requests2){
 								if (err) res.send(err);
-								if (requests.length) res.status(400).send("Friend Request already exists")
-								else{
+								if(!requests2.length){
 									//if (usersRelationshipsController.areFriends(req, res)) 
 									//	return res.status(400).send("Users are already friends");
 									
 									var request = new FriendRequests({
-								        requestingId: requestingId,
-								        requestedId: requestedId
+								        requestingId: requestingUser.id,
+								        requestedId: requestedUser.id
 								    });
 
 								    request.save(function(err) {
 								        return res.json(request);
 								    });
-								};
+								} else res.status(200).send("Friend Request already exists");
 							});
-					};
+					} else res.status(200).send("Friend request already exists");
 				});	
 
 		});
