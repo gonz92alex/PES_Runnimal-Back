@@ -7,9 +7,11 @@ var friendsRouter = express.Router();
 
 friendsRouter.get("/search", usersRelationshipsController.searchFriends);
 
+friendsRouter.get("/:requestingEmail/:requestedEmail", usersRelationshipsController.areFriends);
+
 friendsRouter.delete("/delete/:id", usersRelationshipsController.deleteFriendshipRelationship);
 
-friendsRouter.get("/prova", usersRelationshipsController.list);
-friendsRouter.get("/new", usersRelationshipsController.newDefault);
+friendsRouter.get("/list", usersRelationshipsController.list);
+//friendsRouter.get("/new", usersRelationshipsController.newDefault);
  
 module.exports = friendsRouter;
