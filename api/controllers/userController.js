@@ -78,6 +78,17 @@ exports.getOne = function(req,res) {
     });
 };
 
+exports.getOneById = function(req, res){
+    var id = req.params.id;
+
+    if (!id) return res.status(400).send("Bad request, no id provided");
+
+    Users.findById(id, function(err, user){
+        if(err) return res.status(400).send(err);
+        return res.send(user);
+    });
+}
+
 exports.deleteOne = function(req,res) {
     var email = req.params.email;
     if (!email) return res.status(432).send("Bad request, no email provided");

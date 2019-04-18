@@ -7,6 +7,8 @@ var friendsRouter = express.Router();
 
 friendsRouter.get("/search", usersRelationshipsController.searchFriends);
 
+friendsRouter.get("/user/:userEmail", usersRelationshipsController.userFriends);
+
 friendsRouter.get("/:requestingEmail/:requestedEmail", usersRelationshipsController.areFriends);
 
 friendsRouter.delete("/delete/:id", usersRelationshipsController.deleteFriendshipRelationship);

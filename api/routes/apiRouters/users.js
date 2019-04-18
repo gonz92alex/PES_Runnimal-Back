@@ -16,5 +16,7 @@ usersRouter.route("/:email")
 	.get(users.getOne)
 	.put(users.editUser)
 	.delete(users.deleteOne);
+
+usersRouter.get("/id/:id", users.getOneById);
  
 module.exports = usersRouter;
