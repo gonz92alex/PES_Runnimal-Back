@@ -43,6 +43,24 @@ exports.searchFriends = function(req, res){
     });
 };
 
+exports.userFriends = function(req, res){
+	var userEmail = req.params.userEmail;
+
+	Users.findOne({'email': userEmail}).exec((err,user) => {
+		if(err) res.status(400).send(err);
+
+		UsersRelationships.find({'relatingUserId': user.id, 'type': 'friend'}).exec((err,friends) => {
+	        if (err) return res.status(400).send(err);
+	        UsersRelationships.find({'relatedUserId': user.id, 'type': 'friend'}).exec((err,friends2) => {
+	        	if(err) return res.status(400).send(err);
+	            res.send(friends.concat(friends2));
+	        });
+	    });
+	});
+	
+
+}
+
 exports.newFriendRelationship = function(req, res, relatingUserId, relatedUserId) {
 
 	var maxMin = utils.maxMin(relatingUserId, relatedUserId);
