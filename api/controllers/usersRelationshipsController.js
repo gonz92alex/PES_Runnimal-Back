@@ -107,18 +107,21 @@ exports.areFriends = function(req, res){
 
 	Users.findOne({email: requestingEmail}).exec((err, requestingUser) => {
 		if(!requestingUser) res.status(400).send("No users with requestingEmail");
-		Users.findOne({email: requestedEmail}).exec((err, requestedUser) => {
-			if(!requestedUser) res.status(400).send("No user with requestedEmail");
+		else{
+			Users.findOne({email: requestedEmail}).exec((err, requestedUser) => {
+				if(!requestedUser) res.status(400).send("No user with requestedEmail");
+				else{
+					var maxMin = utils.maxMin(requestingUser.id, requestedUser.id);
 
-			var maxMin = utils.maxMin(requestingUser.id, requestedUser.id);
-
-		 	UsersRelationships.find({relatingUserId: maxMin.min, relatedUserId: maxMin.max, type: "friend"})
-		 		.exec((err,requests) => {
-		        if (err) res.send(err);
-		        else
-		            res.status(200).json(requests);
-		    });
-		});
+				 	UsersRelationships.find({relatingUserId: maxMin.min, relatedUserId: maxMin.max, type: "friend"})
+				 		.exec((err,requests) => {
+				        if (err) res.send(err);
+				        else
+				            res.status(200).json(requests);
+				    });
+				}
+			});
+		}
 	});
 	
 };
