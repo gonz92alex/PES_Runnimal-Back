@@ -98,6 +98,23 @@
         });
     };
     
+
+    exports.getUserPets = function(req, res){
+        var userEmail = req.params.email;
+
+        if(!userEmail) return res.status(400).send("Bad request, no email provided");
+
+        Users.findOne({'email': userEmail}, function(err, user){
+            if(err) return res.status(400).send(err);
+            if(!user) return res.status(400).send("No user with this email");
+            Pets.find({'owner':ObjectId(user._id)})
+                .exec((err, pets) =>{
+                    if(err) return res.status(400).send(err);
+                    return res.send(pets);
+                });
+        });
+    }
+
     exports.editPet = function(req, res) {
         var name = req.params.name; 
         var owner = req.params.owner; 
