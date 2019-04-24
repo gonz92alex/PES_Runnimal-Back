@@ -31,3 +31,8 @@ exports.newPoint = function(req,res){
     return res.json(point); 
 
 }
+
+exports.delete = function(req,res){
+    var id = req.params.id.trim(); 
+          Points.deletePoint(id);
+}

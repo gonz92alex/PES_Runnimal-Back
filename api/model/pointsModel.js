@@ -24,3 +24,12 @@ exports.newPoint = function(title, description, type, photo_url, coord){
 
     return newPoint; 
 }
+exports.deletePoint = function(id){ 
+    var id = id.trim();
+    Points.findByIdAndDelete(id);
+       
+    
+    return point; 
+}
+
+

@@ -30,5 +30,7 @@ module.exports = function(app) {
 //Coordinates//
   app.get('/api/points', points.list);
   app.post('/api/points', points.newPoint);
+  app.delete('/api/point/:id', points.delete);
+  
 }
 
