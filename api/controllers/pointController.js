@@ -34,5 +34,8 @@ exports.newPoint = function(req,res){
 
 exports.delete = function(req,res){
     var id = req.params.id.trim(); 
-          Points.deletePoint(id);
+          
+    Points.deletePoint(id);
+          
+    return res.status(400);
 }
