@@ -16,7 +16,7 @@
     
     
     exports.list = function(req,res) {
-        Pets.find().exec((err,pets) => {
+        Pets.find().populate({ path: 'owner', select: 'email' }).exec((err,pets) => {
             if (err)
                 res.send(err);
             else
@@ -47,7 +47,7 @@
         Users.findOne({'email': owner}).exec((error, user) =>{
             if (error) res.status(400).send("Owner doesn't exis");
             else{
-                Pets.findOne({'name': name, 'owner':user.id})
+                Pets.findOne({'name': name, 'owner':user.id}).populate({ path: 'owner', select: 'email' })
                     .exec((err, result) => {
                     if (result) {
                         return res.json(result);
@@ -81,7 +81,7 @@
         Users.findOne({'email': owner}).exec((error, user) =>{
             if (error) res.status(400).send("Owner doesn't exist");
             else{
-                Pets.findOne({'name': name, 'owner':ObjectId(user._id)})
+                Pets.findOne({'name': name, 'owner':ObjectId(user._id)}).populate({ path: 'owner', select: 'email' })
                     .exec((err, pet) => {
                         console.log(pet)
                         console.log(err);
