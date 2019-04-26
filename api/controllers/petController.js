@@ -107,7 +107,7 @@
         Users.findOne({'email': userEmail}, function(err, user){
             if(err) return res.status(400).send(err);
             if(!user) return res.status(400).send("No user with this email");
-            Pets.find({'owner':ObjectId(user._id)})
+            Pets.find({'owner':ObjectId(user._id)}).populate({ path: 'owner', select: 'email alias' })
                 .exec((err, pets) =>{
                     if(err) return res.status(400).send(err);
                     return res.send(pets);
