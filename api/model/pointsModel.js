@@ -20,13 +20,12 @@ exports.newPoint = function(title, description, type, photo_url, coord){
         photo_url: photo_url,
         coord: coord
     });
-    newPoint.save() //Añadir gestión de errores. 
-
-    return newPoint; 
+   
+    return newPoint.save();    
 }
 exports.deletePoint = function(id){ 
     var id = id.trim();
-    Points.findByIdAndDelete(id);
+    return Points.findByIdAndRemove(id);
 }
 
 

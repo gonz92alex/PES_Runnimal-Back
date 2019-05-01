@@ -22,20 +22,31 @@ exports.newPoint = function(req,res){
     if (!title) return res.status(400).send("Bad request, no title provided");
     if (!type) return res.status(400).send("Bad request, no title provided");
     if (!coord) return res.status(400).send("Bad request, no coord provided"); 
-   var point =  Points.newPoint(title,
+   /*
+        Es importante hacer así 
+        el error handling puesto
+        que de otra forma no se gestionan
+        apropiadamente los mensajes de error.
+   */
+    Points.newPoint(title,
         description,
-        type,
+        type,               
         photo_url,
-        coord) //Hacer gestión de errores 
-    
-    return res.json(point); 
-
+        coord)
+            .then(function(newPoint){ 
+                return res.json(newPoint);
+            }).catch(function (err){
+                return res.status(400).send(err);
+            });
+   
 }
 
 exports.delete = function(req,res){
     var id = req.params.id.trim(); 
-          
-    Points.deletePoint(id);
-          
-    return res.status(400);
+    Points.deletePoint(id).then(function(deletedPoint){ 
+        if(deletedPoint) return res.json(deletedPoint);
+        return res.status(404).json("Point with ID " + id +  " not found");
+        }).catch(function (err){
+            return res.status(400).json(err);
+        });
 }
