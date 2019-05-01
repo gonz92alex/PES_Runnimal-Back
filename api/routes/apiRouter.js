@@ -20,8 +20,8 @@ var trainningRouter = require('./apiRouters/trainnings');
 router.use("/trainnings", trainningRouter);
 
 //#################POINTS#####################
-var pointsRouter = require('./apiRouters/coordinates');
-router.user("/points", pointsRouter);
+var pointsRouter = require('./apiRouters/points');
+router.use("/points", pointsRouter);
 
 //################FRIENDS#####################
 var friendsRouter = require('./apiRouters/friends');

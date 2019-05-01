@@ -9,7 +9,7 @@
 
     var mongoose = require('mongoose').set('debug',true);
     var Pets = require('../models/Pets');
-    var Users = require('../models/Users');
+    var Users = require('../models/users');
     var ObjectId = require('mongodb').ObjectID;
     
     

@@ -2,7 +2,7 @@
 
 var mongoose = require('mongoose').set('debug',true);
 var UsersRelationships = require('../models/UsersRelationships');
-var Users = require('../models/Users');
+var Users = require('../models/users');
 
 var utils = require('../utils.js');
 
