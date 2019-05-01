@@ -19,6 +19,10 @@ router.use("/pets", petsRouter);
 var trainningRouter = require('./apiRouters/trainnings');
 router.use("/trainnings", trainningRouter);
 
+//#################POINTS#####################
+var pointsRouter = require('./apiRouters/coordinates');
+router.user("/points", pointsRouter);
+
 //################FRIENDS#####################
 var friendsRouter = require('./apiRouters/friends');
 router.use('/friends', friendsRouter);

@@ -4,10 +4,6 @@ var trainning = require('../../controllers/trainningController');
 
 var trainningsRouter = express.Router();
 
-trainningsRouter.get("/new", function(req, res){
-  res.render('api/trainnings/new');
-});
-
 trainningsRouter.route("/")
   .get(trainning.list)
   .post(trainning.newTrainning);
