@@ -3,7 +3,23 @@
 var Points = require('../db/Points');
 
 exports.getAll = function(){
+
     return Points.find(); 
+}
+
+exports.getNearTo = function(x,y,maxDist,minDist){
+    return Points.find({
+        coord: 
+        {
+          $near: [x,y], 
+            $minDistance: minDist,
+            $maxDistance: maxDist
+          }  
+    }); 
+}
+
+exports.searchByName = function(name){
+       
 }
 
 exports.newPoint = function(title, description, type, photo_url, coord){
