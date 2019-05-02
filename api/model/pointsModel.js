@@ -4,10 +4,14 @@ var Points = require('../db/Points');
 
 exports.getAll = function(){
 
+
     return Points.find(); 
 }
 
 exports.getNearTo = function(x,y,maxDist,minDist){
+    
+
+
     return Points.find({
         coord: 
         {
