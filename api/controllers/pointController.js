@@ -5,11 +5,33 @@ var Points = require('../models/points');
 
 
 exports.list = function(req,res){
-    Points.getAll().then(function(points){
-        return res.json(points);
-    }).catch(function(err){
-        return res.json({'error':err});
-    });
+    var x = req.query.x; //El query recoge los parámetros directamente del HTTP header.
+    var y = req.query.y;
+    var maxDist = req.query.maxDist;
+    var minDist = req.query.minDist;
+
+    if(!maxDist) maxDist = 10;
+    if(!minDist) minDist = 0;
+    if(x && y){ //Si se añaden los parámetros X e Y, se busca por cercanía. Por defecto maxDistance es 10. minDistance por defecto es 0.
+                //Si no se ponen X e Y, por defecto obtiene todos los puntos del mapa.
+        console.log("Entra aquí");
+
+        Points.getNearTo(x,y,maxDist,minDist).then(function(points){
+            console.log("Va bien");
+            return res.json(points);
+        }).catch(function(err){
+            console.log("Da error");
+            return res.json({'error':err});
+        });
+
+    } else {
+
+            Points.getAll().then(function(points){
+                return res.json(points);
+            }).catch(function(err){
+                return res.json({'error':err});
+            });
+    }
 }
 
 
