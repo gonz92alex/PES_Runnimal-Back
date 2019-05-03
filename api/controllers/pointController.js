@@ -12,7 +12,8 @@ exports.list = function(req,res){
 
     if(!maxDist) maxDist = 10;
     if(!minDist) minDist = 0;
-    if(x && y){ //Si se añaden los parámetros X e Y, se busca por cercanía. Por defecto maxDistance es 10. minDistance por defecto es 0.
+    if(x && y){ 
+                //Si se añaden los parámetros X e Y, se busca por cercanía. Por defecto maxDistance es 10. minDistance por defecto es 0.
                 //Si no se ponen X e Y, por defecto obtiene todos los puntos del mapa.
         console.log("Entra aquí");
 

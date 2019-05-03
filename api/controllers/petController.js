@@ -9,7 +9,8 @@
 
     var mongoose = require('mongoose').set('debug',true);
     var Pets = require('../models/Pets');
-    var Users = require('../models/users');
+    var UsersModel = require('../models/users');
+    var Users = require('../db/users');
     var ObjectId = require('mongodb').ObjectID;
     
     
@@ -45,7 +46,7 @@
         size = size;
         owner = owner.trim();
         Users.findOne({'email': owner}).exec((error, user) =>{
-            if (error) res.status(400).send("Owner doesn't exis");
+            if (error) res.status(400).send("Owner doesn't exist");
             else{
                 Pets.findOne({'name': name, 'owner':user.id}).populate({ path: 'owner', select: 'email alias' })
                     .exec((err, result) => {
@@ -78,7 +79,7 @@
         if (!owner) return res.status(400).send("Bad request, no owner provided");
         name = name.trim();
         owner = owner.trim();
-        Users.findOne({'email': owner}).exec((error, user) =>{
+        Users.findOne({'email': owner}).then((error, user) =>{
             if (error) res.status(400).send("Owner doesn't exist");
             else{
                 Pets.findOne({'name': name, 'owner':ObjectId(user._id)}).populate({ path: 'owner', select: 'email alias' })
@@ -104,7 +105,7 @@
 
         if(!userEmail) return res.status(400).send("Bad request, no email provided");
 
-        Users.findOne({'email': userEmail}, function(err, user){
+      Users.findOne({'email': userEmail}).exec(function(err, user){ //Falta refactorizarlo a las tres capas
             if(err) return res.status(400).send(err);
             if(!user) return res.status(400).send("No user with this email");
             Pets.find({'owner':ObjectId(user._id)}).populate({ path: 'owner', select: 'email alias' })
