@@ -1,4 +1,4 @@
- var photo = require('../../controllers/photoController');
+/* var photo = require('../../controllers/photoController');
  var photos = require('../models/photoModel');
 
  exports.routes = function(app){
@@ -8,7 +8,7 @@
       .get(photo.getUser);
 
 
- }
+ }*/
  /*
  // Photos
  app.post('/user/:email',  upload.single('profile'), photo.uploadUser);
