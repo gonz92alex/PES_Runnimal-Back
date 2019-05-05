@@ -9,7 +9,6 @@ var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         var type = req.path.split('/')[1];
         var dir = 'photos/' + type + '/';
-        console.log(dir)
         mkdirp(dir, function (err) {
             if (err) {
                 console.error(err);
@@ -30,7 +29,7 @@ var storage = multer.diskStorage({
         //return res.json({'result':'OK'});
     }
 });
-var upload = multer({storage:storage});
+var upload = multer({storage:storage, limits: {fileSize: 1000000}});
 
 
 exports.uploadUser = function (req, res, next) {
@@ -64,7 +63,6 @@ exports.getUser = function (req, res, next) {
         }
         else res.status(404).send("User doesn't exists");
     }).catch(err=>{
-        console.log(err)
         res.status(400).send(err);
     });
 }
@@ -82,11 +80,7 @@ exports.uploadPet = function (req, res, next) {
                 .exec((err, pet) => {
                 if (pet){
                     var uploadPet = upload.single('photo');
-                    console.log(uploadPet)
                     uploadPet(req, res, function (err) {
-                        console.log('HOLA JUAPO')
-                        console.log(err)
-                        console.log(this)
                         if (err) {
                             return next(err);
                         }
@@ -98,7 +92,6 @@ exports.uploadPet = function (req, res, next) {
         }
         else res.status(400).send("Owner doesn't exist");
     }).catch(err=>{
-        console.log(err)
         res.status(400).send(err);
     });
 }
@@ -110,18 +103,18 @@ exports.getPet = function (req, res, next) {
     if (!owner) return res.status(400).send("Bad request, no owner provided");
     name = name.trim();
     owner = owner.trim();
-    Users.findOne({'email': owner}).then((error, user) =>{
-        if (error) res.status(400).send("Owner doesn't exist");
-        else{
+    Users.getOne(owner).then((user) =>{
+        if (user){
             Pets.findOne({'name': name, 'owner':ObjectId(user._id)}).populate({ path: 'owner', select: 'email alias' })
                 .exec((err, pet) => {
                 if (pet){
-                    var files = __dirname+'/../../photos/pets/'+ user.email+'.png'
+                    var files = __dirname+'/../../photos/pets/'+ user.email+'-'+pet.name+'.png'
                     res.sendFile(path.resolve(files));
                 }
                 else res.status(404).send("Pet doesn't exists");    
             });
         }
+        else res.status(400).send("Owner doesn't exist");
     }).catch(err=>{
         res.status(400).send(err);
     });

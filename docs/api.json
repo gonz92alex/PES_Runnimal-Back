@@ -32,6 +32,60 @@
 					"response": []
 				},
 				{
+					"name": "POST photo",
+					"request": {
+						"url": "localhost:3000/api/photo/user/ash@pokemon.com",
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "profile",
+									"description": "",
+									"type": "file",
+									"src": "kisspng-ash-ketchum-pokmon-go-pikachu-gif-png-pkmn-ash-excited-by-supercaptainn-on-devia-5bae6ab32476d6.1708963415381572351494.png"
+								},
+								{
+									"key": "hola",
+									"value": "adios",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GET photo",
+					"request": {
+						"url": "localhost:3000/api/photo/user/ash@pokemon.com",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "profile",
+									"value": "",
+									"description": "",
+									"type": "file"
+								},
+								{
+									"key": "hola",
+									"value": "adios",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
 					"name": "GET Users",
 					"request": {
 						"url": "localhost:3000/api/users",
@@ -87,6 +141,26 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "PUT users",
+					"request": {
+						"url": "localhost:3000/api/user/misty@pokemon.com",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"alias\":\"Misty Segunda entrenadora\",\n\"email\":\"misty@pokemon.com\",\n\"password\":\"psyduck\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},
@@ -129,6 +203,54 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n\"alias\":\"pepe\",\n\"email\":\"pepe@marron.com\",\n\"password\":\"NaNaNa\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "POST photo",
+					"request": {
+						"url": "localhost:3000/api/photo/pets/ash@pokemon.com/perro",
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "photo",
+									"description": "",
+									"type": "file",
+									"src": "ash.jpg"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GET photo",
+					"request": {
+						"url": "localhost:3000/api/photo/pets/ash@pokemon.com/perro",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "photo",
+									"description": "",
+									"type": "file",
+									"src": "kisspng-ash-ketchum-pokmon-go-pikachu-gif-png-pkmn-ash-excited-by-supercaptainn-on-devia-5bae6ab32476d6.1708963415381572351494.png"
+								}
+							]
 						},
 						"description": ""
 					},
