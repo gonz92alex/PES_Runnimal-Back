@@ -31,6 +31,10 @@ router.use('/friends', friendsRouter);
 var friendRequestsRouter = require('./apiRouters/friendRequests');
 router.use("/friendRequests", friendRequestsRouter);
 
+//#############FRIEND_REQUESTS################
+var photoRouter = require('./apiRouters/photo');
+router.use("/photo", photoRouter);
+
 //##################EXPORTS###################
 
 module.exports = router;
