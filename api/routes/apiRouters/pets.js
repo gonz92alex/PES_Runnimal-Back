@@ -10,6 +10,8 @@ petsRouter.route("/")
 
 petsRouter.get("/user/:email", pets.getUserPets);
 
+petsRouter.get("/id/:id", pets.getOneById);
+
 petsRouter.route("/:owner/:name")
   .get(pets.getOne)
   .put(pets.editPet)

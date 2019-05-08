@@ -10,7 +10,8 @@ var PetsModel = new mongoose.Schema({
     size: {type: String, enum: {values: sizes, message: "size wrong"}}, 
     race: String,
     birth: Number,
-    owner: {type: mongoose.Schema.Types.ObjectId, ref: 'users'}
+    owner: {type: mongoose.Schema.Types.ObjectId, ref: 'users'},
+    otherOwners: [{type: mongoose.Schema.Types.ObjectId, ref: 'users'}]
 });
 
 module.exports = mongoose.model('pets',PetsModel);

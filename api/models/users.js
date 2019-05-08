@@ -2,7 +2,7 @@
 var Users = require('../db/users');
 
 
-exports.getAll = function(req,res) {
+exports.getAll = function() {
     return Users.find();
 };
 
@@ -37,7 +37,8 @@ exports.editAlias = function(email, alias){
 }
 
 exports.getOne = function(email) {
-    email = email.trim();
+    //email = email.trim();
+    console.log("llegoo");
     return Users.findOne({'email': email});
 };
 
