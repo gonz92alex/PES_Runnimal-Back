@@ -1,6 +1,7 @@
 'use strict';
 var Users = require('../models/users');
 var Pets = require('../models/Pets');
+var Trainning = require('../models/Trainning')
 var ObjectId = require('mongodb').ObjectID;
 var path = require('path');
 var mkdirp = require('mkdirp');
@@ -24,7 +25,10 @@ var storage = multer.diskStorage({
             cb(null, req.params.email + '.' + 'png')
         }
         else{
-            cb(null, req.params.owner + '-' + req.params.name + '.' + 'png')
+            if (type == 'trainnings'){
+                cb(null, req.params.id + '.' + 'png')
+            }
+            else  cb(null, req.params.owner + '-' + req.params.name + '.' + 'png')
         }
         //return res.json({'result':'OK'});
     }
@@ -117,5 +121,40 @@ exports.getPet = function (req, res, next) {
         else res.status(400).send("Owner doesn't exist");
     }).catch(err=>{
         res.status(400).send(err);
+    });
+}
+
+exports.uploadTraining = function (req, res, next) {
+    var id = req.params.id;
+
+    if (!id) return res.status(400).send("Bad request, no id provided");
+
+    Trainning.findById(id, function (err, trainning) {
+        if(trainning){
+            var uploadPet = upload.single('photo');
+                    uploadPet(req, res, function (err) {
+                        if (err) {
+                            return next(err);
+                        }
+                        return res.json({'result':'OK'});
+                    });
+        } else {
+            return res.status(404).send("Training doesn't exists");    
+        }
+    });
+}
+
+exports.getTraining = function (req, res, next) {
+    var id = req.params.id;
+
+    if (!id) return res.status(400).send("Bad request, no id provided");
+
+    Trainning.findById(id, function (err, trainning) {
+        if(trainning){
+            var files = __dirname+'/../../photos/trainnings/'+ trainning._id+'.png'
+            res.sendFile(path.resolve(files));
+        } else {
+            return res.status(404).send("Training doesn't exists");    
+        }
     });
 }

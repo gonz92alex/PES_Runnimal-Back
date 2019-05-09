@@ -12,4 +12,9 @@ photoRouter.route("/users/:email")
 photoRouter.route("/pets/:owner/:name")
     .post(photo.uploadPet)
     .get(photo.getPet);
+
+
+photoRouter.route("/trainnings/:id")
+    .post(photo.uploadTraining)
+    .get(photo.getTraining);
 module.exports = photoRouter;
