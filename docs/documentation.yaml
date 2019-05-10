@@ -135,6 +135,9 @@ paths:
           headers: {}
   /photo/users/{email}:
     post:
+      tags:
+      - Photos
+      summary: POST user photos
       parameters:
         - in: path
           name: email
@@ -142,11 +145,23 @@ paths:
             type: string
           required: true
           description: El email del usuario.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                photo:
+                  type: object
       responses:
         200:
           description: 'La foto se ha subido bien'
           headers: {}
     get:
+      tags:
+      - Photos
+      summary: GET user photos
       parameters:
         - in: path
           name: email
@@ -160,6 +175,9 @@ paths:
           headers: {}
   /photo/pets/{owner}/{name}:
     post:
+      tags:
+      - Photos
+      summary: POST pet photos
       parameters:
         - in: path
           name: owner
@@ -173,11 +191,23 @@ paths:
             type: string
           required: true
           description: El nombre de la mascota.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                photo:
+                  type: object
       responses:
         200:
           description: 'La foto se ha subido bien'
           headers: {}
     get:
+      tags:
+      - Photos
+      summary: GET pet photos
       parameters:
         - in: path
           name: owner
@@ -194,7 +224,47 @@ paths:
       responses:
         200:
           description: 'Devuelve la foto del usuario'
-          headers: {}    
+          headers: {}
+  /photo/trainnings/{id}:
+    post:
+      tags:
+      - Photos
+      summary: POST trainning photos
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: El id del entrenamiento.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                photo:
+                  type: object
+      responses:
+        200:
+          description: 'La foto se ha subido bien'
+          headers: {}
+    get:
+      tags:
+      - Photos
+      summary: GET trainning photos
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: El id del entrenamiento.
+      responses:
+        200:
+          description: 'Devuelve la foto del usuario'
+          headers: {}
   /pet/{owner}/{name}:
     delete:
       tags:
