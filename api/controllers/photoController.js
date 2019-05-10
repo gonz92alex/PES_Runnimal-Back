@@ -63,7 +63,12 @@ exports.getUser = function (req, res, next) {
     Users.getOne(email).then((user) => {
         if (user) {
             var files = __dirname+'/../../photos/users/'+ user.email+'.png'
-            res.sendFile(path.resolve(files));
+            res.sendFile(path.resolve(files), undefined, function (err) {
+                if (err) {
+                    files = __dirname+'/../../photos/users/default.png';
+                    res.sendFile(path.resolve(files));
+                }
+            });
         }
         else res.status(404).send("User doesn't exists");
     }).catch(err=>{
@@ -113,7 +118,12 @@ exports.getPet = function (req, res, next) {
                 .exec((err, pet) => {
                 if (pet){
                     var files = __dirname+'/../../photos/pets/'+ user.email+'-'+pet.name+'.png'
-                    res.sendFile(path.resolve(files));
+                    res.sendFile(path.resolve(files), undefined, function (err) {
+                        if (err) {
+                            files = __dirname+'/../../photos/pets/default.png';
+                            res.sendFile(path.resolve(files));
+                        }
+                    });
                 }
                 else res.status(404).send("Pet doesn't exists");    
             });
@@ -152,7 +162,12 @@ exports.getTraining = function (req, res, next) {
     Trainning.findById(id, function (err, trainning) {
         if(trainning){
             var files = __dirname+'/../../photos/trainnings/'+ trainning._id+'.png'
-            res.sendFile(path.resolve(files));
+            res.sendFile(path.resolve(files), undefined, function (err) {
+                if (err) {
+                    files = __dirname+'/../../photos/trainnings/default.png';
+                    res.sendFile(path.resolve(files));
+                }
+            });          
         } else {
             return res.status(404).send("Training doesn't exists");    
         }
