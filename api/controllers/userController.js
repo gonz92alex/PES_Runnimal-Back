@@ -9,6 +9,14 @@ exports.list = function(req,res) {
     });
 };
 
+exports.ranking = function(req,res){
+    Users.getRanking().then(function(users){
+        return res.json(users)
+    }).catch(function(err){
+        return res.json({'error':err}); 
+    });
+}
+
 exports.newUser = function(req,res) {
     var alias = req.body.alias;
     var email = req.body.email;

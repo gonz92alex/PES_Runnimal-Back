@@ -6,6 +6,18 @@ exports.getAll = function(req,res) {
     return Users.find();
 };
 
+exports.getRanking = function (req, res){
+  return  Users.find({}).sort({points: -1}).execFind(function(err,users){
+        if(err){
+            return {'error' : err}
+        } else {
+            return users; 
+        }
+    });
+    
+
+
+}
 exports.createUser = function(alias, email, password) {
     alias = alias.trim();
     email = email.trim();

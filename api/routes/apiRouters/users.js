@@ -16,6 +16,8 @@ usersRouter.route("/:email")
 		.put(users.addPointsToUser); 
 	usersRouter.route("/:email/removePoints")
 		.put(users.removePointsToUser); 
+
+
 	
 
 usersRouter.get("/id/:id", users.getOneById);

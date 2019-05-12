@@ -35,6 +35,10 @@ router.use("/friendRequests", friendRequestsRouter);
 var photoRouter = require('./apiRouters/photo');
 router.use("/photo", photoRouter);
 
+//##################RANKING###################
+
+
+
 //##################EXPORTS###################
 
 module.exports = router;
