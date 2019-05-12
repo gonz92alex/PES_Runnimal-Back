@@ -37,7 +37,8 @@ router.use("/photo", photoRouter);
 
 //##################RANKING###################
 
-
+var rankingRouter = require('./apiRouters/ranking');
+router.use("/ranking", rankingRouter);
 
 //##################EXPORTS###################
 

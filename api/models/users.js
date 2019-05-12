@@ -7,7 +7,7 @@ exports.getAll = function(req,res) {
 };
 
 exports.getRanking = function (req, res){
-  return  Users.find({}).sort({points: -1}).execFind(function(err,users){
+  return  Users.find({}).sort({points: -1}).then(function(users,err){
         if(err){
             return {'error' : err}
         } else {
