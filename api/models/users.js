@@ -37,29 +37,26 @@ exports.editAlias = function(email, alias){
 }
 
 exports.addPoints = function(email,pointsQuantity){
-    this.getOne(email).then( function(user) {
+   return this.getOne(email).then( user =>  {
         if(!user){
             console.log("Usuario no existe");
             return {'error': 'User do not exists'};
         } else {
             if(!user.points){
                 console.log("Usuario existe y no tiene puntos");
-
                 user.points = pointsQuantity; 
                 return user.save(); 
             } else{
-
                 console.log("Usuario existe y tiene puntos " + user.points);
-
                 user.points = user.points + pointsQuantity; 
-                 
+                 console.log(user); 
                 return user.save(); 
             }
         }
     });
 }
 exports.removePoints = function(email,pointsQuantity){
-    this.getOne(email).then(function(user)  {
+   return this.getOne(email).then(user =>  {
         if(!user){
             return {'error': 'User do not exists'};
         } else {

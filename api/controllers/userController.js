@@ -53,22 +53,17 @@ exports.addPointsToUser = function (req,res){
     if(points){
     console.log("Existen puntos"); 
         Users.addPoints(email,points).then(user => {
-            console.log("Llama a addPoints"); 
-            
             return res.json(user); 
-        }).catch(err=>{
-            console.log("Da Error"); 
-
-            return res.status(400).send(err);
-        });
-    }   
+        }); 
+        
+    }
 }
 
 exports.removePointsToUser = function (req, res){
 
     var email = req.params.email; 
     var points = req.body.points; 
-    
+
     if(!email) return res.status(432).send("Bad request, no email provided");
     if(!points) return res.status(432).send("Bad request, no points provided"); 
     console.log("Obtiene los puntos"); 
