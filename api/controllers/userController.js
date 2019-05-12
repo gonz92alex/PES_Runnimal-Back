@@ -26,6 +26,8 @@ exports.newUser = function(req,res) {
     });
 };
 
+
+
 exports.editUser = function(req,res){
     var email = req.params.email; 
     var alias = req.body.alias;
@@ -39,6 +41,51 @@ exports.editUser = function(req,res){
         })
     } 
 };
+
+exports.addPointsToUser = function (req,res){
+    var email = req.params.email; 
+    var points = req.body.points; 
+
+
+    if(!email) return res.status(432).send("Bad request, no email provided");
+    if(!points) return res.status(432).send("Bad request, no points provided"); 
+    console.log("Obtiene los puntos"); 
+    if(points){
+    console.log("Existen puntos"); 
+        Users.addPoints(email,points).then(user => {
+            console.log("Llama a addPoints"); 
+            
+            return res.json(user); 
+        }).catch(err=>{
+            console.log("Da Error"); 
+
+            return res.status(400).send(err);
+        });
+    }   
+}
+
+exports.removePointsToUser = function (req, res){
+
+    var email = req.params.email; 
+    var points = req.body.points; 
+    
+    if(!email) return res.status(432).send("Bad request, no email provided");
+    if(!points) return res.status(432).send("Bad request, no points provided"); 
+    console.log("Obtiene los puntos"); 
+    if(points){
+    console.log("Existen puntos"); 
+        Users.removePoints(email,points).then(user => {
+            console.log("Llama a removePoints"); 
+            
+            return res.json(user); 
+        }).catch(err=>{
+            console.log("Da Error"); 
+
+            return res.status(400).send(err);
+        });
+        }
+}
+
 
 exports.getOne = function(req,res) {
     var email = req.params.email;

@@ -36,6 +36,46 @@ exports.editAlias = function(email, alias){
     });
 }
 
+exports.addPoints = function(email,pointsQuantity){
+    this.getOne(email).then( function(user) {
+        if(!user){
+            console.log("Usuario no existe");
+            return {'error': 'User do not exists'};
+        } else {
+            if(!user.points){
+                console.log("Usuario existe y no tiene puntos");
+
+                user.points = pointsQuantity; 
+                return user.save(); 
+            } else{
+
+                console.log("Usuario existe y tiene puntos " + user.points);
+
+                user.points = user.points + pointsQuantity; 
+                 
+                return user.save(); 
+            }
+        }
+    });
+}
+exports.removePoints = function(email,pointsQuantity){
+    this.getOne(email).then(function(user)  {
+        if(!user){
+            return {'error': 'User do not exists'};
+        } else {
+            if(!user.points){
+                return {'error': 'User has no points'};
+            } else{
+                user.points = user.points - pointsQuantity; //Un usuario puede tener puntos negativos. 
+                return user.save(); 
+            }
+        }
+    }).catch(err=>{
+        return {'error':err};
+    });
+
+}
+
 exports.getOne = function(email) {
     email = email.trim();
     return Users.findOne({'email': email});
