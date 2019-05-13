@@ -8,38 +8,35 @@ var utils = require('../utils.js');
 
 exports.searchFriends = function(req, res){
 
-	Users.find().exec((err,users) => {
-        if (err)
-            res.send(err);
-        else
-        	var usersRelationship = [];
-            users.forEach(function(user, userIndex, array){
-            	
-            	var i = userIndex % 3;
-            	var relationshipStatus;
-            	switch(i){
-            		case 0:
-            			relationshipStatus = 'friend';
-            			break;
-            		case 1:
-            			relationshipStatus = 'blocked';
-            			break
-            		case 2:
-            			relationshipStatus = 'none';
-            			break;
-            	}
+	Users.getAll().then((users) => {  
+    	var usersRelationship = [];
+        users.forEach(function(user, userIndex, array){
+        	
+        	var i = userIndex % 3;
+        	var relationshipStatus;
+        	switch(i){
+        		case 0:
+        			relationshipStatus = 'friend';
+        			break;
+        		case 1:
+        			relationshipStatus = 'blocked';
+        			break
+        		case 2:
+        			relationshipStatus = 'none';
+        			break;
+        	}
 
-            	var obj = {
-            		_id : user['_id'],
-            		alias: user['alias'],
-  					email: user['email'],
-  					password: user['password'],
-  					relationshipStatus: relationshipStatus
-            	};
-            	
-            	usersRelationship.push(obj);
-            });
-            res.send(usersRelationship)
+        	var obj = {
+        		_id : user['_id'],
+        		alias: user['alias'],
+					email: user['email'],
+					password: user['password'],
+					relationshipStatus: relationshipStatus
+        	};
+        	
+        	usersRelationship.push(obj);
+        });
+        res.send(usersRelationship)
     });
 };
 
