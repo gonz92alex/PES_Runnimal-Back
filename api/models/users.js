@@ -6,6 +6,18 @@ exports.getAll = function() {
     return Users.find();
 };
 
+exports.getRanking = function (req, res){
+  return  Users.find({}).sort({points: -1}).then(function(users,err){
+        if(err){
+            return {'error' : err}
+        } else {
+            return users; 
+        }
+    });
+    
+
+
+}
 exports.createUser = function(alias, email, password) {
     alias = alias.trim();
     email = email.trim();
@@ -34,6 +46,43 @@ exports.editAlias = function(email, alias){
     }).catch(err=>{
         return {'error': err};
     });
+}
+
+exports.addPoints = function(email,pointsQuantity){
+   return this.getOne(email).then( user =>  {
+        if(!user){
+            console.log("Usuario no existe");
+            return {'error': 'User do not exists'};
+        } else {
+            if(!user.points){
+                console.log("Usuario existe y no tiene puntos");
+                user.points = pointsQuantity; 
+                return user.save(); 
+            } else{
+                console.log("Usuario existe y tiene puntos " + user.points);
+                user.points = user.points + pointsQuantity; 
+                 console.log(user); 
+                return user.save(); 
+            }
+        }
+    });
+}
+exports.removePoints = function(email,pointsQuantity){
+   return this.getOne(email).then(user =>  {
+        if(!user){
+            return {'error': 'User do not exists'};
+        } else {
+            if(!user.points){
+                return {'error': 'User has no points'};
+            } else{
+                user.points = user.points - pointsQuantity; //Un usuario puede tener puntos negativos. 
+                return user.save(); 
+            }
+        }
+    }).catch(err=>{
+        return {'error':err};
+    });
+
 }
 
 exports.getOne = function(email) {

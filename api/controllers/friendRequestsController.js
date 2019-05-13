@@ -1,7 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose').set('debug',true);
-var Users = require('../models/users');
+var Users = require('../db/users');
 var FriendRequests = require('../models/FriendRequests');
 var UsersRelationships = require('../models/UsersRelationships');
 var usersRelationshipsController = require('./usersRelationshipsController');
