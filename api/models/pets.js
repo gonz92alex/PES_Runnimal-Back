@@ -12,18 +12,10 @@ var Users = require('./users');
 var Owners = require('./owners');
 var ObjectId = require('mongodb').ObjectID;
 
-exports.getAll = function() {
-	return Pets.find();
-};
 
 exports.new = function(ownerEmail, name, weight, race, birth, description, size) {
     name = name.trim();
     description = description.trim();
-
-    /*if (!name) return res.status(400).send("Bad request, no name provided");
-    if (!size) return res.status(400).send("Bad request, no size provided");
-    if (!birth) return res.status(400).send("Bad request, no birth provided");
-    if (!owner) return res.status(400).send("Bad request, no owner provided");*/
 
     Users.getOne(ownerEmail).then(function (user){
     	if (user) return {'error': 'User already exists'};
@@ -58,6 +50,19 @@ exports.edit = function (id, name, weight, description, size, race, birth) {
 	});
 };
 
+exports.addOwner = function(petId, ownerEmail) {
+    return this.getOneById(petId).then(function (pet) {
+        return Users.getOne(ownerEmail).then(function (user){
+            pet.other_owners.push(user._id);
+            return pet.save();
+        }).catch(function (err){
+
+        });
+    }).catch(function (err){
+
+    });
+};
+
 exports.delete = function(ownerEmail, petName){
 	this.getOne(ownerEmail, petName).then(function (pet) {
 		Pets.remove({_id:ObjectId(pet._id)}, function(err){
@@ -65,6 +70,11 @@ exports.delete = function(ownerEmail, petName){
 			return {'status': 'pet removed'}
 		})
 	})
+};
+
+exports.getAll = function() {
+	return Pets.find().populate({ path: 'owner', select: 'email alias' })
+            .populate('other_owners');;
 };
 
 exports.getOne = function(ownerEmail, petName){
@@ -81,25 +91,20 @@ exports.getOneById = function (id) {
 		.populate('other_owners');
 };
 
-exports.addOwner = function (petId, ownerEmail){
-	/*return Users.getOneById(ownerId)
-	return getOneById(id).then(pet => {
+exports.getUserPets = function(userEmail){
+    
+    return Users.getOne(userEmail).then(function(user){
+        Pets.find()
+    }).catch(function(err){
 
-	})*/
-}
-
-/*exports.getUserPets = function(req, res){
-    var userEmail = req.params.email;
-
-    if(!userEmail) return res.status(400).send("Bad request, no email provided");
-
-    Users.findOne({'email': userEmail}, function(err, user){
-        if(err) return res.status(400).send(err);
-        if(!user) return res.status(400).send("No user with this email");
-        Pets.find({'owner':ObjectId(user._id)}).populate({ path: 'owner', select: 'email alias' })
-            .exec((err, pets) =>{
-                if(err) return res.status(400).send(err);
-                return res.send(pets);
-            });
     });
-}*/
+
+    Users.findOne({'email': userEmail}).exec(function(err, user){ //Falta refactorizarlo a las tres capas
+            if(err) return res.status(400).send(err);
+            if(!user) return res.status(400).send("No user with this email");
+            Pets.find({'owner':ObjectId(user._id)})
+                .or([{ other_owners: user._id}])
+                .populate({ path: 'owner', select: 'email alias' })
+                .populate('other_owners');
+        });
+}

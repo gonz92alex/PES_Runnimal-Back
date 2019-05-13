@@ -11,9 +11,6 @@ exports.list = function(req,res) {
     });
 };
 
-exports.userPets = function(req, res) {
-
-}
 
 exports.newPet = function(req,res) {
     var name = req.body.name;
@@ -77,10 +74,9 @@ exports.getUserPets = function(req, res){
     if(!userEmail) return res.status(400).send("Bad request, no email provided");
 
     Owners.getUserPets(userEmail).then((pets) => {
-        if(pets) return res.status(200).json(pets);
-        else return res.status(400).send("User hasn't pets");
-    }).catch(err => {
-        return res.status(400).send(err);
+       return res.status(200).json(pets);
+    }).catch(function (err){
+        return res.status(400).json({'error':err});
     });
 }
 
@@ -123,3 +119,17 @@ exports.deleteOne = function(req,res) {
         return res.status(400).send(err);
     });
 };
+
+exports.addOwner = function (req, res){
+    var petId = req.params.petId;
+    var ownerEmail = req.params.ownerEmail
+
+    if (!petId) return res.status(400).send("Bad request, no pet id provided");
+    if (!ownerEmail) return res.status(400).send("Bad request, no owner email provided");
+
+    Pets.addOwner(petId, ownerEmail).then(function(pet){
+        return res.status(200).json(pet);
+    }).catch(function (err){
+        return res.status(400).send(err);
+    });
+}
