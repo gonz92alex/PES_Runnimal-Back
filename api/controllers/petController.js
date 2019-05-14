@@ -55,7 +55,7 @@
                             var pet = new Pets({
                                 name: name,
                                 weight:weight,
-                                race:race,
+                                breed:race,
                                 birth:birth,
                                 description:description,
                                 size:size,
