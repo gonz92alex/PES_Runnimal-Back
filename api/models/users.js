@@ -87,7 +87,6 @@ exports.removePoints = function(email,pointsQuantity){
 
 exports.getOne = function(email) {
     //email = email.trim();
-    console.log("llegoo");
     return Users.findOne({'email': email});
 };
 

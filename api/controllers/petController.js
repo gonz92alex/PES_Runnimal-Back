@@ -1,7 +1,6 @@
 'use strict';
 
 var Pets = require('../models/pets');
-var Owners = require('../models/owners');    
 
 exports.list = function(req,res) {
     Pets.getAll().then(function(users){
@@ -65,7 +64,18 @@ exports.getOneById = function(req, res) {
         else return res.status(400).send("Pet doesn't exist");
     }).catch( err => {
         return res.status(400).send(err);
-    })
+    });
+}
+
+exports.getPetOwners = function (req, res){
+    var petId = req.params.id;
+    if (!petId) return res.status(400).send("Bad request, no id provided");
+
+    Pets.getPetOwners(petId).then((pet) => {
+        return res.json(pet);
+    }).catch( err => {
+        return res.status(400).send(err);
+    });
 }
 
 exports.getUserPets = function(req, res){
@@ -73,8 +83,8 @@ exports.getUserPets = function(req, res){
 
     if(!userEmail) return res.status(400).send("Bad request, no email provided");
 
-    Owners.getUserPets(userEmail).then((pets) => {
-       return res.status(200).json(pets);
+    Pets.getUserPets(userEmail).then((pets) => {
+        return res.status(200).json(pets);
     }).catch(function (err){
         return res.status(400).json({'error':err});
     });
@@ -121,8 +131,8 @@ exports.deleteOne = function(req,res) {
 };
 
 exports.addOwner = function (req, res){
-    var petId = req.params.petId;
-    var ownerEmail = req.params.ownerEmail
+    var petId = req.params.id;
+    var ownerEmail = req.body.userEmail;
 
     if (!petId) return res.status(400).send("Bad request, no pet id provided");
     if (!ownerEmail) return res.status(400).send("Bad request, no owner email provided");

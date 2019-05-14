@@ -17,27 +17,23 @@ exports.new = function(ownerEmail, name, weight, race, birth, description, size)
     name = name.trim();
     description = description.trim();
 
-    Users.getOne(ownerEmail).then(function (user){
-    	if (user) return {'error': 'User already exists'};
-        else {
-        	var pet = new Pets({
-                name: name,
-                weight:weight,
-                race:race,
-                birth:birth,
-                description:description,
-                size:size,
-                owner:user.id
-            });
-            pet = pet.save();
-            Owners.newOwner(user._id, pet._id);
-            return pet;
-        }      
+    return Users.getOne(ownerEmail).then(function (user){
+    	
+        var pet = new Pets({
+            name: name,
+            weight:weight,
+            race:race,
+            birth:birth,
+            description:description,
+            size:size,
+            owner:user._id
+        });
+        return pet.save();
     });
 };
 
 exports.edit = function (id, name, weight, description, size, race, birth) {
-	this.getOneById(id).then(function (pet){
+	return this.getOneById(id).then(function (pet){
 		pet.name = name;
 		pet.weight = weight;
 		pet.description = description;
@@ -50,18 +46,39 @@ exports.edit = function (id, name, weight, description, size, race, birth) {
 	});
 };
 
-exports.addOwner = function(petId, ownerEmail) {
-    return this.getOneById(petId).then(function (pet) {
-        return Users.getOne(ownerEmail).then(function (user){
-            pet.other_owners.push(user._id);
-            return pet.save();
+exports.addOwner = function(petId, userEmail) {
+
+    return Users.getOne(userEmail).then(function (user){
+        return Pets.findById(petId).then(function (pet){
+
+        }).catch(function (err){
+
+        });
+    }).catch(function (err) {
+
+    });
+
+    /*return this.getOneById(petId).then(function (pet){
+        return Users.getOne(userEmail).then(function (user){
+            console.log("hola hola")
+            console.log(pet.otherOwners.find(x => x.id === pet._id));
+            //if(!pet.otherOwners[pet.otherOwners.indexOf(petId)]){
+                pet.otherOwners.push(user._id);
+                return pet.save();
+            } else {
+                console.log("ja existe el owner");
+            }//
         }).catch(function (err){
 
         });
     }).catch(function (err){
 
-    });
+    });*/
 };
+
+exports.removeOwner = function(petId, userEmail) {
+    
+}
 
 exports.delete = function(ownerEmail, petName){
 	this.getOne(ownerEmail, petName).then(function (pet) {
@@ -74,37 +91,36 @@ exports.delete = function(ownerEmail, petName){
 
 exports.getAll = function() {
 	return Pets.find().populate({ path: 'owner', select: 'email alias' })
-            .populate('other_owners');;
+            .populate('otherOwners');;
 };
 
 exports.getOne = function(ownerEmail, petName){
 	return Users.getOne(ownerEmail).then((user) => {
 		return Pets.findOne({'name': petName, 'owner':ObjectId(user._id)})
 			.populate({ path: 'owner', select: 'email alias' })
-			.populate('other_owners');
+			.populate('otherOwners');
 	});
 };
 
 exports.getOneById = function (id) {
 	return Pets.findById(id)
 		.populate({ path: 'owner', select: 'email alias' })
-		.populate('other_owners');
+		.populate('otherOwners');
 };
 
 exports.getUserPets = function(userEmail){
-    
+
     return Users.getOne(userEmail).then(function(user){
-        Pets.find()
+        return Pets.find( { $or:[ {'owner': ObjectId(user._id)}, {'otherOwners': ObjectId(user._id)} ]})
+            .populate({ path: 'owner', select: 'email alias' })
+            .populate('otherOwners');
     }).catch(function(err){
 
     });
+}
 
-    Users.findOne({'email': userEmail}).exec(function(err, user){ //Falta refactorizarlo a las tres capas
-            if(err) return res.status(400).send(err);
-            if(!user) return res.status(400).send("No user with this email");
-            Pets.find({'owner':ObjectId(user._id)})
-                .or([{ other_owners: user._id}])
-                .populate({ path: 'owner', select: 'email alias' })
-                .populate('other_owners');
-        });
+exports.getPetOwners = function(id) {
+    return Pets.findById(id, 'owner')
+        .populate({ path: 'owner', select: 'email alias' })
+        .populate('otherOwners');
 }

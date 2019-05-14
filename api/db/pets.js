@@ -14,4 +14,6 @@ var PetsModel = new mongoose.Schema({
     otherOwners: [{type: mongoose.Schema.Types.ObjectId, ref: 'users'}]
 });
 
+PetsModel.index({ name: 1, owner: 1 }, { unique: true });
+
 module.exports = mongoose.model('pets',PetsModel);
