@@ -8,7 +8,7 @@ var PetsModel = new mongoose.Schema({
     weight: Number,
     description: String,
     size: {type: String, enum: {values: sizes, message: "size wrong"}}, 
-    race: String,
+    breed: String,
     birth: Number,
     owner: {type: mongoose.Schema.Types.ObjectId, ref: 'users'}
 });
