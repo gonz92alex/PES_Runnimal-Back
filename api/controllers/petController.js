@@ -14,7 +14,7 @@ exports.list = function(req,res) {
 exports.newPet = function(req,res) {
     var name = req.body.name;
     var weight = req.body.weight;
-    var race = req.body.race;
+    var breed = req.body.breed;
     var birth = req.body.birth;
     var description = req.body.description;
     var size = req.body.size;
@@ -26,13 +26,13 @@ exports.newPet = function(req,res) {
 
     name = name.trim();
     weight = weight;
-    race = race.trim();
+    breed = breed.trim();
     birth = birth;
     description = description.trim();
     size = size;
     owner = owner.trim();
     
-    Pets.new(owner, name, weight, race, birth, description, size).then(pet => {
+    Pets.new(owner, name, weight, breed, birth, description, size).then(pet => {
         return res.status(200).json(pet);
     }).catch(err => {
         return res.status(400).send(err);
@@ -97,16 +97,16 @@ exports.editPet = function(req, res) {
     var weight = req.body.weight;
     var description = req.body.description;
     var size = req.body.size;
-    var race = req.body.race;
+    var breed = req.body.breed;
     var birth = req.body.birth;
     
     Pets.getOne(owner, name).then(function (pet){
         if(!weight) weight = pet.weight;
         if(!description) description = pet.description;
         if(!size) size = pet.size;
-        if(!race) race = pet.race;
+        if(!breed) breed = pet.breed;
         if(!birth) birth = pet.birth;
-        pets.edit(pet._id, name, weight, description, size, race, birth)
+        pets.edit(pet._id, name, weight, description, size, breed, birth)
             .then(function (petEdited){
                 return res.status(200).json(petEdited);
             }).catch(function(err) {
@@ -138,6 +138,20 @@ exports.addOwner = function (req, res){
     if (!ownerEmail) return res.status(400).send("Bad request, no owner email provided");
 
     Pets.addOwner(petId, ownerEmail).then(function(pet){
+        return res.status(200).json(pet);
+    }).catch(function (err){
+        return res.status(400).send(err);
+    });
+}
+
+exports.removeOwner = function (req, res){
+    var petId = req.params.id;
+    var ownerEmail = req.body.userEmail;
+
+    if (!petId) return res.status(400).send("Bad request, no pet id provided");
+    if (!ownerEmail) return res.status(400).send("Bad request, no owner email provided");
+
+    Pets.removeOwner(petId, ownerEmail).then(function(pet){
         return res.status(200).json(pet);
     }).catch(function (err){
         return res.status(400).send(err);

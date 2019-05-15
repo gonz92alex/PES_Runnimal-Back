@@ -13,7 +13,7 @@ var Owners = require('./owners');
 var ObjectId = require('mongodb').ObjectID;
 
 
-exports.new = function(ownerEmail, name, weight, race, birth, description, size) {
+exports.new = function(ownerEmail, name, weight, breed, birth, description, size) {
     name = name.trim();
     description = description.trim();
 
@@ -22,7 +22,7 @@ exports.new = function(ownerEmail, name, weight, race, birth, description, size)
         var pet = new Pets({
             name: name,
             weight:weight,
-            race:race,
+            breed:breed,
             birth:birth,
             description:description,
             size:size,
@@ -32,13 +32,13 @@ exports.new = function(ownerEmail, name, weight, race, birth, description, size)
     });
 };
 
-exports.edit = function (id, name, weight, description, size, race, birth) {
+exports.edit = function (id, name, weight, description, size, breed, birth) {
 	return this.getOneById(id).then(function (pet){
 		pet.name = name;
 		pet.weight = weight;
 		pet.description = description;
 		pet.size = size;
-		pet.race = race;
+		pet.breed = breed;
 		pet.birth = birth; 
         return pet.save();
 	}).catch(function (err) {
@@ -47,37 +47,34 @@ exports.edit = function (id, name, weight, description, size, race, birth) {
 };
 
 exports.addOwner = function(petId, userEmail) {
-
     return Users.getOne(userEmail).then(function (user){
         return Pets.findById(petId).then(function (pet){
-
+            if(pet.owner != user._id && (pet.otherOwners).indexOf(user._id) == -1){
+                pet.otherOwners.push( ObjectId(user._id) );
+                return pet.save();
+            }
         }).catch(function (err){
 
         });
     }).catch(function (err) {
 
     });
-
-    /*return this.getOneById(petId).then(function (pet){
-        return Users.getOne(userEmail).then(function (user){
-            console.log("hola hola")
-            console.log(pet.otherOwners.find(x => x.id === pet._id));
-            //if(!pet.otherOwners[pet.otherOwners.indexOf(petId)]){
-                pet.otherOwners.push(user._id);
-                return pet.save();
-            } else {
-                console.log("ja existe el owner");
-            }//
-        }).catch(function (err){
-
-        });
-    }).catch(function (err){
-
-    });*/
 };
 
 exports.removeOwner = function(petId, userEmail) {
-    
+    return Users.getOne(userEmail).then(function (user){
+        return Pets.findById(petId).then(function (pet){
+            var index = pet.otherOwners.indexOf(user._id);
+            if(index > -1){
+                pet.otherOwners.splice(index, 1);
+                return pet.save();
+            }
+        }).catch(function (err){
+
+        });
+    }).catch(function (err) {
+
+    });
 }
 
 exports.delete = function(ownerEmail, petName){
