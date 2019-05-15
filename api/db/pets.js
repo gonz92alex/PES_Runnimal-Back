@@ -10,7 +10,10 @@ var PetsModel = new mongoose.Schema({
     size: {type: String, enum: {values: sizes, message: "size wrong"}}, 
     breed: String,
     birth: Number,
-    owner: {type: mongoose.Schema.Types.ObjectId, ref: 'users'}
+    owner: {type: mongoose.Schema.Types.ObjectId, ref: 'users'},
+    otherOwners: [{type: mongoose.Schema.Types.ObjectId, ref: 'users'}]
 });
+
+PetsModel.index({ name: 1, owner: 1 }, { unique: true });
 
 module.exports = mongoose.model('pets',PetsModel);

@@ -1,183 +1,159 @@
-/*nombre: String,
-    peso: Number,
-    descripcion: String,
-    tamano: Number, 
-    raza: String,
-    naciemiento: Number*/
+'use strict';
 
-    'use strict';
+var Pets = require('../models/pets');
 
-    var mongoose = require('mongoose').set('debug',true);
-    var Pets = require('../models/Pets');
-    var Users = require('../models/users');
-    var ObjectId = require('mongodb').ObjectID;
+exports.list = function(req,res) {
+    Pets.getAll().then(function(users){
+        return res.status(200).json(users);
+    }).catch(function(err){
+        return res.status(400).json({'error':err});
+    });
+};
+
+
+exports.newPet = function(req,res) {
+    var name = req.body.name;
+    var weight = req.body.weight;
+    var breed = req.body.breed;
+    var birth = req.body.birth;
+    var description = req.body.description;
+    var size = req.body.size;
+    var owner = req.body.owner;
+    if (!name) return res.status(400).send("Bad request, no name provided");
+    if (!size) return res.status(400).send("Bad request, no size provided");
+    if (!birth) return res.status(400).send("Bad request, no birth provided");
+    if (!owner) return res.status(400).send("Bad request, no owner provided");
+
+    name = name.trim();
+    weight = weight;
+    breed = breed.trim();
+    birth = birth;
+    description = description.trim();
+    size = size;
+    owner = owner.trim();
     
-    
-    
-    
-    exports.list = function(req,res) {
-        Pets.find().populate({ path: 'owner', select: 'email alias' }).exec((err,pets) => {
-            if (err)
-                res.send(err);
-            else
-                res.json(pets);
-        });
-    };
-    
-    exports.newPet = function(req,res) {
-        var name = req.body.name;
-        var weight = req.body.weight;
-        var race = req.body.race;
-        var birth = req.body.birth;
-        var description = req.body.description;
-        var size = req.body.size;
-        var owner = req.body.owner;
-        if (!name) return res.status(400).send("Bad request, no name provided");
-        if (!size) return res.status(400).send("Bad request, no size provided");
-        if (!birth) return res.status(400).send("Bad request, no birth provided");
-        if (!owner) return res.status(400).send("Bad request, no owner provided");
-    
-        name = name.trim();
-        weight = weight;
-        race = race.trim();
-        birth = birth;
-        description = description.trim();
-        size = size;
-        owner = owner.trim();
-        Users.getOne(owner).then(user=>{
-            if (user){
-                    Pets.findOne({'name': name, 'owner':user.id}).populate({ path: 'owner', select: 'email alias' })
-                        .exec((err, result) => {
-                        if (result) {
-                            return res.json(result);
-                        }
-                        else {
-                            var pet = new Pets({
-                                name: name,
-                                weight:weight,
-                                breed:race,
-                                birth:birth,
-                                description:description,
-                                size:size,
-                                owner:user.id
-                            });
-                            pet.save(function(err) {
-                                return res.json(pet);
-                            });
-                        }
-                    });          
-            }
-            else{
-                res.status(400).send("Owner doesn't exist");
-            }
-        }).catch(err=>{
-            res.status(400).send(err);
-        });
-            
-    };
-    
-    exports.getOne = function(req,res) {
-        var name = req.params.name;
-        var owner = req.params.owner;
-        if (!name) return res.status(400).send("Bad request, no name provided");
-        if (!owner) return res.status(400).send("Bad request, no owner provided");
-        name = name.trim();
-        owner = owner.trim();
-        console.log(owner)
-        Users.getOne( owner).then(user =>{
-            if (user) {
-                Pets.findOne({'name': name, 'owner':ObjectId(user._id)}).populate({ path: 'owner', select: 'email alias' })
-                    .exec((err, pet) => {
-                        console.log(pet)
-                        console.log(err);
-                        console.log(name)
-                        console.log(user.id);
-                    if (pet) {
-                        return res.json(pet);
-                    }
-                    else {
-                        return res.json(err);
-                    }
-                });   
-        }
-        else res.status(400).send("Owner doesn't exist");
+    Pets.new(owner, name, weight, breed, birth, description, size).then(pet => {
+        return res.status(200).json(pet);
+    }).catch(err => {
+        return res.status(400).send(err);
+    });
+};
+
+exports.getOne = function(req,res) {
+    var name = req.params.name;
+    var owner = req.params.owner;
+    if (!name) return res.status(400).send("Bad request, no name provided");
+    if (!owner) return res.status(400).send("Bad request, no owner provided");
+    name = name.trim();
+    owner = owner.trim();
+
+    Pets.getOne(owner, name).then((pet) => {
+        if (pet) return res.json(pet);
+        else return res.status(404).send("Pet doesn't exists");
     }).catch(err=>{
-        res.status(400).send(err);
-        });
-    };
+        return res.status(400).send(err);
+    });
+};
+
+exports.getOneById = function(req, res) {
+    var petId = req.params.id;
+    if (!petId) return res.status(400).send("Bad request, no id provided");
+
+    Pets.getOneById(petId).then((pet) => {
+        if(pet) return res.json(pet);
+        else return res.status(400).send("Pet doesn't exist");
+    }).catch( err => {
+        return res.status(400).send(err);
+    });
+}
+
+exports.getPetOwners = function (req, res){
+    var petId = req.params.id;
+    if (!petId) return res.status(400).send("Bad request, no id provided");
+
+    Pets.getPetOwners(petId).then((pet) => {
+        return res.json(pet);
+    }).catch( err => {
+        return res.status(400).send(err);
+    });
+}
+
+exports.getUserPets = function(req, res){
+    var userEmail = req.params.email;
+
+    if(!userEmail) return res.status(400).send("Bad request, no email provided");
+
+    Pets.getUserPets(userEmail).then((pets) => {
+        return res.status(200).json(pets);
+    }).catch(function (err){
+        return res.status(400).json({'error':err});
+    });
+}
+
+exports.editPet = function(req, res) {
+    var name = req.params.name; 
+    var owner = req.params.owner; 
+
+    var weight = req.body.weight;
+    var description = req.body.description;
+    var size = req.body.size;
+    var breed = req.body.breed;
+    var birth = req.body.birth;
     
+    Pets.getOne(owner, name).then(function (pet){
+        if(!weight) weight = pet.weight;
+        if(!description) description = pet.description;
+        if(!size) size = pet.size;
+        if(!breed) breed = pet.breed;
+        if(!birth) birth = pet.birth;
+        pets.edit(pet._id, name, weight, description, size, breed, birth)
+            .then(function (petEdited){
+                return res.status(200).json(petEdited);
+            }).catch(function(err) {
+                return res.status(400).send(err);
+            });
+    });
+}
 
-    exports.getUserPets = function(req, res){
-        var userEmail = req.params.email;
+exports.deleteOne = function(req,res) {
+    var name = req.params.name;
+    var owner = req.params.owner;
+    if (!name) return res.status(400).send("Bad request, no name provided");
+    if (!owner) return res.status(400).send("Bad request, no owner provided");
+    name = name.trim();
+    owner = owner.trim();
+    
+    Pets.delete(owner, name).then(function(result){
+        return res.status(200).json(result);
+    }).catch(function(err){
+        return res.status(400).send(err);
+    });
+};
 
-        if(!userEmail) return res.status(400).send("Bad request, no email provided");
+exports.addOwner = function (req, res){
+    var petId = req.params.id;
+    var ownerEmail = req.body.userEmail;
 
-      Users.getOne(userEmail).exec(function(err, user){ //Falta refactorizarlo a las tres capas
-            if(err) return res.status(400).send(err);
-            if(!user) return res.status(400).send("No user with this email");
-            Pets.find({'owner':ObjectId(user._id)}).populate({ path: 'owner', select: 'email alias' })
-                .exec((err, pets) =>{
-                    if(err) return res.status(400).send(err);
-                    return res.send(pets);
-                });
-        });
-    }
+    if (!petId) return res.status(400).send("Bad request, no pet id provided");
+    if (!ownerEmail) return res.status(400).send("Bad request, no owner email provided");
 
-    exports.editPet = function(req, res) {
-        var name = req.params.name; 
-        var owner = req.params.owner; 
+    Pets.addOwner(petId, ownerEmail).then(function(pet){
+        return res.status(200).json(pet);
+    }).catch(function (err){
+        return res.status(400).send(err);
+    });
+}
 
-        var weight = req.body.weight;
-        var description = req.body.description;
-        var size = req.body.size;
-        var race = req.body.race;
-        var birth = req.body.birth;
-        //Rentaría mover esta parte a a otra capa. Pedir Explicación al profesor.
-        Users.getOne(owner).exec((err, user) => {
-            if(user) {
-                Pets.findOne({'name' : name, 'owner' :ObjectId(user._id)}).exec((error, pet) => {
-                if(pet){
-                    if(size) pet.size = size; 
-                    if(weight) pet.weight = weight; 
-                    if(race) pet.race = race.trim(); 
-                    if(birth) pet.birth = birth; 
-                    if(description) pet.description = description.trim(); 
-                    pet.save(function(err) {
-                        return res.json(pet);
-                    }); 
-                    } else {
-                        return res.status(404).send("Pet " + name  + " not found for user " + owner); 
-                        }
-                    })
-                } else {
-                 return res.status(404).send("User " + owner + " not found." ); 
-            }
-        }); 
-    }
+exports.removeOwner = function (req, res){
+    var petId = req.params.id;
+    var ownerEmail = req.body.userEmail;
 
-    exports.deleteOne = function(req,res) {
-        var name = req.params.name;
-        var owner = req.params.owner;
-        if (!name) return res.status(400).send("Bad request, no name provided");
-        if (!owner) return res.status(400).send("Bad request, no owner provided");
-        name = name.trim();
-        owner = owner.trim();
-        Users.getOne(owner).exec((error, user) =>{
-            if (error) res.status(400).send("Owner doesn't exist");
-            else{
-                Pets.findOne({'name': name, 'owner':ObjectId(user._id)})
-                    .exec((err, pet) => {
-                    if (pet) {
-                        Pets.remove({_id:ObjectId(pet._id)}, function(err){
-                            if (!err) res.send('{"result":"OK"}');
-                            else res.send('{"result":"KO"}');
-                        });
-                    }
-                    else {
-                        if (err) res.json(err);
-                        else res.status(400).send("Pet doesn't exist");
-                    }
-                });   
-            }
-        });
-    };
+    if (!petId) return res.status(400).send("Bad request, no pet id provided");
+    if (!ownerEmail) return res.status(400).send("Bad request, no owner email provided");
+
+    Pets.removeOwner(petId, ownerEmail).then(function(pet){
+        return res.status(200).json(pet);
+    }).catch(function (err){
+        return res.status(400).send(err);
+    });
+}
