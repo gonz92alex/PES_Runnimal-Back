@@ -2,7 +2,7 @@
 var Users = require('../db/users');
 
 
-exports.getAll = function(req,res) {
+exports.getAll = function() {
     return Users.find();
 };
 
@@ -86,7 +86,7 @@ exports.removePoints = function(email,pointsQuantity){
 }
 
 exports.getOne = function(email) {
-    email = email.trim();
+    //email = email.trim();
     return Users.findOne({'email': email});
 };
 
