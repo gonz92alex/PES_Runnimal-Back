@@ -9,8 +9,7 @@
 
     var mongoose = require('mongoose').set('debug',true);
     var Pets = require('../models/Pets');
-    var UsersModel = require('../models/users');
-    var Users = require('../db/users');
+    var Users = require('../models/users');
     var ObjectId = require('mongodb').ObjectID;
     
     
@@ -45,31 +44,36 @@
         description = description.trim();
         size = size;
         owner = owner.trim();
-        Users.findOne({'email': owner}).exec((error, user) =>{
-            if (error) res.status(400).send("Owner doesn't exist");
-            else{
-                Pets.findOne({'name': name, 'owner':user.id}).populate({ path: 'owner', select: 'email alias' })
-                    .exec((err, result) => {
-                    if (result) {
-                        return res.json(result);
-                    }
-                    else {
-                        var pet = new Pets({
-                            name: name,
-                            weight:weight,
-                            race:race,
-                            birth:birth,
-                            description:description,
-                            size:size,
-                            owner:user.id
-                        });
-                        pet.save(function(err) {
-                            return res.json(pet);
-                        });
-                    }
-                });   
+        Users.getOne(owner).then(user=>{
+            if (user){
+                    Pets.findOne({'name': name, 'owner':user.id}).populate({ path: 'owner', select: 'email alias' })
+                        .exec((err, result) => {
+                        if (result) {
+                            return res.json(result);
+                        }
+                        else {
+                            var pet = new Pets({
+                                name: name,
+                                weight:weight,
+                                breed:race,
+                                birth:birth,
+                                description:description,
+                                size:size,
+                                owner:user.id
+                            });
+                            pet.save(function(err) {
+                                return res.json(pet);
+                            });
+                        }
+                    });          
             }
-        });          
+            else{
+                res.status(400).send("Owner doesn't exist");
+            }
+        }).catch(err=>{
+            res.status(400).send(err);
+        });
+            
     };
     
     exports.getOne = function(req,res) {
@@ -79,9 +83,9 @@
         if (!owner) return res.status(400).send("Bad request, no owner provided");
         name = name.trim();
         owner = owner.trim();
-        Users.findOne({'email': owner}).then((error, user) =>{
-            if (error) res.status(400).send("Owner doesn't exist");
-            else{
+        console.log(owner)
+        Users.getOne( owner).then(user =>{
+            if (user) {
                 Pets.findOne({'name': name, 'owner':ObjectId(user._id)}).populate({ path: 'owner', select: 'email alias' })
                     .exec((err, pet) => {
                         console.log(pet)
@@ -95,7 +99,10 @@
                         return res.json(err);
                     }
                 });   
-            }
+        }
+        else res.status(400).send("Owner doesn't exist");
+    }).catch(err=>{
+        res.status(400).send(err);
         });
     };
     
@@ -105,7 +112,7 @@
 
         if(!userEmail) return res.status(400).send("Bad request, no email provided");
 
-      Users.findOne({'email': userEmail}).exec(function(err, user){ //Falta refactorizarlo a las tres capas
+      Users.getOne(userEmail).exec(function(err, user){ //Falta refactorizarlo a las tres capas
             if(err) return res.status(400).send(err);
             if(!user) return res.status(400).send("No user with this email");
             Pets.find({'owner':ObjectId(user._id)}).populate({ path: 'owner', select: 'email alias' })
@@ -126,7 +133,7 @@
         var race = req.body.race;
         var birth = req.body.birth;
         //Rentaría mover esta parte a a otra capa. Pedir Explicación al profesor.
-        Users.findOne({'email' :owner}).exec((err, user) => {
+        Users.getOne(owner).exec((err, user) => {
             if(user) {
                 Pets.findOne({'name' : name, 'owner' :ObjectId(user._id)}).exec((error, pet) => {
                 if(pet){
@@ -155,13 +162,13 @@
         if (!owner) return res.status(400).send("Bad request, no owner provided");
         name = name.trim();
         owner = owner.trim();
-        Users.findOne({'email': owner}).exec((error, user) =>{
+        Users.getOne(owner).exec((error, user) =>{
             if (error) res.status(400).send("Owner doesn't exist");
             else{
                 Pets.findOne({'name': name, 'owner':ObjectId(user._id)})
                     .exec((err, pet) => {
                     if (pet) {
-                        Users.remove({_id:ObjectId(pet._id)}, function(err){
+                        Pets.remove({_id:ObjectId(pet._id)}, function(err){
                             if (!err) res.send('{"result":"OK"}');
                             else res.send('{"result":"KO"}');
                         });
