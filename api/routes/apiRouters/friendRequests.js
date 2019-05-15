@@ -4,7 +4,7 @@ var friendRequests = require('../../controllers/friendRequestsController');
 
 var friendRequestsRouter = express.Router();
 
-friendRequestsRouter.get("/:email", friendRequests.userList);
+friendRequestsRouter.get("/:email", friendRequests.userPendingRequests);
 
 friendRequestsRouter.post("/new", friendRequests.new);
 
