@@ -40,6 +40,11 @@ router.use("/photo", photoRouter);
 var rankingRouter = require('./apiRouters/ranking');
 router.use("/ranking", rankingRouter);
 
+//##################RANKING###################
+
+var loginRouter = require('./apiRouters/login');
+router.use("/login", loginRouter);
+
 //##################EXPORTS###################
 
 module.exports = router;
