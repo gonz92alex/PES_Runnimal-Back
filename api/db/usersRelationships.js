@@ -1,11 +1,10 @@
 var mongoose = require('mongoose');
 
-var types = ["friend", "blocked"];
+var types = ["friend", "pending", "denied"];
 
 var friends_schema = new mongoose.Schema({
-	//relatingUserId < relatedUserId
-	relatingUserId: {type: mongoose.Schema.Types.ObjectId, ref: 'Users'},
-	relatedUserId: {type: mongoose.Schema.Types.ObjectId, ref: 'Users'},
+	userId1: {type: mongoose.Schema.Types.ObjectId, ref: 'Users'},
+	userId2: {type: mongoose.Schema.Types.ObjectId, ref: 'Users'},
 	date: String,
 	type: {type: String, enum: {values: types, message: "type wrong"}}
 });
