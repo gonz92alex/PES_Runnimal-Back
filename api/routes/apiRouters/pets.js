@@ -1,7 +1,6 @@
 var express = require("express");
 
 var pets = require('../../controllers/petController');
-
 var petsRouter = express.Router();
 
 petsRouter.route("/")

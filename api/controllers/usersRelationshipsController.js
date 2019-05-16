@@ -1,148 +1,83 @@
 'use strict';
 
 var mongoose = require('mongoose').set('debug',true);
-var UsersRelationships = require('../models/UsersRelationships');
-var Users = require('../db/users');
+var UsersRelationships = require('../models/usersRelationships');
 
 var utils = require('../utils.js');
 
-exports.searchFriends = function(req, res){
+exports.newFriendRequest = function(req, res){
+	var user1 = req.body.user1;
+    var user2 = req.body.user2;
 
-	Users.getAll().then((users) => {  
-    	var usersRelationship = [];
-        users.forEach(function(user, userIndex, array){
-        	
-        	var i = userIndex % 3;
-        	var relationshipStatus;
-        	switch(i){
-        		case 0:
-        			relationshipStatus = 'friend';
-        			break;
-        		case 1:
-        			relationshipStatus = 'blocked';
-        			break
-        		case 2:
-        			relationshipStatus = 'none';
-        			break;
-        	}
+    if (!user1) return res.status(400).send("Bad request, no user1 id provided");
+    if (!user2) return res.status(400).send("Bad request, no user2 id provided");
 
-        	var obj = {
-        		_id : user['_id'],
-        		alias: user['alias'],
-					email: user['email'],
-					password: user['password'],
-					relationshipStatus: relationshipStatus
-        	};
-        	
-        	usersRelationship.push(obj);
-        });
-        res.send(usersRelationship)
+    UsersRelationships.newFriendRequest(user1, user2).then(function(friendRequest){
+    	return res.status(200).json(friendRequest);
+    }).catch(function(err){
+    	return res.send(err);
     });
-};
-
-exports.userFriends = function(req, res){
-	var userEmail = req.params.userEmail;
-
-	Users.findOne({'email': userEmail}).exec((err,user) => {
-		if(err) res.status(400).send(err);
-
-		UsersRelationships.find({'relatingUserId': user.id, 'type': 'friend'}).exec((err,friends) => {
-	        if (err) return res.status(400).send(err);
-	        UsersRelationships.find({'relatedUserId': user.id, 'type': 'friend'}).exec((err,friends2) => {
-	        	if(err) return res.status(400).send(err);
-	            res.send(friends.concat(friends2));
-	        });
-	    });
-	});
-	
-
 }
 
-exports.newFriendRelationship = function(req, res, relatingUserId, relatedUserId) {
+exports.userFriends = function(req, res){
+	var email = req.params.email;
 
-	var maxMin = utils.maxMin(relatingUserId, relatedUserId);
+	UsersRelationships.userFriends(email).then(function (requests){
+		return res.status(200).json(requests);
+	}).catch(function (err){
+		return res.send(err);
+	})
+}
 
-	UsersRelationships.find({relatingUserId: maxMin.min, relatedUserId: maxMin.Max, type: "friend"})
-		.exec(function (err, relationships){
-			if (err) res.status(400).send(err); 
-			if (relationships.length) return res.status(400).send("Users are already friends");
-			else {
-				var userRelationship = new UsersRelationships({
-					relatingUserId: maxMin.min,
-					relatedUserId: maxMin.max,
-					date: new Date,
-					type: "friend"
-				});
+exports.answerFriendRequest = function(req, res){
+	var id = req.params.id;
+	var action = req.body.action;
+	if (!action) return res.status(400).send("Bad request, no action provided");
 
-				userRelationship.save(function(err) {
-					if (err) return res.send(err);
-					res.json(userRelationship);
-				})
-			};
+	if(action == "accept"){
+		UsersRelationships.acceptFriendRequest(id).then(function(userRelationship){
+			return res.status(200).json(userRelationship);
+		}).catch(function (err){
+			return res.send(err);
 		});
-};
+	} else if(action == "deny"){
+		UsersRelationships.denyFriendRequest(id).then(function (userRelationship){
+			return res.status(200).json(userRelationship);
+		}).catch(function (err){
+			return res.send(err);
+		});
+	}else{
+		return res.send("action not accepted");
+	}
+}
 
-exports.deleteFriendshipRelationship = function(req, res) {
+exports.deleteFriendshipRelationship = function(req, res){
+	var id = req.params.id;
 
-	var relationshipId = req.params.id;
-
-	if(!relationshipId) return res.status(400).send("Bad request, no relationshipId provided");	
-	UsersRelationships.findByIdAndRemove(relationshipId, function (err, relationship) {
-		if(err) return res.status(400).send(err);
-		else if (relationship) res.status(200).send(relationshipId+" relationship deleted");
-		else return res.status(400).send("Bad request, no friendship relationship with this id");
-	});
-};
+	UsersRelationships.delete(id).then(function (userRelationship){
+		return res.status(200).json(userRelationship);
+	}).catch(function (err){
+		return res.send(err);
+	})
+}
 
 exports.areFriends = function(req, res){
-	var requestingEmail = req.params.requestingEmail;
-	var requestedEmail = req.params.requestedEmail;
+	var user1email = req.params.user1email;
+	var user2email = req.params.user2email;
 
-	//if(requestingId == requestedId) return res.status(400).send("Bad request, no requesting id provided"); 
-	if (!requestingEmail) return res.status(400).send("Bad request, no requesting user id provided");
-	if (!requestedEmail) return res.status(400).send("Bad request, no requested user id provided");
+	UsersRelationships.areFriends(user1email, user2email).then(function (userRelationship){
+		return res.status(200).json(userRelationship);
+	}).catch(function (err){
+		return res.send(err);
+	})
+}
 
-	Users.findOne({email: requestingEmail}).exec((err, requestingUser) => {
-		if(!requestingUser) res.status(400).send("No users with requestingEmail");
-		else{
-			Users.findOne({email: requestedEmail}).exec((err, requestedUser) => {
-				if(!requestedUser) res.status(400).send("No user with requestedEmail");
-				else{
-					var maxMin = utils.maxMin(requestingUser.id, requestedUser.id);
+exports.userFriendRequests = function(req, res){
+	var email = req.params.email;
 
-				 	UsersRelationships.find({relatingUserId: maxMin.min, relatedUserId: maxMin.max, type: "friend"})
-				 		.exec((err,requests) => {
-				        if (err) res.send(err);
-				        else
-				            res.status(200).json(requests);
-				    });
-				}
-			});
-		}
-	});
-	
-};
-
-exports.list = function(req, res){
-    UsersRelationships.find().exec((err,requests) => {
-        if (err)
-            res.send(err);
-        else
-            res
-        		.status(200)
-        		.json(requests);
-    });
-};
-
-exports.newDefault = function(req, res){
-	var relationship = new UsersRelationships({
-		relatingUserId: '5c9cb42899e42e72babc8d11',
-		relatedUserId: '5c9cb65499e42e72babc8d12',
-		date: new Date,
-		type: 'friend'
-	});
-	relationship.save(function(err) {
-		if(err) res.send(err);
-        return res.json(relationship);
-    });
-};
+	UsersRelationships.userFriendRequests(email).then(function (requests){
+		return res.status(200).json(requests);
+	}).catch(function (err){
+		return res.send(err);
+	})
+}

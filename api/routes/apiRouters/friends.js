@@ -1,19 +1,16 @@
 var express = require("express");
 
-var usersRelationshipsController = require('../../controllers/usersRelationshipsController');
+var usersRelationships = require('../../controllers/usersRelationshipsController');
 var friendsRouter = express.Router();
 
-///friendsRouter.get("/:userId", );
+friendsRouter.route("/")
+	.post(usersRelationships.newFriendRequest);
 
-friendsRouter.get("/search", usersRelationshipsController.searchFriends);
+friendsRouter.route("/:id")
+	.put(usersRelationships.answerFriendRequest)
+	.delete(usersRelationships.deleteFriendshipRelationship);
 
-friendsRouter.get("/user/:userEmail", usersRelationshipsController.userFriends);
+friendsRouter.route("/:user1email/:user2email")
+	.get(usersRelationships.areFriends);
 
-friendsRouter.get("/:requestingEmail/:requestedEmail", usersRelationshipsController.areFriends);
-
-friendsRouter.delete("/delete/:id", usersRelationshipsController.deleteFriendshipRelationship);
-
-friendsRouter.get("/list", usersRelationshipsController.list);
-//friendsRouter.get("/new", usersRelationshipsController.newDefault);
- 
 module.exports = friendsRouter;
