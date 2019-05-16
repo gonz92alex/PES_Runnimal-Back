@@ -1,6 +1,7 @@
 var express = require("express");
 
 var users = require('../../controllers/userController');
+var friends = require('../../controllers/usersRelationshipsController')
 
 var usersRouter = express.Router();
 
@@ -17,7 +18,8 @@ usersRouter.route("/:email")
 	usersRouter.route("/:email/removePoints")
 		.put(users.removePointsToUser); 
 
-
+usersRouter.get("/:email/friends", friends.userFriends);
+usersRouter.get("/:email/friendRequests", friends.userFriendRequests);
 	
 
 usersRouter.get("/id/:id", users.getOneById);
