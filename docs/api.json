@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "Runnimal",
-		"_postman_id": "33a90d91-59b0-d3a6-3d9a-26c4fe6f5715",
+		"_postman_id": "7668b681-c258-0d66-c93e-325e41080807",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -185,7 +185,8 @@
 									"key": "photo",
 									"description": "",
 									"type": "file",
-									"src": "319662.jpg"
+									"src": "319662.jpg",
+									"value": ""
 								},
 								{
 									"key": "hola",
@@ -378,6 +379,52 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n\"alias\":\"pepe\",\n\"email\":\"pepe@marron.com\",\n\"password\":\"NaNaNa\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "login",
+			"description": "",
+			"item": [
+				{
+					"name": "GET Users copy",
+					"request": {
+						"url": "localhost:3000/api/login/token/3355c95194f62d914013dd5af3d",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"alias\":\"pepe\",\n\"email\":\"pepe@marron.com\",\n\"password\":\"NaNaNa\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "POST User",
+					"request": {
+						"url": "localhost:3000/api/login",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"alias\":\"Misty\",\n\"email\":\"misty@pokemon.com\",\n\"password\":\"psyduck\"\n}"
 						},
 						"description": ""
 					},
