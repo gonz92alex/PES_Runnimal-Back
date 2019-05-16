@@ -32,14 +32,17 @@ exports.new = function(ownerEmail, name, weight, breed, birth, description, size
     });
 };
 
-exports.edit = function (id, name, weight, description, size, breed, birth) {
-	return this.getOneById(id).then(function (pet){
-		pet.name = name;
-		pet.weight = weight;
-		pet.description = description;
-		pet.size = size;
-		pet.breed = breed;
-		pet.birth = birth; 
+exports.edit = function (owner, name, weight, description, size, breed, birth) {
+	
+    return this.getOne(owner, name).then(function (pet){
+
+		pet.name = (!name) ? pet.name : name;
+		pet.weight = (!weight) ? pet.weight : weight;
+		pet.description = (!description) ? pet.description : description;
+		pet.size = (!size) ? pet.size : size;
+		pet.breed = (!breed) ? pet.breed : breed;
+		pet.birth = (!birth) ? pet.birth : birth; 
+
         return pet.save();
 	}).catch(function (err) {
 		return {'error': err};
@@ -78,12 +81,11 @@ exports.removeOwner = function(petId, userEmail) {
 }
 
 exports.delete = function(ownerEmail, petName){
-	this.getOne(ownerEmail, petName).then(function (pet) {
-		Pets.remove({_id:ObjectId(pet._id)}, function(err){
-			if (err) return err;
-			return {'status': 'pet removed'}
-		})
-	})
+    return this.getOne(ownerEmail, petName).then(function (pet) {
+		return Pets.remove({_id:ObjectId(pet._id)});
+	}).catch(function (err){
+
+    });
 };
 
 exports.getAll = function() {
