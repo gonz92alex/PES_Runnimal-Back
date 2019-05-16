@@ -100,19 +100,12 @@ exports.editPet = function(req, res) {
     var breed = req.body.breed;
     var birth = req.body.birth;
     
-    Pets.getOne(owner, name).then(function (pet){
-        if(!weight) weight = pet.weight;
-        if(!description) description = pet.description;
-        if(!size) size = pet.size;
-        if(!breed) breed = pet.breed;
-        if(!birth) birth = pet.birth;
-        pets.edit(pet._id, name, weight, description, size, breed, birth)
-            .then(function (petEdited){
-                return res.status(200).json(petEdited);
-            }).catch(function(err) {
-                return res.status(400).send(err);
-            });
-    });
+    Pets.edit(owner, name, weight, description, size, breed, birth)
+        .then(function (petEdited){
+            return res.status(200).json(petEdited);
+        }).catch(function(err) {
+            return res.status(400).send(err);
+        });
 }
 
 exports.deleteOne = function(req,res) {
