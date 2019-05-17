@@ -14,9 +14,8 @@ petsRouter.route("/:id")
 
 petsRouter.route("/:id/owners")
 	.get(pets.getPetOwners)
-	.post(pets.addOwner)
-	.delete(pets.removeOwner)
-	.put(pets.removeOwner);
+	.put(pets.removeOwner)
+	.post(pets.addOwner);
 
 petsRouter.route("/:owner/:name")
 	.get(pets.getOne)

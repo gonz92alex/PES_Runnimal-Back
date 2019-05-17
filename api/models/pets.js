@@ -55,6 +55,8 @@ exports.addOwner = function(petId, userEmail) {
             if(pet.owner != user._id && (pet.otherOwners).indexOf(user._id) == -1){
                 pet.otherOwners.push( ObjectId(user._id) );
                 return pet.save();
+            } else {
+                return pet;
             }
         }).catch(function (err){
 
@@ -71,6 +73,8 @@ exports.removeOwner = function(petId, userEmail) {
             if(index > -1){
                 pet.otherOwners.splice(index, 1);
                 return pet.save();
+            } else {
+                return pet;
             }
         }).catch(function (err){
 
