@@ -1,12 +1,12 @@
 'use strict';
 var Users = require('../db/users');
-
+var Friends = require('./usersRelationships'); 
 
 exports.getAll = function() {
     return Users.find();
 };
 
-exports.getRanking = function (req, res){
+exports.getRanking = function (){
   return  Users.find({}).sort({points: -1}).then(function(users,err){
         if(err){
             return {'error' : err}
@@ -14,8 +14,13 @@ exports.getRanking = function (req, res){
             return users; 
         }
     });
-    
+}
 
+exports.getRankingByFriends = function(userEmail){
+    var rankingList = new Array(); 
+    rankingList.push(this.getOne(userEmail)); 
+    
+    return Friends.userFriends(userEmail); 
 
 }
 exports.createUser = function(alias, email, password) {
