@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "Runnimal",
-		"_postman_id": "7668b681-c258-0d66-c93e-325e41080807",
+		"_postman_id": "ccbb7a78-28eb-162b-992a-21e2c2efccf4",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -255,26 +255,6 @@
 			"description": "",
 			"item": [
 				{
-					"name": "DELETE pet",
-					"request": {
-						"url": "localhost:3000/api/pet/ash@pokemon.com/Pikachu",
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\"alias\":\"pepe\",\n\"email\":\"pepe@marron.com\",\n\"password\":\"NaNaNa\"\n}"
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
 					"name": "GET Pets",
 					"request": {
 						"url": "localhost:3000/api/pets",
@@ -295,22 +275,60 @@
 					"response": []
 				},
 				{
-					"name": "POST photo",
+					"name": "GET pet",
 					"request": {
-						"url": "localhost:3000/api/photo/pets/ash@pokemon.com/perro",
-						"method": "POST",
-						"header": [],
+						"url": "localhost:3000/api/pet/ash@pokemon.com/Pikachu",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "photo",
-									"description": "",
-									"type": "file",
-									"src": "ash.jpg",
-									"value": ""
-								}
-							]
+							"mode": "raw",
+							"raw": "{\n\"alias\":\"pepe\",\n\"email\":\"pepe@marron.com\",\n\"password\":\"NaNaNa\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "POST Pet",
+					"request": {
+						"url": "localhost:3000/api/pets",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"name\": \"Pikachu\",\r\n\t\"weight\":3,\r\n\t\"race\":\"Electrico\",\r\n\t\"birth\":1996,\r\n\t\"description\":\"No le gusta la pokeball\",\r\n\t\"size\":5,\r\n\t\"owner\":\"ash@pokemon.com\"\r\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE pet",
+					"request": {
+						"url": "localhost:3000/api/pet/ash@pokemon.com/Pikachu",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"alias\":\"pepe\",\n\"email\":\"pepe@marron.com\",\n\"password\":\"NaNaNa\"\n}"
 						},
 						"description": ""
 					},
@@ -345,9 +363,51 @@
 					"response": []
 				},
 				{
-					"name": "POST Pet",
+					"name": "POST photo",
 					"request": {
-						"url": "localhost:3000/api/pets",
+						"url": "localhost:3000/api/photo/pets/ash@pokemon.com/perro",
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "photo",
+									"description": "",
+									"type": "file",
+									"src": "ash.jpg",
+									"value": ""
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Pet",
+					"request": {
+						"url": "localhost:3000/api/pets/ash@pokemon.com/Pikachu",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"name\": \"Pikachu\",\r\n\t\"weight\":3,\r\n\t\"breed\":\"raza\",\r\n\t\"birth\":1996,\r\n\t\"description\":\"No le gusta la pokeball\",\r\n\t\"size\": \"Big\",\r\n\t\"owner\":\"ash@pokemon.com\"\r\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add owner",
+					"request": {
+						"url": "http://localhost:3000/api/pets/5ca234a5bfcc850a98a4f4b1/owners",
 						"method": "POST",
 						"header": [
 							{
@@ -358,17 +418,17 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"name\": \"Pikachu\",\r\n\t\"weight\":3,\r\n\t\"race\":\"Electrico\",\r\n\t\"birth\":1996,\r\n\t\"description\":\"No le gusta la pokeball\",\r\n\t\"size\":5,\r\n\t\"owner\":\"ash@pokemon.com\"\r\n}"
+							"raw": "{\n\t\"userEmail\": \"mistypostaman@pokemon.com\"\n}"
 						},
 						"description": ""
 					},
 					"response": []
 				},
 				{
-					"name": "GET pet",
+					"name": "Remove owner",
 					"request": {
-						"url": "localhost:3000/api/pet/ash@pokemon.com/Pikachu",
-						"method": "GET",
+						"url": "http://localhost:3000/api/pets/5ca234a5bfcc850a98a4f4b1/owners",
+						"method": "DELETE",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -378,7 +438,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\"alias\":\"pepe\",\n\"email\":\"pepe@marron.com\",\n\"password\":\"NaNaNa\"\n}"
+							"raw": "{\n\t\"userEmail\": \"mistypostaman@pokemon.com\"\n}"
 						},
 						"description": ""
 					},
@@ -426,6 +486,88 @@
 							"mode": "raw",
 							"raw": "{\n\"alias\":\"Misty\",\n\"email\":\"misty@pokemon.com\",\n\"password\":\"psyduck\"\n}"
 						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Friends",
+			"description": "",
+			"item": [
+				{
+					"name": "POST friendRequest",
+					"request": {
+						"url": "localhost:3000/api/friends/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user1\": \"fotoUp@pokemon.com\",\n\t\"user2\": \"em@a.com\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE userRelationship",
+					"request": {
+						"url": "localhost:3000/api/friends/5cddd6c6d681bd1945148016",
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PUT accept/deny friendRequest",
+					"request": {
+						"url": "localhost:3000/api/friends/5cddd340d5a5681812c3d8cb",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"action\": \"deny\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GET user friend requests",
+					"request": {
+						"url": "http://localhost:3000/api/users/em@a.com/friendRequests",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GET user friends",
+					"request": {
+						"url": "http://localhost:3000/api/users/alvaro@pokemon.com/friends",
+						"method": "GET",
+						"header": [],
+						"body": {},
 						"description": ""
 					},
 					"response": []
