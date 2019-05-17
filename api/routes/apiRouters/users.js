@@ -20,7 +20,8 @@ usersRouter.route("/:email")
 
 usersRouter.get("/:email/friends", friends.userFriends);
 usersRouter.get("/:email/friendRequests", friends.userFriendRequests);
-	
+usersRouter.get("/:email/ranking", users.filteredRanking);
+
 
 usersRouter.get("/id/:id", users.getOneById);
  
