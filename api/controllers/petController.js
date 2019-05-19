@@ -114,7 +114,8 @@ exports.deleteOne = function(req,res) {
     owner = owner.trim();
     
     Pets.delete(owner, name).then(function(result){
-        return res.status(200).json(result);
+        if (result) return res.status(200).json(result);
+        return res.status(204).send("Pet doesn't exists");
     }).catch(function(err){
         return res.status(404).send(err);
     });
