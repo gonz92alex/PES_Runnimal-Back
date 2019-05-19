@@ -49,15 +49,17 @@ exports.getOne = function(email, password) {
 
 
 exports.getUser = function(token) {
-    return Tokens.findOne({'token': token}).populate({ path: 'user', select: 'email alias' })
+    return Tokens.findOne({'token': token, 'duration': {'$lte': new Date().getMilliseconds()}}).populate({ path: 'user', select: 'email alias' })
 };
 
 exports.createToken = function(email, password){
     return Users.findOne({'email': email, 'password':password}).then(user=>{
         if (user){
             var tkn_str = new Date().getMilliseconds().toString()+user._id;
+            var date = new Date();
+            var duration = date.setDate(date.getDate() + days).getMilliseconds();
             console.log(tkn_str)
-            var tkn = new Tokens({'token': tkn_str, 'user': user});
+            var tkn = new Tokens({'token': tkn_str, 'user': user, 'duration':duration});
             return tkn.save();
         }
         else{
