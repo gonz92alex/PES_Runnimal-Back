@@ -1,7 +1,7 @@
 'use strict';
 var Users = require('../models/users');
 var Pets = require('../db/pets');
-var Trainning = require('../models/Trainning')
+var Trainning = require('../models/trainning')
 var ObjectId = require('mongodb').ObjectID;
 var path = require('path');
 var mkdirp = require('mkdirp');

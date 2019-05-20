@@ -165,6 +165,17 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "GET User pets",
+					"request": {
+						"url": "http://localhost:3000/api/users/estudiante@alejandroIII.com/pets",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},
@@ -172,6 +183,88 @@
 			"name": "Trainnings",
 			"description": "",
 			"item": [
+				{
+					"name": "GET trainnings",
+					"request": {
+						"url": "localhost:3000/api/trainnings",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"alias\":\"pepe\",\n\"email\":\"pepe@marron.com\",\n\"password\":\"NaNaNa\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GET trainning",
+					"request": {
+						"url": "localhost:3000/api/trainnings/5ce04fa2dbb77b12d0c7c2e2",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "POST trainning",
+					"request": {
+						"url": "localhost:3000/api/trainnings",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Entrenamiento des de postman\",\n\t\"description\": \"Descripción entrenamiento des de postman\",\n\t\"steps\": [\"first step\", \"second step\"]\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "PUT edit trainning",
+					"request": {
+						"url": "localhost:3000/api/trainnings/5ce04fa2dbb77b12d0c7c2e2",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"description\": \"Entrenamiento des de postman\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE trainning",
+					"request": {
+						"url": "localhost:3000/api/trainnings/5ce0589f6af89b0e74334784",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
 				{
 					"name": "POST photo",
 					"request": {
@@ -227,26 +320,6 @@
 						"description": ""
 					},
 					"response": []
-				},
-				{
-					"name": "GET Users",
-					"request": {
-						"url": "localhost:3000/api/trainnings",
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\"alias\":\"pepe\",\n\"email\":\"pepe@marron.com\",\n\"password\":\"NaNaNa\"\n}"
-						},
-						"description": ""
-					},
-					"response": []
 				}
 			]
 		},
@@ -277,7 +350,7 @@
 				{
 					"name": "GET pet",
 					"request": {
-						"url": "localhost:3000/api/pet/ash@pokemon.com/Pikachu",
+						"url": "localhost:3000/api/pets/ash@pokemon.com/Pikachu",
 						"method": "GET",
 						"header": [
 							{
@@ -405,6 +478,17 @@
 					"response": []
 				},
 				{
+					"name": "GET PET owners",
+					"request": {
+						"url": "http://localhost:3000/api/pets/5ca234a5bfcc850a98a4f4b1/owners",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
 					"name": "Add owner",
 					"request": {
 						"url": "http://localhost:3000/api/pets/5ca234a5bfcc850a98a4f4b1/owners",
@@ -418,7 +502,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"userEmail\": \"mistypostaman@pokemon.com\"\n}"
+							"raw": "{\n\t\"userEmail\": \"nave@v.com\"\n}"
 						},
 						"description": ""
 					},
@@ -428,7 +512,7 @@
 					"name": "Remove owner",
 					"request": {
 						"url": "http://localhost:3000/api/pets/5ca234a5bfcc850a98a4f4b1/owners",
-						"method": "DELETE",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -438,7 +522,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"userEmail\": \"mistypostaman@pokemon.com\"\n}"
+							"raw": "{\n\t\"userEmail\": \"nave@v.com\"\n}"
 						},
 						"description": ""
 					},
