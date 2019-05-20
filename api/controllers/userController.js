@@ -17,6 +17,17 @@ exports.ranking = function(req,res){
     });
 }
 
+exports.filteredRanking = function(req, res){
+    var email = req.params.email; 
+  Users.getRankingByFriends(email).then(users => {
+      return res.json(users);
+  }).catch(function(err ){
+  return res.json({'error': err})
+    }); 
+   
+}
+
+
 exports.newUser = function(req,res) {
     var alias = req.body.alias;
     var email = req.body.email;

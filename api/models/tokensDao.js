@@ -20,11 +20,11 @@ exports.createOrReturn = function(alias, email, password) {
                 'password': password
             });
             console.log('ei')
-            return usr.save(function (err) {
+            return usr.save(function (err, usr_c) {
                 console.log('hola')
                 console.log(err)
                 if (err) return handleError(err);
-                var tkn = new Tokens({'token': new Date().getMilliseconds().toString()+user._id, 'user': usr})
+                var tkn = new Tokens({'token': new Date().getMilliseconds().toString()+usr_c._id, 'user': usr_c})
                 return tkn.save();
             });
         }

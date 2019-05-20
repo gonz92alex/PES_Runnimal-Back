@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var types = ["pipican", "park", "other"]; //Añadir aquí futuras posibilidades
+var types = ["PIPICAN", "PARK", "OTHER"]; //Añadir aquí futuras posibilidades
 
 var PointsModel = new mongoose.Schema({
     title: String,

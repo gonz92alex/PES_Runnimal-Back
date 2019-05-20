@@ -1,12 +1,12 @@
 'use strict';
 var Users = require('../db/users');
-
+var Friends = require('./usersRelationships'); 
 
 exports.getAll = function() {
     return Users.find();
 };
 
-exports.getRanking = function (req, res){
+exports.getRanking = function (){
   return  Users.find({}).sort({points: -1}).then(function(users,err){
         if(err){
             return {'error' : err}
@@ -14,10 +14,34 @@ exports.getRanking = function (req, res){
             return users; 
         }
     });
-    
-
-
 }
+
+exports.getRankingByFriends = function(userEmail){
+     return  Friends.userFriends(userEmail).then(function(friends){
+        var idSet = [];
+        friends.forEach(function(friend){           
+            var userId1 = friend.userId1; 
+            var userId2 = friend.userId2;
+            idSet.push(userId1);
+            idSet.push(userId2);        
+        });
+        return idSet;
+    }).then(function(idSet){
+        
+        return Users.find( {_id: {$in: idSet}}).sort({points: -1}).then(users => {
+            console.log("buscando usuarios");
+
+            console.log(users);
+            return users; 
+        }).catch(err => {
+            return ({'error':err});
+        })
+         
+    });
+
+  
+}
+
 exports.createUser = function(alias, email, password) {
     alias = alias.trim();
     email = email.trim();
@@ -91,7 +115,12 @@ exports.getOne = function(email) {
 };
 
 exports.getOneById = function(id) {
-    return Users.findById(id);
+    return Users.findById(id).then(user => {
+        console.log("Se ha llamado al getOneById");
+        return user; 
+    }).catch(err=> {
+        return {'error':err};
+    });
 }
 
 exports.deleteOne = function(email) {
