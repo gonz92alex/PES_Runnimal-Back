@@ -9,14 +9,14 @@ exports.newFriendRequest = function(user1email, user2email){
 	return Users.getOne(user1email).then(function (user1){
 		return Users.getOne(user2email).then(function (user2){
 			return UsersRelationships.find({ $or: [
-				{userId1: ObjectId(user1._id), userId2 : ObjectId(user2._id)},
-				{userId1: ObjectId(user2._id), userId2 : ObjectId(user1._id)}
-			]})//.populate('userId1').populate('userId2')
+				{user1: ObjectId(user1._id), user2 : ObjectId(user2._id)},
+				{user1: ObjectId(user2._id), user2 : ObjectId(user1._id)}
+			]})//.populate('user1').populate('user2')
 			.then(function (request){
 				if(!request.length){
 					var usr = new UsersRelationships({
-						userId1: user1._id,
-						userId2: user2._id,
+						user1: user1._id,
+						user2: user2._id,
 						date: new Date,
 						type: "pending"
 					});
@@ -68,9 +68,11 @@ exports.denyFriendRequest = function(id){
 exports.userFriends = function(email){
 	return Users.getOne(email).then(function(user){
 		return UsersRelationships.find({ $or: [
-				{userId1: ObjectId(user._id), type: "friend"},
-				{userId2: ObjectId(user._id), type: "friend"}
-			]});
+				{user1: ObjectId(user._id), type: "friend"},
+				{user2: ObjectId(user._id), type: "friend"}
+			]})
+			.populate('user1')
+			.populate('user2');
 	}).catch(function(err){
 
 	});
@@ -80,9 +82,11 @@ exports.areFriends = function(email1, email2){
 	return Users.getOne(email1).then(function(user1){
 		return Users.getOne(email2).then(function(user2){
 			return UsersRelationships.find({ $or: [
-				{userId1: ObjectId(user1._id), userId2 : ObjectId(user2._id)},
-				{userId1: ObjectId(user2._id), userId2 : ObjectId(user1._id)}
-			]});
+				{user1: ObjectId(user1._id), user2 : ObjectId(user2._id)},
+				{user1: ObjectId(user2._id), user2 : ObjectId(user1._id)}
+			]})
+			.populate('user1')
+			.populate('user2');
 		}).catch(function (err){
 
 		});
@@ -93,7 +97,8 @@ exports.areFriends = function(email1, email2){
 
 exports.userFriendRequests = function(email){
 	return Users.getOne(email).then(function(user){
-		return UsersRelationships.find({userId2 : ObjectId(user._id), type: "pending"}, '-userId1');
+		return UsersRelationships.find({user2 : ObjectId(user._id), type: "pending"}, '-user1')
+			.populate('user2');
 	}).catch(function(err){
 
 	});
