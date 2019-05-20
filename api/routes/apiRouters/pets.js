@@ -7,8 +7,6 @@ petsRouter.route("/")
 	.get(pets.list)
 	.post(pets.newPet);
 
-petsRouter.get("/user/:email", pets.getUserPets);
-
 petsRouter.route("/:id")
 	.get(pets.getOneById);
 
