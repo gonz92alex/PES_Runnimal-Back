@@ -97,8 +97,8 @@ exports.areFriends = function(email1, email2){
 
 exports.userFriendRequests = function(email){
 	return Users.getOne(email).then(function(user){
-		return UsersRelationships.find({user2 : ObjectId(user._id), type: "pending"}, '-user1')
-			.populate('user2');
+		return UsersRelationships.find({user2 : ObjectId(user._id), type: "pending"}, '-user2')
+			.populate('user1');
 	}).catch(function(err){
 
 	});
