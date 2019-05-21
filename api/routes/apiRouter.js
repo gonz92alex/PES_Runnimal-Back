@@ -38,8 +38,8 @@ router.use("/ranking", rankingRouter);
 
 //##################RANKING###################
 
-var loginRouter = require('./apiRouters/login');
-router.use("/login", loginRouter);
+var authRouter = require('./apiRouters/auth');
+router.use("/auth", authRouter);
 
 //##################EXPORTS###################
 

@@ -1,7 +1,48 @@
 'use strict';
-var Users = require('../models/users');
-var Token = require('../models/tokensDao')
+var Token = require('../models/tokensDao');
 
+
+
+exports.login = function(req, res){
+    var email = req.body.email;
+    var password = req.body.password;
+    if (!email) return res.status(400).send("Bad request, no email provided");
+    if (!password) return res.status(400).send("Bad request, no password provided");
+    email = email.trim();
+    password = password.trim();
+}
+
+exports.signup = function(req, res){
+    var alias = req.body.alias;
+    var email = req.body.email;
+    var password = req.body.password;
+    if (!email) return res.status(400).send("Bad request, no email provided");
+    if (!alias) return res.status(400).send("Bad request, no email provided");
+    if (!password) return res.status(400).send("Bad request, no password provided");
+    email = email.trim();
+    password = password.trim();
+    alias = alias.trim();
+    var token = Token.signup(alias, email, password).then(token=>{
+        console.log('TOKEN: ' + token);
+        console.log(typeof token);
+    })
+    .catch(err=>{
+        res.status(400).send(err);
+    });
+    console.log('TOKEN: ' + token);
+    console.log(typeof token);
+    if (typeof token == "string") return res.status(400).send(token);
+    else{
+        return token.then(token=>{
+            console.log('TOKEN: ' + token);
+            console.log(typeof token);
+        })
+        .catch(err=>{
+            res.status(400).send(err);
+        });
+    }
+
+}
 
 
 exports.createOrReturn = function(req,res) {

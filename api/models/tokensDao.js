@@ -2,9 +2,35 @@
 var Users = require('../db/users');
 var Tokens = require('../db/tokens');
 var ObjectId = require('mongodb').ObjectID;
-/*
-token = new Token()
-            crypto.createHash('md5').update(user._id).digest("hex");*/
+const bcrypt = require('bcrypt');
+
+
+
+exports.signup = function(alias, email, password){
+    var user = Users.findOne({'email':email}).then(usr=>{
+        return usr;
+    })
+    .catch(err=>{
+        return {'err':err};
+    });
+    if (user === "undefined"){
+        let pass = bcrypt.hashSync(password, 10);
+        user = new Users({
+            'alias': alias, 
+            'email':email,
+            'password':pass 
+        });
+        var tkn_str = new Date().getMilliseconds().toString()+user._id;
+        var date = new Date();
+        var duration = date.setDate(date.getDate() + days).getMilliseconds();
+        var tkn = new Tokens({'token': tkn_str, 'user': user, 'duration':duration});
+        return tkn.save();
+    }
+    else{
+        if ('err' in user) return user['err'];
+        else return 'User already exists';
+    }
+}
 
 exports.createOrReturn = function(alias, email, password) {
     return Users.findOne({'email':email}).then((user) => {
