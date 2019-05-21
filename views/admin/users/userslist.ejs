@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Users</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta charset="utf-8">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+  </head>
+  <body>
+    <h1>users</h1>
+    <table class="table table-inverse">
+    	<thead>
+    		<tr>
+    			<th>ID</th>
+    			<th>Alias</th>
+    			<th>Email</th>
+    			<th>Points</th>
+    			<th>Options</th>
+    		</tr>
+    	</thead>
+    	<tbody>
+    		<% for(var i=0; i < users.length; i++) { %>
+    		<tr>
+    			<td><%= users[i]._id %></td>
+    			<td><%= users[i].alias %></td>
+    			<td><%= users[i].email %></td>
+    			<td><%= users[i].points %></td>
+    			<% var editLink = "../../admin/users/"+users[i]._id %>
+    			<td>
+    				<a href="<%= editLink %>" role="button" style="color: black">
+    					<i class="fas fa-edit fa-lg"></i>
+    				</a>
+    				<a href="" role="button" style="color: black">
+    					<i class="fas fa-ban fa-lg"></i>
+    				</a>
+    			</td>
+    		</tr>
+    		<% } %>
+    	</tbody>
+    </table>
+  </body>
+</html>
