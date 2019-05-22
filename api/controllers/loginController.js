@@ -43,10 +43,11 @@ exports.getUser = function(req,res) {
     var token = req.params.token;
     if (!token) return res.status(430).send("Bad request, no token provided");
     token = token.trim();
-    Token.getUser(token).then((tkn) => {
+    return Token.getUser(token).then((tkn) => {
         if (tkn) return res.json(tkn.user);
         else return res.status(404).send("User doesn't exists");
     }).catch(err=>{
+        console.log(err);
         return res.status(400).send(err);
     });
 };
