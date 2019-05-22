@@ -20,8 +20,11 @@ exports.getRankingByFriends = function(userEmail){
      return  Friends.userFriends(userEmail).then(function(friends){
         var idSet = [];
         friends.forEach(function(friend){           
-            var userId1 = friend.userId1; 
-            var userId2 = friend.userId2;
+         
+            var userId1 = friend.user1; 
+            var userId2 = friend.user2;
+            console.log(userId1);
+            console.log(userId2);
             idSet.push(userId1);
             idSet.push(userId2);        
         });
