@@ -7,5 +7,9 @@ var usersRouter = express.Router();
 usersRouter.route("/")
 	.get(users.list);
 
+usersRouter.route("/:id")
+	.get(users.view)
+	.post(users.edit);
+
  
 module.exports = usersRouter;
