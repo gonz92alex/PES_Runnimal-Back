@@ -15,18 +15,21 @@ exports.list = function(req,res){
 }
 
 exports.createWalk = function (req,res){
-
-    var userid = req.body.userid; 
+    var usermail = req.body.usermail; 
     var duration = req.body.duration;
     var distance = req.body.distance; 
+    var created = req.body.created; 
     var beginDate = req.body.begindate; 
     var endDate = req.body.endDate; 
     var walkpoints = req.body.walkpoints;  
-    console.log(walkpoints); //Funciona bien
+    if(!usermail) return res.status(400).send("User Mail required"); 
+    if(!duration) return res.status(400).send("Duration Required");
+    if(!distance) return res.status(400).send("Distance required"); 
 
-
-
-
-return res.status(200).json(walkpoints);
-
+    return Walks.createWalk(usermail,duration,distance, created,beginDate,endDate,walkpoints)
+            .then(walk => {
+        return res.status(200).json(walk); 
+    }).catch(function(err){
+        return res.status(400).json({'error':err});
+    }); 
 }

@@ -15,4 +15,3 @@ var walksModel = new mongoose.Schema({
     walkpoints: {type: [walkpointsModel]}
 });
 module.exports = mongoose.model('walks',walksModel);
-module.exports = mongoose.model('walkpoints', walkpointsModel);
