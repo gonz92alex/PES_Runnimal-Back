@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>New user</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta charset="utf-8">
+    <% include ../../partials/headers %>
+  </head>
+  <body>
+    <div class="row">
+        <div class="col-12 p-0">
+            <% include ../../partials/adminNavbar %>
+        </div>
+        <div class="col-12 border rounded px-3 py-4">
+            <h2 class="text-center mt-3 mb-5">Create new user</h2>
+            <div class="row">
+                <div class="col-12 col-sm-4">
+                    <img src="/photos/users" class="rounded-circle mx-auto d-block" style="max-width: 250px">
+                </div>
+                <form name="editUser" method="POST" action="/admin/users/new" class="col-12 col-sm-8">
+                    <div class="form-group mx-auto row">
+                        
+                        <label for="email" class="col-12 col-sm-1 offset-sm-1">Email</label>
+                        <input type="email" name="email" placeholder="Email" id="email" class="form-control col12 col-sm-4" readonly>
+                    </div>
+                    <div class="form-group mx-auto row">
+                        <label for="alias" class="col-12 col-sm-1">Alias</label>
+                        <input type="text" name="alias" placeholder="Alias" id="alias" class="form-control col12 col-sm-4">
+                        <label for="role" class="col-12 col-sm-1 offset-sm-1">Role</label>
+                        <select id="size" class="form-control col-12 col-sm-4">
+                            <option selected>user</option>
+                            <option>admin</option>
+                        </select>
+                    </div>
+                    <div class="form-group mx-auto row">
+                        <label for="points" class="col-12 col-sm-1">Points</label>
+                        <input type="points" name="points" placeholder="Points" id="points" class="form-control col12 col-sm-4" readonly>
+                        <div class="col-12 col-sm-3 offset-sm-1">
+                            <a class="btn btn-warning" href="#" role="button">Reset password</a>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-2 offset-sm-1 p-0">
+                        <input type="submit" value="edit" class="btn btn-info">         
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  </body>
+</html>

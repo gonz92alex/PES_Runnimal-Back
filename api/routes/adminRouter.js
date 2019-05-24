@@ -24,4 +24,8 @@ router.post("/processLogin", auth.processLogin);
 var usersRouter = require('./adminRouters/users');
 router.use("/users", usersRouter);
 
+//##################PETS######################
+var petsRouter = require('./adminRouters/pets');
+router.use("/pets", petsRouter);
+
 module.exports = router;

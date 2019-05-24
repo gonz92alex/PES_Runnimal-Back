@@ -4,11 +4,13 @@
     <title><%= user.email %> profile</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <meta charset="utf-8">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <% include ../../partials/headers %>
   </head>
   <body>
     <div class="row">
+        <div class="col-12 p-0">
+            <% include ../../partials/adminNavbar %>
+        </div>
         <div class="col-12 border rounded px-3 py-4">
             <h2 class="text-center mt-3 mb-5"><%= user.email %></h2>
             <div class="row">
@@ -16,16 +18,17 @@
                     <% var imgLink="../../api/photo/users/"+user.email %>
                     <img src="<%= imgLink %>" class="rounded-circle mx-auto d-block" style="max-width: 250px">
                 </div>
-                <form name="editUser" method="POST" action="/admin/users/edit" class="col-12 col-sm-8">
+                <% var editUserLink = "/admin/users/"+user._id; %>
+                <form name="editUser" method="POST" action="editUserLink" class="col-12 col-sm-8">
                     <div class="form-group mx-auto row">
                         <label for="id" class="col-12 col-sm-1">ID</label>
-                        <input type="text" name="id" value="<%= user.id %>" id="id" class="form-control col12 col-sm-4" readonly>
+                        <input type="text" name="id" value="<%= user.id %>" id="id" class="form-control col-12 col-sm-4" readonly>
                         <label for="email" class="col-12 col-sm-1 offset-sm-1">Email</label>
-                        <input type="email" name="email" value="<%= user.email %>" id="email" class="form-control col12 col-sm-4" readonly>
+                        <input type="email" name="email" value="<%= user.email %>" id="email" class="form-control col-12 col-sm-4" readonly>
                     </div>
                     <div class="form-group mx-auto row">
                         <label for="alias" class="col-12 col-sm-1">Alias</label>
-                        <input type="text" name="alias" value="<%= user.alias %>" id="alias" class="form-control col12 col-sm-4">
+                        <input type="text" name="alias" value="<%= user.alias %>" id="alias" class="form-control col-12 col-sm-4">
                         <label for="role" class="col-12 col-sm-1 offset-sm-1">Role</label>
                         <select id="size" class="form-control col-12 col-sm-4">
                         <% var roles = ["user", "admin"]; %>
@@ -40,10 +43,13 @@
                     </div>
                     <div class="form-group mx-auto row">
                         <label for="points" class="col-12 col-sm-1">Points</label>
-                        <input type="points" name="points" value="<%= user.points %>" id="points" class="form-control col12 col-sm-4" readonly>
+                        <input type="points" name="points" value="<%= user.points %>" id="points" class="form-control col-12 col-sm-4" readonly>
+                        <div class="col-12 col-sm-3 offset-sm-1">
+                            <a class="btn btn-warning" href="#" role="button">Reset password</a>
+                        </div>
                     </div>
                     <div class="col-12 col-sm-2 offset-sm-1 p-0">
-                        <input type="submit" value="save" class="btn btn-info">
+                        <input type="submit" value="edit" class="btn btn-info">         
                     </div>
                 </form>
             </div>
@@ -53,7 +59,9 @@
                 <div class="row">
                     <h1 class="pb-4 col-12 col-sm-4">Pets</h1>
                     <div class="col-12 col-sm-2 offset-sm-6">
-                        <a href="" class="btn btn-info float-right mr-3" role="button">Add pet</a>
+                        <button type="button" class="btn btn-info float-right mr-3" data-toggle="modal" data-target="#addPetModal">
+                            Add pet
+                        </button>
                     </div>
                 </div>
                 <% for(var i=0; i < pets.length; i++) { %>
@@ -61,14 +69,9 @@
                     <div class="col-12">
                     <div class="row py-3">
                         <h4 class="col-12 col-sm-4 offset-sm-1"><%= pets[i].name %></h4>
-                        <h6><%= pets[i].owner._id %></h6>
-                        <h6>-</h6>
-                        <h6><%= user._id %></h6>
-                        <% if(pets[i].owner._id == user._id) { %>
                         <div class="col-12 col-sm-2 offset-sm-5">
                             <a href="" class="btn btn-danger float-right mr-3" role="button">Delete</a>
                         </div>
-                        <% } %>
                     </div>
                     </div>
                     <div class="col-12 col-sm-3">
@@ -79,13 +82,13 @@
                     <div class="container">
                         <div class="form-group row">
                             <label for="id" class="col-12 col-sm-2">ID</label>
-                            <input type="text" name="id" value="<%= pets[i]._id %>" id="id" class="form-control col12 col-sm-4" readonly>
+                            <input type="text" name="id" value="<%= pets[i]._id %>" id="id" class="form-control col-12 col-sm-4" readonly>
                             <label for="name" class="col-12 col-sm-2">Name</label>
-                            <input type="text" name="name" value="<%= pets[i].name %>" id="name" class="form-control col12 col-sm-4">
+                            <input type="text" name="name" value="<%= pets[i].name %>" id="name" class="form-control col-12 col-sm-4">
                         </div>
                         <div class="form-group row">
                             <label for="breed" class="col-12 col-sm-2">Breed</label>
-                            <input type="text" name="breed" value="<%= pets[i].breed %>" id="breed" class="form-control col12 col-sm-4">
+                            <input type="text" name="breed" value="<%= pets[i].breed %>" id="breed" class="form-control col-12 col-sm-4">
                             <label for="size" class="col-12 col-sm-2">size</label>
                             <select id="size" class="form-control col-12 col-sm-4">
                             <% var sizes = ["Small", "Medium", "Big"]; %>
@@ -102,7 +105,7 @@
                             <label for="description" class="col-12 col-sm-2">Description</label>
                             <input type="text" name="description" value="<%= pets[i].description %>" id="description" class="form-control col-12 col-sm-4">
                             <label for="weight" class="col-12 col-sm-2">Weight</label>
-                            <input type="text" name="weight" value="<%= pets[i].weight %>" id="weight" class="form-control col12 col-sm-2">
+                            <input type="number" name="weight" value="<%= pets[i].weight %>" id="weight" class="form-control col-12 col-sm-2">
                         </div>        
                     </div>
                     </form>
@@ -114,7 +117,9 @@
                                     <th>ID</th>
                                     <th>Alias</th>
                                     <th>Email</th>
-                                    <th></th>
+                                    <th>
+                                        <a href="" class="btn btn-info" role="button">Add owner</a>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -154,3 +159,59 @@
     </div>
   </body>
 </html>
+
+<!-- Modal -->
+<div class="modal fade" id="addPetModal" tabindex="-1" role="dialog" aria-labelledby="addPetModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add pet</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="editUser" method="POST" action="/admin/pets/new" class="container p-0 mt-3">
+            <input type="hidden" name="id" id="userId" value="<%= user._id %>" required>
+            <div class="form-group mx-auto row">
+                <label for="name" class="col-12 col-sm-3">Name</label>
+                <input type="text" name="name" placeholder="Name" id="name" class="form-control col-12 col-sm-8" required>
+            </div>
+            <div class="form-group mx-auto row">
+                <label for="description" class="col-12 col-sm-3">Description</label>
+                <input type="text" name="description" placeholder="Description" id="description" class="form-control col-12 col-sm-8" required>
+            </div>
+            <div class="form-group mx-auto row">
+                <label for="breed" class="col-12 col-sm-3">Breed</label>
+                <input type="text" name="breed" placeholder="Breed" id="breed" class="form-control col-12 col-sm-8" required>
+            </div>
+            <div class="form-group mx-auto row">
+                <label for="birth" class="col-12 col-sm-3">Birth</label>
+                <input type="text" name="birth" placeholder="Birth" id="birth" class="form-control col-12 col-sm-8" required>
+            </div>
+            <div class="form-group mx-auto row">
+                <label for="size" class="col-12 col-sm-3">Size</label>
+                <select id="size" class="form-control col-12 col-sm-3" required>
+                    <option selected>Small</option>
+                    <option>Medium</option>
+                    <option>Big</option>
+                </select>
+                <label for="weight" class="col-12 col-sm-2 ">Weight</label>
+                <input type="number" name="weight" placeholder="2" class="form-control col-12 col-sm-3 " required>
+            </div>
+            <div class="row justify-content-end">
+                <div class="col-12 col-sm-2">
+                    <input type="submit" value="Add" class="btn btn-success mx-2">         
+                </div>
+                <div class="col-12 col-sm-2 p-0">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+                <div class="col-12 col-sm-1"></div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

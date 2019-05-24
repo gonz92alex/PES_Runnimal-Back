@@ -26,3 +26,14 @@ exports.view = function(req, res){
 exports.edit = function(req, res){
 	return res.send(req.body);
 }
+
+exports.newForm = function(req, res){
+	return res.render('admin/users/new');
+}
+
+exports.new = function(req, res){
+	return res.send(req.params);
+	var email = req.params.email;
+	var password = req.params.password;
+	var alias = req.params.alias;
+}
