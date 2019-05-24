@@ -43,6 +43,11 @@ var rankingRouter = require('./apiRouters/ranking');
 router.use("/ranking", rankingRouter);
 
 
+//##################WALKS###################
+
+var walksRouter = require('./apiRouters/walks'); 
+router.use("/walks", walksRouter); 
+
 //##################EXPORTS###################
 
 module.exports = router;
