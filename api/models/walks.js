@@ -10,6 +10,16 @@ exports.getOne = function(id){
     return Walks.findById(id); 
 };
 
+exports.deleteWalk = function(id){
+    return this.getOne(id).then(walk => {
+        
+        if(!walk) throw "Error, no existe un paseo con ID-> [" + id +"]."; 
+        return Walks.findByIdAndRemove(walk._id); 
+
+
+    }); 
+}
+
 exports.createWalk = function(useremail,title, duration,distance, 
     created,begindate,
     enddate, walkpoints) {

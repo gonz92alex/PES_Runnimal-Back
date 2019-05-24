@@ -11,6 +11,8 @@ walksRouter.route("/")
     .get(walks.list)
     .post(walks.createWalk); 
 
+walksRouter.route("/:id")
+    .delete(walks.deleteWalk);
 
 
 

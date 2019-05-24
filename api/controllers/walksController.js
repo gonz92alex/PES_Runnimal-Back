@@ -35,3 +35,14 @@ exports.createWalk = function (req,res){
         return res.status(400).json({'error':err});
     }); 
 }
+
+
+exports.deleteWalk = function(req,res){
+    var walkid = req.params.id; 
+
+    return Walks.deleteWalk(walkid).then(walk =>{
+        return res.status(200).json({'deleted':walk}); 
+    }).catch(function(err){
+        return res.status(400).json({'error':err});
+    });
+}
