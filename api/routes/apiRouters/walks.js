@@ -12,10 +12,7 @@ walksRouter.route("/")
     .post(walks.createWalk); 
 
 walksRouter.route("/:id")
-    .delete(walks.deleteWalk);
-
-
-
-    
+    .delete(walks.deleteWalk)
+    .get(walks.getwalk); 
 module.exports = walksRouter; 
 

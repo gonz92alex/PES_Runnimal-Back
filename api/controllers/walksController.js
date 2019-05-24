@@ -14,6 +14,28 @@ exports.list = function(req,res){
 
 }
 
+exports.getwalk = function(req,res){
+    var id = req.params.id; 
+    Walks.getOne(id).then(walk => {
+        return res.json(walk); 
+    }).catch(err => {
+        return res.status(400).json({'error':err}); 
+    });
+}
+
+exports.getUserWalks = function(req,res){
+    var usermail = req.params.email; 
+    Walks.getWalksByUserMail(usermail).then(walks => {
+        if(walks.length > 0){
+            return res.status(200).json(walks); 
+        } else{
+            return res.status(404).send({'error':"No walks found"}); 
+        }
+    }).catch(err => {
+        return res.status(404).json({'error':err}); 
+    }); 
+}
+
 exports.createWalk = function (req,res){
     var usermail = req.body.usermail; 
     var title = req.body.title;
@@ -35,7 +57,6 @@ exports.createWalk = function (req,res){
         return res.status(400).json({'error':err});
     }); 
 }
-
 
 exports.deleteWalk = function(req,res){
     var walkid = req.params.id; 

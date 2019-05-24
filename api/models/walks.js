@@ -10,13 +10,22 @@ exports.getOne = function(id){
     return Walks.findById(id); 
 };
 
+exports.getWalksByUserMail = function(usermail){
+
+return Users.getOne(usermail).then(user => {
+   if(!user) throw "No existe el usuario con email=>: [" + usermail + "].";
+    var userid = user._id; 
+    return  Walks.find({user: userid});
+});
+
+
+}
+
 exports.deleteWalk = function(id){
     return this.getOne(id).then(walk => {
         
         if(!walk) throw "Error, no existe un paseo con ID-> [" + id +"]."; 
         return Walks.findByIdAndRemove(walk._id); 
-
-
     }); 
 }
 
