@@ -13,10 +13,10 @@ function loginMiddleware(req, res, next){
                 req.user = token.user;
             }
             else{
-                res.status(403).send('No user find');
+                return res.status(403).send('No user find');
             }
         }).catch(err=>{
-
+            return res.status(500).send(err);
         });
     }
     next();

@@ -1,16 +1,19 @@
 var express = require("express");
-var bodyParser = require('body-parser');
 var middleware = require('../middleware');
+var bodyParser = require('body-parser');
 var router = express.Router();
 
 
 router.use(bodyParser.urlencoded({extended: true}));
 router.use(bodyParser.json());
 
-//##################LOGIN###################
+//##################AUTH###################
+var loginRouter = require('./apiRouters/login');
+router.use("/login", loginRouter);
 
-var authRouter = require('./apiRouters/auth');
-router.use("/auth", authRouter);
+//#############PHOTO################
+var photoRouter = require('./apiRouters/photo');
+router.use("/photo", photoRouter);
 
 //Middleware de login 
 router.use(middleware);
@@ -35,15 +38,20 @@ router.use("/points", pointsRouter);
 var friendsRouter = require('./apiRouters/friends');
 router.use('/friends', friendsRouter);
 
-//#############FRIEND_REQUESTS################
-var photoRouter = require('./apiRouters/photo');
-router.use("/photo", photoRouter);
-
 //##################RANKING###################
 
 var rankingRouter = require('./apiRouters/ranking');
 router.use("/ranking", rankingRouter);
 
+<<<<<<< HEAD
+=======
+
+//##################WALKS###################
+
+var walksRouter = require('./apiRouters/walks'); 
+router.use("/walks", walksRouter); 
+
+>>>>>>> 1658dd222dd72ccfa4b1f928551ef33ae6733c0e
 //##################EXPORTS###################
 
 module.exports = router;
