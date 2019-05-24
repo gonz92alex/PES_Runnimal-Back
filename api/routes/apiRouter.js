@@ -1,11 +1,19 @@
 var express = require("express");
-
 var bodyParser = require('body-parser');
-
+var middleware = require('../middleware');
 var router = express.Router();
+
 
 router.use(bodyParser.urlencoded({extended: true}));
 router.use(bodyParser.json());
+
+//##################LOGIN###################
+
+var authRouter = require('./apiRouters/auth');
+router.use("/auth", authRouter);
+
+//Middleware de login 
+router.use(middleware);
 
 //##################USERS#####################
 var usersRouter = require('./apiRouters/users');
@@ -35,11 +43,6 @@ router.use("/photo", photoRouter);
 
 var rankingRouter = require('./apiRouters/ranking');
 router.use("/ranking", rankingRouter);
-
-//##################RANKING###################
-
-var authRouter = require('./apiRouters/auth');
-router.use("/auth", authRouter);
 
 //##################EXPORTS###################
 

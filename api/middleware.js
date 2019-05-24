@@ -4,9 +4,7 @@ function loginMiddleware(req, res, next){
     console.log('En el middleware');
     var token = req.headers.token;
     console.log(req.path)
-    if (req.path.startsWith('/api/login') || req.path.startsWith('/api/auth')) next();
-    else{
-            if (!token) return res.status(401).send('No token provided');
+    if (!token) return res.status(401).send('No token provided');
     else{
         token = token.trim();
         TokenDao.getUser(token).then(token=>{
@@ -22,7 +20,6 @@ function loginMiddleware(req, res, next){
         });
     }
     next();
-}
 }
 
 
