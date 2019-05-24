@@ -8,6 +8,7 @@ var walkpointsModel = new mongoose.Schema({
 var walksModel = new mongoose.Schema({
     user: {type: mongoose.Schema.Types.ObjectId, ref: 'users'},
     duration: {type: Number},
+    title: {type: String},
     distance: {type: Number},
     created:  {type: Date, default: Date.now},
     beginDate: {type: Number},
