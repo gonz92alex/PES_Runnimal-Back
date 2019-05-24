@@ -6,6 +6,7 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var env_vars = require('./bin/config-env').config();
+var middleware = require('./api/middleware');
 var dburl = env_vars["DBURL"];
 var dbschema = env_vars["DBSCHEMA"];
 var dbuser = env_vars["DBUSER"];
@@ -37,6 +38,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+//Middleware de login 
+app.use(middleware);
 app.use('/', indexRoutes);
 //apiRoutes(app);
 
@@ -58,5 +62,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+
 
 module.exports = app;
