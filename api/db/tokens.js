@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 
 var tokenModel = new mongoose.Schema({
     token: String,
-    user: {type: mongoose.Schema.Types.ObjectId, ref: 'users'}
+    user: {type: mongoose.Schema.Types.ObjectId, ref: 'users'},
+    duration: Number
 });
 
 tokenModel.index({ user: 1 }, { unique: true });

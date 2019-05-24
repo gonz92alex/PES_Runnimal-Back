@@ -20,26 +20,18 @@ exports.signup = function(req, res){
     email = email.trim();
     password = password.trim();
     alias = alias.trim();
-    var token = Token.signup(alias, email, password).then(token=>{
-        console.log('TOKEN: ' + token);
-        console.log(typeof token);
+    return Token.signup(alias, email, password).then(token=>{
+        console.log(token)
+        if (typeof token == "string") return res.status(401).send(token);
+        else{
+            if (token) return res.send(token.token);
+            else return res.status(401).send('No token generate');
+        }
     })
     .catch(err=>{
-        res.status(400).send(err);
+        console.log(err);
+        return res.status(500).send(err);
     });
-    console.log('TOKEN: ' + token);
-    console.log(typeof token);
-    if (typeof token == "string") return res.status(400).send(token);
-    else{
-        return token.then(token=>{
-            console.log('TOKEN: ' + token);
-            console.log(typeof token);
-        })
-        .catch(err=>{
-            res.status(400).send(err);
-        });
-    }
-
 }
 
 

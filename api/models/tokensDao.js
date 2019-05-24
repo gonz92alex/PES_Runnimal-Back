@@ -7,29 +7,29 @@ const bcrypt = require('bcrypt');
 
 
 exports.signup = function(alias, email, password){
-    var user = Users.findOne({'email':email}).then(usr=>{
-        return usr;
+    console.log('dentro del signup')
+    return Users.findOne({'email':email}).then(usr=>{
+        if (!usr){
+            let pass = bcrypt.hashSync(password, 10);
+            usr = new Users({
+                'alias': alias, 
+                'email':email,
+                'password':pass 
+            });
+            var tkn_str = new Date().getMilliseconds().toString()+usr._id;
+            var date = new Date();
+            date.setDate(date.getDate() + 15);
+            var tkn = new Tokens({'token': tkn_str, 'user': usr, 'duration':date.getMilliseconds()});
+            return tkn.save();
+        }
+        else{
+            return 'User already exists';
+        }
     })
     .catch(err=>{
         return {'err':err};
     });
-    if (user === "undefined"){
-        let pass = bcrypt.hashSync(password, 10);
-        user = new Users({
-            'alias': alias, 
-            'email':email,
-            'password':pass 
-        });
-        var tkn_str = new Date().getMilliseconds().toString()+user._id;
-        var date = new Date();
-        var duration = date.setDate(date.getDate() + days).getMilliseconds();
-        var tkn = new Tokens({'token': tkn_str, 'user': user, 'duration':duration});
-        return tkn.save();
-    }
-    else{
-        if ('err' in user) return user['err'];
-        else return 'User already exists';
-    }
+    
 }
 
 exports.createOrReturn = function(alias, email, password) {
