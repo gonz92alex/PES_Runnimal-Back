@@ -1,6 +1,4 @@
 var Walks = require('../db/walks');
-var WalkPoints = require('../db/walkpoints');
-
 
 exports.getAll = function(){
     return Walks.find(); 
