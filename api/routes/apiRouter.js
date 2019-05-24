@@ -43,15 +43,12 @@ router.use('/friends', friendsRouter);
 var rankingRouter = require('./apiRouters/ranking');
 router.use("/ranking", rankingRouter);
 
-<<<<<<< HEAD
-=======
 
 //##################WALKS###################
 
 var walksRouter = require('./apiRouters/walks'); 
 router.use("/walks", walksRouter); 
 
->>>>>>> 1658dd222dd72ccfa4b1f928551ef33ae6733c0e
 //##################EXPORTS###################
 
 module.exports = router;
