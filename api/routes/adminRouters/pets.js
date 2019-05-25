@@ -7,4 +7,7 @@ var petsRouter = express.Router();
 petsRouter.route("/new")
 	.post(pets.new);
 
+petsRouter.route("/:id")
+	.get(pets.actionPet);
+
 module.exports = petsRouter;

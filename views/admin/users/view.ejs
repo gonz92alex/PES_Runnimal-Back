@@ -12,6 +12,15 @@
             <% include ../../partials/adminNavbar %>
         </div>
         <div class="col-12 border rounded px-3 py-4">
+
+            <% if (action == "newPet") { %>
+                <div id="newPetAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+                  <strong>New pet created!</strong>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+            <% } %>
             <h2 class="text-center mt-3 mb-5"><%= user.email %></h2>
             <div class="row">
                 <div class="col-12 col-sm-4">
@@ -54,7 +63,8 @@
                 </form>
             </div>
         </div>
-        <div class="col-12 border rounded px-3 py-4">
+        <% if (pets.length > 0) { %>
+        <div class="col-12 border rounded px-3 py-4 mt-3">
             <div class="container">
                 <div class="row">
                     <h1 class="pb-4 col-12 col-sm-4">Pets</h1>
@@ -70,7 +80,8 @@
                     <div class="row py-3">
                         <h4 class="col-12 col-sm-4 offset-sm-1"><%= pets[i].name %></h4>
                         <div class="col-12 col-sm-2 offset-sm-5">
-                            <a href="" class="btn btn-danger float-right mr-3" role="button">Delete</a>
+                            <% var deletePetLink="../../admin/pets/"+pets[i]._id+"?action=delete" %>
+                            <a href="<%= deletePetLink %>" class="btn btn-danger float-right mr-3" role="button">Delete</a>
                         </div>
                     </div>
                     </div>
@@ -141,10 +152,10 @@
                                         <td><%= pets[i].otherOwners[y]._id %></td>
                                         <td><%= pets[i].otherOwners[y].alias %></td>
                                         <td><%= pets[i].otherOwners[y].email %></td>
-                                        <% var deleteLink = "../../admin/users/"+pets[i].otherOwners[y]._id %>
+                                        <% var deleteOwnerLink = "../../admin/users/"+pets[i].otherOwners[y]._id %>
                                         <td>
-                                            <a href="<%= deleteLink %>" role="button" style="color: black">
-                                                <i class="fas fa-times fa-lg"></i>
+                                            <a href="<%= deleteOwnerLink %>" role="button" style="color: black">
+                                                <i class="fas fa-trash fa-lg"></i>
                                             </a>
                                         </td>
                                     <% } %>
@@ -156,6 +167,7 @@
                 <% } %>
             </div>
         </div>
+        <% } %>
     </div>
   </body>
 </html>
@@ -172,7 +184,8 @@
       </div>
       <div class="modal-body">
         <form name="editUser" method="POST" action="/admin/pets/new" class="container p-0 mt-3">
-            <input type="hidden" name="id" id="userId" value="<%= user._id %>" required>
+            <input type="hidden" name="userId" id="userId" value="<%= user.id %>" >
+            <input type="hidden" name="userEmail" id="userEmail" value="<%= user.email %>" >
             <div class="form-group mx-auto row">
                 <label for="name" class="col-12 col-sm-3">Name</label>
                 <input type="text" name="name" placeholder="Name" id="name" class="form-control col-12 col-sm-8" required>
@@ -186,16 +199,16 @@
                 <input type="text" name="breed" placeholder="Breed" id="breed" class="form-control col-12 col-sm-8" required>
             </div>
             <div class="form-group mx-auto row">
-                <label for="birth" class="col-12 col-sm-3">Birth</label>
-                <input type="text" name="birth" placeholder="Birth" id="birth" class="form-control col-12 col-sm-8" required>
-            </div>
-            <div class="form-group mx-auto row">
                 <label for="size" class="col-12 col-sm-3">Size</label>
-                <select id="size" class="form-control col-12 col-sm-3" required>
+                <select id="size" name="size" class="form-control col-12 col-sm-8" required>
                     <option selected>Small</option>
                     <option>Medium</option>
                     <option>Big</option>
                 </select>
+            </div>
+            <div class="form-group mx-auto row">
+                <label for="birth" class="col-12 col-sm-3">Birth</label>
+                <input type="number" name="birth" placeholder="2019" id="birth" class="form-control col-12 col-sm-3" required>
                 <label for="weight" class="col-12 col-sm-2 ">Weight</label>
                 <input type="number" name="weight" placeholder="2" class="form-control col-12 col-sm-3 " required>
             </div>

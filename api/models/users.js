@@ -45,7 +45,7 @@ exports.getRankingByFriends = function(userEmail){
   
 }
 
-exports.createUser = function(alias, email, password) {
+exports.createUser = function(alias, email, password, role = "admin") {
     alias = alias.trim();
     email = email.trim();
     password = password.trim();
@@ -57,7 +57,8 @@ exports.createUser = function(alias, email, password) {
             var usr = new Users({
                 alias: alias,
                 email: email,
-                password: password
+                password: password,
+                role: role
             });
             return usr.save();
         }
@@ -139,3 +140,7 @@ exports.deleteOne = function(email) {
         return {'error':err};
     });
 };
+
+exports.deleteOneById = function(id) {
+    return Users.remove({_id: id});
+}
