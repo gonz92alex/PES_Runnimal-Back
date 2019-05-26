@@ -13,14 +13,35 @@
         </div>
         <div class="col-12 border rounded px-3 py-4">
 
-            <% if (action == "newPet") { %>
+            <% if (alert == "newPet") { %>
                 <div id="newPetAlert" class="alert alert-success alert-dismissible fade show" role="alert">
                   <strong>New pet created!</strong>
                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-            <% } %>
+            <% } else if (alert == "deletePet"){ %>
+                <div id="deletePetAlert" class="alert alert-warning alert-dismissible fade show" role="alert">
+                  <strong>Pet successfully deleted!</strong>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+            <% } else if (alert == "ownerAdded"){ %>
+                <div id="deletePetAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+                  <strong>New owner added!</strong>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+            <% } else if (alert == "ownerDeleted"){ %>
+                <div id="deletePetAlert" class="alert alert-warning alert-dismissible fade show" role="alert">
+                  <strong>Owner successfully deleted!</strong>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+            <% }%>
             <h2 class="text-center mt-3 mb-5"><%= user.email %></h2>
             <div class="row">
                 <div class="col-12 col-sm-4">
@@ -69,7 +90,7 @@
                 <div class="row">
                     <h1 class="pb-4 col-12 col-sm-4">Pets</h1>
                     <div class="col-12 col-sm-2 offset-sm-6">
-                        <button type="button" class="btn btn-info float-right mr-3" data-toggle="modal" data-target="#addPetModal">
+                        <button type="button" class="btn btn-success float-right mr-3" data-toggle="modal" data-target="#addPetModal">
                             Add pet
                         </button>
                     </div>
@@ -80,7 +101,7 @@
                     <div class="row py-3">
                         <h4 class="col-12 col-sm-4 offset-sm-1"><%= pets[i].name %></h4>
                         <div class="col-12 col-sm-2 offset-sm-5">
-                            <% var deletePetLink="../../admin/pets/"+pets[i]._id+"?action=delete" %>
+                            <% var deletePetLink="../../admin/pets/"+pets[i]._id+"?action=delete&userId=" + user._id %>
                             <a href="<%= deletePetLink %>" class="btn btn-danger float-right mr-3" role="button">Delete</a>
                         </div>
                     </div>
@@ -128,9 +149,7 @@
                                     <th>ID</th>
                                     <th>Alias</th>
                                     <th>Email</th>
-                                    <th>
-                                        <a href="" class="btn btn-info" role="button">Add owner</a>
-                                    </th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -141,10 +160,9 @@
                                     <td><%= pets[i].owner.email %></td>
                                     <td></td>
                                 </tr>
+                                <% for(var y=0; y < pets[i].otherOwners.length; y++) { %>
                                 <tr>
-                                    <% for(var y=0; y < pets[i].otherOwners.length; y++) { 
-                                        if (y == 0) {
-                                    %>
+                                    <%if (y == 0) { %>
                                         <td rowspan="<%= (pets[i].otherOwners.length + 1)%>">
                                             <strong>Other owners</strong>
                                         </td>
@@ -152,19 +170,42 @@
                                         <td><%= pets[i].otherOwners[y]._id %></td>
                                         <td><%= pets[i].otherOwners[y].alias %></td>
                                         <td><%= pets[i].otherOwners[y].email %></td>
-                                        <% var deleteOwnerLink = "../../admin/users/"+pets[i].otherOwners[y]._id %>
-                                        <td>
-                                            <a href="<%= deleteOwnerLink %>" role="button" style="color: black">
+                                        <% var removeOwnerLink = "../../admin/pets/" + pets[i]._id + "/owners?action=remove&userId=" + user._id + "&otherOwnerEmail=" +  pets[i].otherOwners[y].email %>
+                                        <td class="text-center">
+                                            <a href="<%= removeOwnerLink %>" role="button" style="color: black">
                                                 <i class="fas fa-trash fa-lg"></i>
                                             </a>
                                         </td>
-                                    <% } %>
                                 </tr>
+                                <% } %>
                             </tbody>
                         </table>
                     </div>
+                    <div class="col-12">
+                        <% var addOwnerLink = "/admin/pets/" +pets[i]._id + "/owners" %>
+                        <form method="POST" action="<%= addOwnerLink %>">
+                        <div class="form-group row justify-content-center">
+                            <input type="hidden" name="userId" value="<%= user._id%>">
+                            <input type="hidden" name="petId" value="<%= pets[i]._id%>">
+                            <input type="otherOwnerEmail" name="otherOwnerEmail" id="otherOwnerEmail" placeholder="owner@email.com" class="form-control col-12 col-sm-3 offset-sm-1" required>
+                            <div class="col-12 col-md-2">
+                                <input type="submit" value="Add owner" class="btn btn-info mx-2">
+                            </div>
+                        </div>
+                        </form>
+                    </div>
                 </div>
                 <% } %>
+            </div>
+        </div>
+        <% } else { %>
+        <div class="col-12 px-3 py-4 mt-3">
+            <div class="row justify-content-end">
+                <div class="col-12 col-sm-2">
+                    <button type="button" class="btn btn-success float-right mr-3" data-toggle="modal" data-target="#addPetModal">
+                        Add pet
+                    </button>
+                </div>
             </div>
         </div>
         <% } %>
@@ -172,7 +213,7 @@
   </body>
 </html>
 
-<!-- Modal -->
+<!-- Modal add pet-->
 <div class="modal fade" id="addPetModal" tabindex="-1" role="dialog" aria-labelledby="addPetModalTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">

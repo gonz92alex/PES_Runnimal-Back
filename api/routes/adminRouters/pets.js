@@ -10,4 +10,8 @@ petsRouter.route("/new")
 petsRouter.route("/:id")
 	.get(pets.actionPet);
 
+petsRouter.route("/:id/owners")
+	.get(pets.actionOwners)
+	.post(pets.addOwner);
+
 module.exports = petsRouter;

@@ -18,6 +18,7 @@ exports.view = function(req, res){
 
 	var userId = req.params.id;
 	var action = req.query.action;
+	var alert = req.query.alert;
 
 	if (action == "delete") {
 		Users.deleteOneById(userId).then( function (user){
@@ -28,7 +29,7 @@ exports.view = function(req, res){
 	} else {
 		Users.getOneById(userId).then(function (user){
 			Pets.getUserPets(user.email).then(function(pets){
-				return res.render('admin/users/view', {'user': user, 'pets': pets, 'action': action});
+				return res.render('admin/users/view', {'user': user, 'pets': pets, 'alert': alert});
 			}).catch(function (err){
 
 			});
