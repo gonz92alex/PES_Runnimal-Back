@@ -26,7 +26,13 @@ exports.view = function(req, res){
 		}).catch( function (err){
 			return res.send("error al eliminar usuari per id");
 		});
-	} else {
+	} else if(action == "resetPassword"){
+		Users.resetPassword(userId).then(function (user){
+			return res.redirect("/admin/users/"+userId+"?alert=passwordReseted");
+		}).catch(function (err){
+
+		})
+	}else {
 		Users.getOneById(userId).then(function (user){
 			Pets.getUserPets(user.email).then(function(pets){
 				return res.render('admin/users/view', {'user': user, 'pets': pets, 'alert': alert});
@@ -41,6 +47,20 @@ exports.view = function(req, res){
 }
 
 exports.edit = function(req, res){
+	var id = req.body.id;
+	var email = req.body.email;
+	var alias = req.body.alias;
+	var role = req.body.role;
+
+	return Users.editAlias(email, alias).then(function(alias){
+		return Users.changeRole(email, role).then(function(userEdited){
+			return res.redirect("/admin/users/" + id + "?alert=userEdited");
+		}).catch(function(err){
+
+		})
+	}).catch( function(err){
+
+	});
 	return res.send(req.body);
 }
 

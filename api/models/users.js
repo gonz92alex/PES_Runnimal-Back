@@ -76,6 +76,24 @@ exports.editAlias = function(email, alias){
     });
 }
 
+exports.changeRole = function(email, newRole){
+    return this.getOne(email).then(user=>{
+        user.role = newRole; 
+        return user.save();
+    }).catch(err=>{
+        return {'error': err};
+    });
+}
+
+exports.resetPassword = function(userId){
+    return this.getOneById(userId).then(user=>{
+        user.password = user.alias; 
+        return user.save();
+    }).catch(err=>{
+        return {'error': err};
+    });
+}
+
 exports.addPoints = function(email,pointsQuantity){
    return this.getOne(email).then( user =>  {
         if(!user){
