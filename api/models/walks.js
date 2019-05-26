@@ -5,6 +5,16 @@ exports.getAll = function(){
 };
 
 
+exports.getWalksByUserAndDateRange = function (usermail, lowerDate, upperDate){
+//Por defecto esta función busca por beginDate de los walks que es un número. De modo 
+//Que lo que hay que enviarle para que funcione correctamente es un valor numérico.
+    return Users.getOne(usermail).then(user => {
+        if(!user) throw "No existe el usuario con email=>: [" + usermail + "].";
+            var userid = user._id; 
+            return  Walks.find({user: userid, beginDate: {$lt: upperDate, $gt: lowerDate}});
+        });
+}
+
 
 exports.getOne = function(id){
     return Walks.findById(id); 
@@ -12,13 +22,11 @@ exports.getOne = function(id){
 
 exports.getWalksByUserMail = function(usermail){
 
-return Users.getOne(usermail).then(user => {
-   if(!user) throw "No existe el usuario con email=>: [" + usermail + "].";
-    var userid = user._id; 
-    return  Walks.find({user: userid});
-});
-
-
+    return Users.getOne(usermail).then(user => {
+    if(!user) throw "No existe el usuario con email=>: [" + usermail + "].";
+        var userid = user._id; 
+        return  Walks.find({user: userid});
+    });
 }
 
 exports.deleteWalk = function(id){

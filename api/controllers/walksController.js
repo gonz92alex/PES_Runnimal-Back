@@ -25,15 +25,36 @@ exports.getwalk = function(req,res){
 
 exports.getUserWalks = function(req,res){
     var usermail = req.params.email; 
-    Walks.getWalksByUserMail(usermail).then(walks => {
-        if(walks.length > 0){
-            return res.status(200).json(walks); 
-        } else{
-            return res.status(404).send({'error':"No walks found"}); 
-        }
-    }).catch(err => {
-        return res.status(404).json({'error':err}); 
-    }); 
+    var lowerDate = req.query.lowerDate; //El query recoge los parámetros directamente del HTTP header.
+    var upperDate = req.query.upperDate;
+
+
+    if(lowerDate && upperDate){
+        
+        Walks.getWalksByUserAndDateRange(usermail,lowerDate,upperDate).then(walks => {
+            if(walks.length > 0){
+                return res.status(200).json(walks); 
+            } else{
+                return res.status(404).send({'error':"No walks found"}); 
+            }
+        }).catch(err => {
+            return res.status(404).json({'error':err}); 
+        }); 
+
+    } else {
+        Walks.getWalksByUserMail(usermail).then(walks => {
+            if(walks.length > 0){
+                return res.status(200).json(walks); 
+            } else{
+                return res.status(404).send({'error':"No walks found"}); 
+            }
+        }).catch(err => {
+            return res.status(404).json({'error':err}); 
+        }); 
+    }
+
+
+   
 }
 
 exports.createWalk = function (req,res){
