@@ -11,7 +11,7 @@ exports.getWalksByUserAndDateRange = function (usermail, lowerDate, upperDate){
     return Users.getOne(usermail).then(user => {
         if(!user) throw "No existe el usuario con email=>: [" + usermail + "].";
             var userid = user._id; 
-            return  Walks.find({user: userid, beginDate: {$lt: upperDate, $gt: lowerDate}});
+            return  Walks.find({user: userid, start: {$lt: upperDate, $gt: lowerDate}});
         });
 }
 
@@ -48,10 +48,10 @@ return Users.getOne(useremail).then(function (user){
     user: user._id,
     title: title,
     duration: duration,
-    beginDate: begindate,
+    start: begindate,
     distance: distance, 
-    endDate: enddate,
-    walkpoints: walkpoints
+    end: enddate,
+    route: walkpoints
 })
 console.log("Un nuevo paseo va a ser creado");
 console.log(newWalk);
@@ -60,4 +60,6 @@ return newWalk.save();
 });
 
 
-}; 
+};
+
+

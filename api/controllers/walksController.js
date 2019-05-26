@@ -63,9 +63,9 @@ exports.createWalk = function (req,res){
     var duration = req.body.duration;
     var distance = req.body.distance; 
     var created = req.body.created; 
-    var beginDate = req.body.begindate; 
-    var endDate = req.body.endDate; 
-    var walkpoints = req.body.walkpoints;  
+    var beginDate = req.body.start; 
+    var endDate = req.body.end; 
+    var walkpoints = req.body.route;  
     if(!usermail) return res.status(400).send("User Mail required"); 
     if(!title) return res.status(400).send("Title Required");
     if(!duration) return res.status(400).send("Duration Required");
