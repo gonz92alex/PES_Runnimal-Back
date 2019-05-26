@@ -1,5 +1,6 @@
 var Walks = require('../db/walks');
 var Users = require('./users');
+var WalksStatistics = requiree('../db/walksStatistics'); 
 exports.getAll = function(){
     return Walks.find(); 
 };
@@ -14,6 +15,26 @@ exports.getWalksByUserAndDateRange = function (usermail, lowerDate, upperDate){
             return  Walks.find({user: userid, start: {$lt: upperDate, $gt: lowerDate}});
         });
 }
+
+
+exports.getUserWalksStatistics = function(usermail){
+    return Users.getOne(usermail).then(user => {
+        if(!user) throw "No existe el usuario con email=>: [" + usermail + "].";
+            var userid = user._id; 
+            return  WalksStatistics.find({user: userid});
+        });
+}
+
+createOrUpdateUserWalksStatistics = function(usermail){
+
+
+
+    
+
+
+
+}
+
 
 
 exports.getOne = function(id){
