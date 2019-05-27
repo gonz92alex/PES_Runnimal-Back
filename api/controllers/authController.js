@@ -8,6 +8,15 @@ exports.login = function(req, res){
     if (!password) return res.status(400).send("Bad request, no password provided");
     email = email.trim();
     password = password.trim();
+    return Token.login(email, password).then(token=>{
+        if (typeof token == "string") return res.status(401).send(token);
+        else{
+            if (token) return res.send(token.token);
+            else return res.status(401).send('No token generate');
+        }
+    }).catch(err=>{
+        return res.status(500).send(err);
+    });
 }
 
 exports.signup = function(req, res){
@@ -21,16 +30,13 @@ exports.signup = function(req, res){
     password = password.trim();
     alias = alias.trim();
     return Token.signup(alias, email, password).then(token=>{
-        console.log(token)
         if (typeof token == "string") return res.status(401).send(token);
         else{
-            console.log(token)
             if (token) return res.send(token.token);
             else return res.status(401).send('No token generate');
         }
     })
     .catch(err=>{
-        console.log(err);
         return res.status(500).send(err);
     });
 }

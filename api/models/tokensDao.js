@@ -7,7 +7,6 @@ const bcrypt = require('bcrypt');
 
 
 exports.signup = function(alias, email, password){
-    console.log('dentro del signup')
     return Users.findOne({'email':email}).then(usr=>{
         if (!usr){
             let pass = bcrypt.hashSync(password, 10);
@@ -35,10 +34,40 @@ exports.signup = function(alias, email, password){
         }
     })
     .catch(err=>{
-        return {'err':err};
+        return err;
     });
     
 }
+
+exports.login = function(email, password){
+    return Users.findOne({'email':email}).then(usr=>{
+        if (usr){
+            return bcrypt.compare(password, usr.password).then(res=>{
+                if (res){
+                    return Tokens.findOne({'user': ObjectId(usr._id)}).then(tkn=>{
+                        if (tkn) return tkn;
+                        else return 'Token doesn\'t found'
+                    }).catch(errT=>{
+                        return errT
+                    });
+                }
+                else{
+                    return 'Wrong password';
+                }
+            }).catch(errC=>{
+                return errC;
+            });
+        }
+        else{
+            return 'User doesn\'t found';
+        }
+    })
+    .catch(err=>{
+        return err;
+    });
+    
+}
+
 
 exports.createOrReturn = function(alias, email, password) {
     return Users.findOne({'email':email}).then((user) => {
