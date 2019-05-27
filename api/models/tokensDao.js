@@ -15,10 +15,10 @@ exports.signup = function(alias, email, password){
                 'email':email,
                 'password':pass 
             });
-            var tkn_str = new Date().getMilliseconds().toString()+usr._id;
             var date = new Date();
+            var tkn_str = date.getTime().toString()+usr._id;
             date.setDate(date.getDate() + 15);
-            var tkn = new Tokens({'token': tkn_str, 'user': usr._id, 'duration':date.getMilliseconds()});
+            var tkn = new Tokens({'token': tkn_str, 'user': usr._id, 'duration':date.getTime()});
             return usr.save().then(function(){
                 return tkn.save().then(function(){
                     return tkn;
@@ -45,7 +45,16 @@ exports.login = function(email, password){
             return bcrypt.compare(password, usr.password).then(res=>{
                 if (res){
                     return Tokens.findOne({'user': ObjectId(usr._id)}).populate({ path: 'user', select: 'email alias' }).then(tkn=>{
-                        if (tkn) return tkn;
+                        if (tkn){
+                            var dur =  new Date().getTime();
+                            tkn.duration = dur;
+                            return tkn.save().then(function(){
+                                console.log(tkn)
+                                return tkn;
+                            }).catch(errS=>{
+                                return errS;
+                            })
+                        }
                         else return 'Token doesn\'t found'
                     }).catch(errT=>{
                         return errT
@@ -111,7 +120,7 @@ exports.getOne = function(email, password) {
 
 
 exports.getUser = function(token) {
-    return Tokens.findOne({'token': token, 'duration': {'$lte': new Date().getMilliseconds()}}).populate({ path: 'user', select: 'email alias' })
+    return Tokens.findOne({'token': token, 'duration': {'$lte': new Date().getDate()}}).populate({ path: 'user', select: 'email alias' })
 };
 
 exports.createToken = function(email, password){
