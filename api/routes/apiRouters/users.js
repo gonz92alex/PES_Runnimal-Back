@@ -3,7 +3,7 @@ var express = require("express");
 var users = require('../../controllers/userController');
 var pets = require('../../controllers/petController');
 var friends = require('../../controllers/usersRelationshipsController');
-
+var walks = require('../../controllers/walksController')
 var usersRouter = express.Router();
 
 usersRouter.route("/")
@@ -23,7 +23,8 @@ usersRouter.get("/:email/pets", pets.getUserPets);
 usersRouter.get("/:email/friends", friends.userFriends);
 usersRouter.get("/:email/friendRequests", friends.userFriendRequests);
 usersRouter.get("/:email/ranking", users.filteredRanking);
-
+usersRouter.get("/:email/walks",walks.getUserWalks); 
+//usersRouter.get("/:email/walks/statistics",walks.getUserWalksStatistics); 
 
 usersRouter.get("/id/:id", users.getOneById);
  

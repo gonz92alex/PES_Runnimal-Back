@@ -57,6 +57,7 @@ exports.uploadUser = function (req, res, next) {
 }
 
 exports.getUser = function (req, res, next) {
+    console.log('En la foto');
     var email = req.params.email;
     if (!email) return res.status(430).send("Bad request, no email provided");
     email = email.trim();
