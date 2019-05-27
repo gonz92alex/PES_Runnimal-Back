@@ -19,8 +19,16 @@ exports.signup = function(alias, email, password){
             var tkn_str = new Date().getMilliseconds().toString()+usr._id;
             var date = new Date();
             date.setDate(date.getDate() + 15);
-            var tkn = new Tokens({'token': tkn_str, 'user': usr, 'duration':date.getMilliseconds()});
-            return tkn.save();
+            var tkn = new Tokens({'token': tkn_str, 'user': usr._id, 'duration':date.getMilliseconds()});
+            return usr.save().then(function(){
+                return tkn.save().then(function(){
+                    return tkn;
+                }).catch(errT=>{
+                    return errT;
+                })
+            }).catch(errU=>{
+                return errU
+            })
         }
         else{
             return 'User already exists';

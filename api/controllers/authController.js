@@ -24,6 +24,7 @@ exports.signup = function(req, res){
         console.log(token)
         if (typeof token == "string") return res.status(401).send(token);
         else{
+            console.log(token)
             if (token) return res.send(token.token);
             else return res.status(401).send('No token generate');
         }
