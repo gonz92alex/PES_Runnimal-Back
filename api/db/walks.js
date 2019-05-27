@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 
 var walkpointsModel = new mongoose.Schema({
     created:  {type: Date, default: Date.now},
-    coord: {type: [Number], index: '2d'}
+    latitude: {type: Number},
+    longitude: {type: Number}
 });
 
 var walksModel = new mongoose.Schema({
@@ -11,8 +12,8 @@ var walksModel = new mongoose.Schema({
     title: {type: String},
     distance: {type: Number},
     created:  {type: Date, default: Date.now},
-    beginDate: {type: Number},
-    endDate: {type: Number},
-    walkpoints: {type: [walkpointsModel]}
+    start: {type: Number},
+    end: {type: Number},
+    route: {type: [walkpointsModel]}
 });
 module.exports = mongoose.model('walks',walksModel);
