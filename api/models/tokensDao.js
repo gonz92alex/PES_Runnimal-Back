@@ -44,7 +44,7 @@ exports.login = function(email, password){
         if (usr){
             return bcrypt.compare(password, usr.password).then(res=>{
                 if (res){
-                    return Tokens.findOne({'user': ObjectId(usr._id)}).then(tkn=>{
+                    return Tokens.findOne({'user': ObjectId(usr._id)}).populate({ path: 'user', select: 'email alias' }).then(tkn=>{
                         if (tkn) return tkn;
                         else return 'Token doesn\'t found'
                     }).catch(errT=>{
@@ -67,7 +67,7 @@ exports.login = function(email, password){
     });
     
 }
-
+/*
 
 exports.createOrReturn = function(alias, email, password) {
     return Users.findOne({'email':email}).then((user) => {
@@ -84,7 +84,6 @@ exports.createOrReturn = function(alias, email, password) {
             });
             console.log('ei')
             return usr.save(function (err, usr_c) {
-                console.log('hola')
                 console.log(err)
                 if (err) return handleError(err);
                 var tkn = new Tokens({'token': new Date().getMilliseconds().toString()+usr_c._id, 'user': usr_c})
@@ -94,7 +93,7 @@ exports.createOrReturn = function(alias, email, password) {
     }).catch(err=>{
         return {'error':err};
     });        
-};
+};*/
 
 
 exports.getOne = function(email, password) {

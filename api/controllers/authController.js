@@ -11,7 +11,7 @@ exports.login = function(req, res){
     return Token.login(email, password).then(token=>{
         if (typeof token == "string") return res.status(401).send(token);
         else{
-            if (token) return res.send(token.token);
+            if (token) return res.send(token);
             else return res.status(401).send('No token generate');
         }
     }).catch(err=>{
@@ -32,7 +32,7 @@ exports.signup = function(req, res){
     return Token.signup(alias, email, password).then(token=>{
         if (typeof token == "string") return res.status(401).send(token);
         else{
-            if (token) return res.send(token.token);
+            if (token) return res.send(token);
             else return res.status(401).send('No token generate');
         }
     })
