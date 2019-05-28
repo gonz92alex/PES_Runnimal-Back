@@ -28,4 +28,8 @@ router.use("/users", usersRouter);
 var petsRouter = require('./adminRouters/pets');
 router.use("/pets", petsRouter);
 
+//###############TRAINNINGS###################
+var trainningsRouter = require('./adminRouters/trainnings');
+router.use("/trainnings", trainningsRouter);
+
 module.exports = router;

@@ -7,26 +7,41 @@ exports.getAll = function() {
 	return Trainning.find();
 }
 
-exports.new = function(name, description, steps) {
+exports.new = function(name, description, language) {
 	var trainning = new Trainning({
         name: name,
         description:description,
-        steps: steps
+        language: language
     });
     
     return trainning.save();
 }
 
-exports.edit = function(id, name, description, steps) {
+exports.edit = function(id, name, description, language) {
 	return this.getOneById(id).then(function (trainning){
 		trainning.name = (!name) ? trainning.name : name;
 		trainning.description = (!description) ? trainning.description : description;
-		trainning.steps = (!steps) ? trainning.steps : steps;
+		trainning.language = (!language) ? trainning.language : language;
 
 		return trainning.save();
 	}).catch(function (err){
 
-	})
+	});
+}
+
+exports.removeStep = function(id, step){
+	return this.getOneById(id).then(function (trainning){
+		var index = trainning.steps.indexOf(step);
+        if(index > -1){
+            trainning.steps.splice(index, 1);
+            return trainning.save();
+        } else {
+            return trainning;
+        }
+	}).catch(function (err){
+
+	});
+
 }
 
 exports.getOneById = function(id){
