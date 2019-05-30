@@ -24,7 +24,7 @@ exports.newPet = function(req,res) {
     if (!size) return res.status(400).send("Bad request, no size provided");
     if (!birth) return res.status(400).send("Bad request, no birth provided");
     if (!owner) return res.status(400).send("Bad request, no owner provided");
-
+    if (req.user.email != owner && req.user.role != 'admin') return res.status(403).send("Can't create a pet for other user");
     name = name.trim();
     weight = weight;
     breed = breed.trim();
@@ -97,6 +97,8 @@ exports.editPet = function(req, res) {
     var size = req.body.size;
     var breed = req.body.breed;
     var birth = req.body.birth;
+
+    if (req.user.email != owner && req.user.role != 'admin') return res.status(403).send("Can't edit pet from another user");
     
     Pets.edit(owner, name, weight, description, size, breed, birth)
     .then(function (petEdited){
@@ -112,7 +114,7 @@ exports.deleteOne = function(req,res) {
 
     name = name.trim();
     owner = owner.trim();
-    
+    if (req.user.email != email && req.user.role != 'admin') return res.status(403).send("Can't delete pet from other user");
     Pets.delete(owner, name).then(function(result){
         if (result) return res.status(200).json(result);
         return res.status(204).send("Pet doesn't exists");
