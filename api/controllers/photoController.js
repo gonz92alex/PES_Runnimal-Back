@@ -39,6 +39,7 @@ var upload = multer({storage:storage, limits: {fileSize: 1000000}});
 exports.uploadUser = function (req, res, next) {
     var email = req.params.email;
     if (!email) return res.status(430).send("Bad request, no email provided");
+    if (req.user.email != email && req.user.role != 'admin') return res.status(403).send("Can't upload photo to other user");
     email = email.trim();
     Users.getOne(email).then((user) => {
         if (user) {
@@ -57,7 +58,6 @@ exports.uploadUser = function (req, res, next) {
 }
 
 exports.getUser = function (req, res, next) {
-    console.log('En la foto');
     var email = req.params.email;
     if (!email) return res.status(430).send("Bad request, no email provided");
     email = email.trim();
@@ -82,6 +82,7 @@ exports.uploadPet = function (req, res, next) {
     var owner = req.params.owner;
     if (!name) return res.status(400).send("Bad request, no name provided");
     if (!owner) return res.status(400).send("Bad request, no owner provided");
+    if (req.user.email != owner && req.user.role != 'admin') return res.status(403).send("Can't upload photo to another user pet");
     name = name.trim();
     owner = owner.trim();
     Users.getOne(owner).then(user =>{
