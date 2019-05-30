@@ -140,7 +140,7 @@ exports.uploadTraining = function (req, res, next) {
 
     if (!id) return res.status(400).send("Bad request, no id provided");
 
-    Trainning.findById(id, function (err, trainning) {
+    Trainning.getOneById(id).then(function (trainning){
         if(trainning){
             var uploadPet = upload.single('photo');
                     uploadPet(req, res, function (err) {
@@ -152,7 +152,10 @@ exports.uploadTraining = function (req, res, next) {
         } else {
             return res.status(404).send("Training doesn't exists");    
         }
+    }).catch(function(err){
+        res.send(err);
     });
+
 }
 
 exports.getTraining = function (req, res, next) {
@@ -160,7 +163,7 @@ exports.getTraining = function (req, res, next) {
 
     if (!id) return res.status(400).send("Bad request, no id provided");
 
-    Trainning.findById(id, function (err, trainning) {
+    Trainning.getOneById(id).then(function (trainning){
         if(trainning){
             var files = __dirname+'/../../photos/trainnings/'+ trainning._id+'.png'
             res.sendFile(path.resolve(files), undefined, function (err) {
@@ -172,5 +175,7 @@ exports.getTraining = function (req, res, next) {
         } else {
             return res.status(404).send("Training doesn't exists");    
         }
-    });
+    }).catch(function (err){
+        return res.send(err);
+    })
 }

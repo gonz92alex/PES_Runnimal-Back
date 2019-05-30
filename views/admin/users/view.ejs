@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= user.email %> profile</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta charset="utf-8">
+    <% include ../../partials/headers %>
+  </head>
+  <body>
+    <div class="row">
+        <div class="col-12 p-0">
+            <% include ../../partials/adminNavbar %>
+        </div>
+        <div class="col-12 border rounded px-3 py-4">
+
+            <% if (alert == "userEdited"){ %>
+                <div id="userEditedAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+                  <strong>User changes saved successfully!</strong>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+            <% } else if (alert == "passwordReseted") { %>
+                <div id="userEditedAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+                  <strong>Password reseted successfully!</strong>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+            <% } else if (alert == "newPet") { %>
+                <div id="newPetAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+                  <strong>New pet created!</strong>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+            <% } else if (alert == "deletePet"){ %>
+                <div id="deletePetAlert" class="alert alert-warning alert-dismissible fade show" role="alert">
+                  <strong>Pet successfully deleted!</strong>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+            <% } else if (alert == "ownerAdded"){ %>
+                <div id="ownerAddedAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+                  <strong>New owner added!</strong>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+            <% } else if (alert == "ownerDeleted"){ %>
+                <div id="ownerDeletedAlert" class="alert alert-warning alert-dismissible fade show" role="alert">
+                  <strong>Owner successfully deleted!</strong>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+            <% }%>
+            <h2 class="text-center mt-3 mb-5"><%= user.email %></h2>
+            <div class="row">
+                <div class="col-12 col-sm-4">
+                    <% var imgLink="../../api/photo/users/"+user.email %>
+                    <img src="<%= imgLink %>" class="rounded-circle mx-auto d-block" style="max-width: 250px">
+                </div>
+                <% var editUserLink = "/admin/users/"+user._id; %>
+                <form name="editUser" method="POST" action="editUserLink" class="col-12 col-sm-8">
+                    <div class="form-group mx-auto row">
+                        <label for="id" class="col-12 col-sm-1">ID</label>
+                        <input type="text" name="id" value="<%= user.id %>" id="id" class="form-control col-12 col-sm-4" readonly>
+                        <label for="email" class="col-12 col-sm-1 offset-sm-1">Email</label>
+                        <input type="email" name="email" value="<%= user.email %>" id="email" class="form-control col-12 col-sm-4" readonly>
+                    </div>
+                    <div class="form-group mx-auto row">
+                        <label for="alias" class="col-12 col-sm-1">Alias</label>
+                        <input type="text" name="alias" value="<%= user.alias %>" id="alias" class="form-control col-12 col-sm-4">
+                        <label for="role" class="col-12 col-sm-1 offset-sm-1">Role</label>
+                        <select id="role" class="form-control col-12 col-sm-4" name="role">
+                        <% var roles = ["user", "admin"]; %>
+                        <% for(var i = 0; i < roles.length; i++){
+                            if(user.role == roles[i]){ %>
+                            <option selected><%= roles[i] %></option>
+                            <%  } else {%>
+                                <option><%= roles[i] %></option>
+                            <%  } 
+                        } %> 
+                        </select>
+                    </div>
+                    <div class="form-group mx-auto row">
+                        <label for="points" class="col-12 col-sm-1">Points</label>
+                        <input type="points" value="<%= user.points %>" id="points" class="form-control col-12 col-sm-4" readonly>
+                        <div class="col-12 col-sm-3 offset-sm-1">
+                            <% var resetPasswordLink = "/admin/users/" + user._id + "?action=resetPassword"%>
+                            <a class="btn btn-warning" href="<%= resetPasswordLink %>" role="button">Reset password</a>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-2 offset-sm-1 p-0">
+                        <input type="submit" value="save" class="btn btn-info">         
+                    </div>
+                </form>
+            </div>
+        </div>
+        <% if (pets.length > 0) { %>
+        <div class="col-12 border rounded px-3 py-4 mt-3">
+            <div class="container">
+                <div class="row">
+                    <h1 class="pb-4 col-12 col-sm-4">Pets</h1>
+                    <div class="col-12 col-sm-2 offset-sm-6">
+                        <button type="button" class="btn btn-success float-right mr-3" data-toggle="modal" data-target="#addPetModal">
+                            Add pet
+                        </button>
+                    </div>
+                </div>
+                <% for(var i=0; i < pets.length; i++) { %>
+                <div class="row border rounded my-2">
+                    <div class="col-12">
+                    <div class="row py-3">
+                        <h4 class="col-12 col-sm-4 offset-sm-1"><%= pets[i].name %></h4>
+                        <div class="col-12 col-sm-2 offset-sm-5">
+                            <% var deletePetLink="../../admin/pets/"+pets[i]._id+"?action=delete&userId=" + user._id %>
+                            <a href="<%= deletePetLink %>" class="btn btn-danger float-right mr-3" role="button">Delete</a>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-12 col-sm-3">
+                        <% var imgLink="../../api/photo/pets/"+pets[i].owner.email+"/"+pets[i].name %>
+                        <img src="<%= imgLink %>" class="rounded-circle mx-auto d-block" style="max-width: 250px">
+                    </div>
+                    <form name="<%= pets[i]._id %>" method="POST" action="/admin/pets/edit" class="col-12 col-sm-9">
+                    <div class="container">
+                        <div class="form-group row">
+                            <label for="id" class="col-12 col-sm-2">ID</label>
+                            <input type="text" name="id" value="<%= pets[i]._id %>" id="id" class="form-control col-12 col-sm-4" readonly>
+                            <label for="name" class="col-12 col-sm-2">Name</label>
+                            <input type="text" name="name" value="<%= pets[i].name %>" id="name" class="form-control col-12 col-sm-4">
+                        </div>
+                        <div class="form-group row">
+                            <label for="breed" class="col-12 col-sm-2">Breed</label>
+                            <input type="text" name="breed" value="<%= pets[i].breed %>" id="breed" class="form-control col-12 col-sm-4">
+                            <label for="size" class="col-12 col-sm-2">size</label>
+                            <select id="size" class="form-control col-12 col-sm-4">
+                            <% var sizes = ["Small", "Medium", "Big"]; %>
+                            <% for(var y = 0; y < sizes.length; y++){
+                                if(pets[i].size == sizes[y]){ %>
+                                <option selected><%= sizes[y] %></option>
+                                <%  } else {%>
+                                    <option><%= sizes[y] %></option>
+                                <%  } 
+                            } %> 
+                            </select>
+                        </div>
+                        <div class="form-group row">
+                            <label for="description" class="col-12 col-sm-2">Description</label>
+                            <input type="text" name="description" value="<%= pets[i].description %>" id="description" class="form-control col-12 col-sm-4">
+                            <label for="weight" class="col-12 col-sm-2">Weight</label>
+                            <input type="number" name="weight" value="<%= pets[i].weight %>" id="weight" class="form-control col-12 col-sm-2">
+                        </div>        
+                    </div>
+                    </form>
+                    <div class="col-12">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>ID</th>
+                                    <th>Alias</th>
+                                    <th>Email</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Owner</strong></td>
+                                    <td><%= pets[i].owner._id %></td>
+                                    <td><%= pets[i].owner.alias %></td>
+                                    <td><%= pets[i].owner.email %></td>
+                                    <td></td>
+                                </tr>
+                                <% for(var y=0; y < pets[i].otherOwners.length; y++) { %>
+                                <tr>
+                                    <%if (y == 0) { %>
+                                        <td rowspan="<%= (pets[i].otherOwners.length + 1)%>">
+                                            <strong>Other owners</strong>
+                                        </td>
+                                    <%  } %>
+                                        <td><%= pets[i].otherOwners[y]._id %></td>
+                                        <td><%= pets[i].otherOwners[y].alias %></td>
+                                        <td><%= pets[i].otherOwners[y].email %></td>
+                                        <% var removeOwnerLink = "../../admin/pets/" + pets[i]._id + "/owners?action=remove&userId=" + user._id + "&otherOwnerEmail=" +  pets[i].otherOwners[y].email %>
+                                        <td class="text-center">
+                                            <a href="<%= removeOwnerLink %>" role="button" style="color: black">
+                                                <i class="fas fa-trash fa-lg"></i>
+                                            </a>
+                                        </td>
+                                </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-12">
+                        <% var addOwnerLink = "/admin/pets/" +pets[i]._id + "/owners" %>
+                        <form method="POST" action="<%= addOwnerLink %>">
+                        <div class="form-group row justify-content-center">
+                            <input type="hidden" name="userId" value="<%= user._id%>">
+                            <input type="hidden" name="petId" value="<%= pets[i]._id%>">
+                            <input type="otherOwnerEmail" name="otherOwnerEmail" id="otherOwnerEmail" placeholder="owner@email.com" class="form-control col-12 col-sm-3 offset-sm-1" required>
+                            <div class="col-12 col-md-2">
+                                <input type="submit" value="Add owner" class="btn btn-info mx-2">
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+        </div>
+        <% } else { %>
+        <div class="col-12 px-3 py-4 mt-3">
+            <div class="row justify-content-end">
+                <div class="col-12 col-sm-2">
+                    <button type="button" class="btn btn-success float-right mr-3" data-toggle="modal" data-target="#addPetModal">
+                        Add pet
+                    </button>
+                </div>
+            </div>
+        </div>
+        <% } %>
+    </div>
+  </body>
+</html>
+
+<!-- Modal add pet-->
+<div class="modal fade" id="addPetModal" tabindex="-1" role="dialog" aria-labelledby="addPetModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add pet</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="editUser" method="POST" action="/admin/pets/new" class="container p-0 mt-3">
+            <input type="hidden" name="userId" id="userId" value="<%= user.id %>" >
+            <input type="hidden" name="userEmail" id="userEmail" value="<%= user.email %>" >
+            <div class="form-group mx-auto row">
+                <label for="name" class="col-12 col-sm-3">Name</label>
+                <input type="text" name="name" placeholder="Name" id="name" class="form-control col-12 col-sm-8" required>
+            </div>
+            <div class="form-group mx-auto row">
+                <label for="description" class="col-12 col-sm-3">Description</label>
+                <input type="text" name="description" placeholder="Description" id="description" class="form-control col-12 col-sm-8" required>
+            </div>
+            <div class="form-group mx-auto row">
+                <label for="breed" class="col-12 col-sm-3">Breed</label>
+                <input type="text" name="breed" placeholder="Breed" id="breed" class="form-control col-12 col-sm-8" required>
+            </div>
+            <div class="form-group mx-auto row">
+                <label for="size" class="col-12 col-sm-3">Size</label>
+                <select id="size" name="size" class="form-control col-12 col-sm-8" required>
+                    <option selected>Small</option>
+                    <option>Medium</option>
+                    <option>Big</option>
+                </select>
+            </div>
+            <div class="form-group mx-auto row">
+                <label for="birth" class="col-12 col-sm-3">Birth</label>
+                <input type="number" name="birth" placeholder="2019" id="birth" class="form-control col-12 col-sm-3" required>
+                <label for="weight" class="col-12 col-sm-2 ">Weight</label>
+                <input type="number" name="weight" placeholder="2" class="form-control col-12 col-sm-3 " required>
+            </div>
+            <div class="row justify-content-end">
+                <div class="col-12 col-sm-2">
+                    <input type="submit" value="Add" class="btn btn-success mx-2">         
+                </div>
+                <div class="col-12 col-sm-2 p-0">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+                <div class="col-12 col-sm-1"></div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

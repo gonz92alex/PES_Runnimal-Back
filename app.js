@@ -17,7 +17,8 @@ mongoose.connect(mongoConnect, { useNewUrlParser: true }).catch(function (reason
 
 var  indexRoutes = require('./routes/indexRoutes');
 //var  apiRoutes = require('./api/routes/apiRoutes');
-var  apiRouter = require('./api/routes/apiRouter');
+var apiRouter = require('./api/routes/apiRouter');
+var adminRouter = require('./api/routes/adminRouter');
 
 
 var app = express();
@@ -42,6 +43,7 @@ app.use('/', indexRoutes);
 //apiRoutes(app);
 
 app.use("/api", apiRouter);
+app.use("/admin", adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
