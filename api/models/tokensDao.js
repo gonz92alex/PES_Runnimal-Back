@@ -49,7 +49,7 @@ exports.getOne = function(email, password) {
 
 
 exports.getUser = function(token) {
-    return Tokens.findOne({'token': token}).populate({ path: 'user', select: 'email alias' })
+    return Tokens.findOne({'token': token}).populate({ path: 'user', select: 'email alias role' })
 };
 
 exports.createToken = function(email, password){

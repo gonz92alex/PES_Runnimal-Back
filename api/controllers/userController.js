@@ -51,6 +51,7 @@ exports.editUser = function(req,res){
     var email = req.params.email; 
     var alias = req.body.alias;
     if(!email) return res.status(432).send("Bad request, no email provided");
+    if (req.user.email != email && req.user.role != 'admin') return res.status(403).send("Can't edit other user");
     if (alias){
         alias = alias.trim(); 
         Users.editAlias(email, alias).then(user=>{
@@ -68,6 +69,7 @@ exports.addPointsToUser = function (req,res){
 
     if(!email) return res.status(432).send("Bad request, no email provided");
     if(!points) return res.status(432).send("Bad request, no points provided"); 
+    if (req.user.email != email && req.user.role != 'admin') return res.status(403).send("Can't obtein points from other user");
     console.log("Obtiene los puntos"); 
     if(points){
     console.log("Existen puntos"); 
@@ -85,6 +87,7 @@ exports.removePointsToUser = function (req, res){
 
     if(!email) return res.status(432).send("Bad request, no email provided");
     if(!points) return res.status(432).send("Bad request, no points provided"); 
+    if (req.user.email != email && req.user.role != 'admin') return res.status(403).send("Can't remove points to other user");
     console.log("Obtiene los puntos"); 
     if(points){
     console.log("Existen puntos"); 
@@ -128,6 +131,7 @@ exports.getOneById = function(req, res){
 exports.deleteOne = function(req,res) {
     var email = req.params.email;
     if (!email) return res.status(432).send("Bad request, no email provided");
+    if (req.user.email != email && req.user.role != 'admin') return res.status(403).send("Can't delete other user");
     email = email.trim();
     Users.deleteOne(email).then(result=>{
         return res.json(result);
