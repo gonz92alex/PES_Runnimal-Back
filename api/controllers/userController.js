@@ -118,7 +118,7 @@ exports.getOneById = function(req, res){
     var id = req.params.id;
     if (!id) return res.status(400).send("Bad request, no id provided");
 
-    Users.getOneById(id).then(result => {
+    return Users.getOneById(id).then(result => {
         return res.json(result);
     }).catch(err => {
         return res.status(400).send(err);
