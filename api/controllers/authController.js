@@ -1,7 +1,45 @@
 'use strict';
-var Users = require('../models/users');
-var Token = require('../models/tokensDao')
+var Token = require('../models/tokensDao');
 
+exports.login = function(req, res){
+    var email = req.body.email;
+    var password = req.body.password;
+    if (!email) return res.status(400).send("Bad request, no email provided");
+    if (!password) return res.status(400).send("Bad request, no password provided");
+    email = email.trim();
+    password = password.trim();
+    return Token.login(email, password).then(token=>{
+        if (typeof token == "string") return res.status(401).send(token);
+        else{
+            if (token) return res.send(token.token);
+            else return res.status(401).send('No token generate');
+        }
+    }).catch(err=>{
+        return res.status(500).send(err);
+    });
+}
+
+exports.signup = function(req, res){
+    var alias = req.body.alias;
+    var email = req.body.email;
+    var password = req.body.password;
+    if (!email) return res.status(400).send("Bad request, no email provided");
+    if (!alias) return res.status(400).send("Bad request, no email provided");
+    if (!password) return res.status(400).send("Bad request, no password provided");
+    email = email.trim();
+    password = password.trim();
+    alias = alias.trim();
+    return Token.signup(alias, email, password).then(token=>{
+        if (typeof token == "string") return res.status(401).send(token);
+        else{
+            if (token) return res.send(token.token);
+            else return res.status(401).send('No token generate');
+        }
+    })
+    .catch(err=>{
+        return res.status(500).send(err);
+    });
+}
 
 
 exports.createOrReturn = function(req,res) {

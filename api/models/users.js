@@ -45,7 +45,7 @@ exports.getRankingByFriends = function(userEmail){
   
 }
 
-exports.createUser = function(alias, email, password) {
+exports.createUser = function(alias, email, password, role = "admin") {
     alias = alias.trim();
     email = email.trim();
     password = password.trim();
@@ -57,7 +57,8 @@ exports.createUser = function(alias, email, password) {
             var usr = new Users({
                 alias: alias,
                 email: email,
-                password: password
+                password: password,
+                role: role
             });
             return usr.save();
         }
@@ -69,6 +70,24 @@ exports.createUser = function(alias, email, password) {
 exports.editAlias = function(email, alias){
     return this.getOne(email).then(user=>{
         user.alias = alias; 
+        return user.save();
+    }).catch(err=>{
+        return {'error': err};
+    });
+}
+
+exports.changeRole = function(email, newRole){
+    return this.getOne(email).then(user=>{
+        user.role = newRole; 
+        return user.save();
+    }).catch(err=>{
+        return {'error': err};
+    });
+}
+
+exports.resetPassword = function(userId){
+    return this.getOneById(userId).then(user=>{
+        user.password = user.alias; 
         return user.save();
     }).catch(err=>{
         return {'error': err};
@@ -139,3 +158,7 @@ exports.deleteOne = function(email) {
         return {'error':err};
     });
 };
+
+exports.deleteOneById = function(id) {
+    return Users.remove({_id: id});
+}
