@@ -14,6 +14,19 @@ exports.list = function(req,res){
 
 }
 
+exports.getUserWalksStatistics = function(req,res){
+    var usermail = req.params.email; 
+
+    Walks.getUserWalksStatistics(usermail).then(statistics => {
+        return res.status(200).json(statistics); 
+    }).catch(err => {
+        return res.status(500).json({'error':err}); 
+    });
+
+
+   
+}
+
 exports.getwalk = function(req,res){
     var id = req.params.id; 
     Walks.getOne(id).then(walk => {
@@ -73,6 +86,7 @@ exports.createWalk = function (req,res){
 
     return Walks.createWalk(usermail,title,duration,distance, created,beginDate,endDate,walkpoints)
             .then(walk => {
+        Walks.createOrUpdateUserWalksStatistics(usermail); 
         return res.status(200).json(walk); 
     }).catch(function(err){
         return res.status(400).json({'error':err});

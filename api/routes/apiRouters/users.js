@@ -24,8 +24,7 @@ usersRouter.get("/:email/friends", friends.userFriends);
 usersRouter.get("/:email/friendRequests", friends.userFriendRequests);
 usersRouter.get("/:email/ranking", users.filteredRanking);
 usersRouter.get("/:email/walks",walks.getUserWalks); 
-//usersRouter.get("/:email/walks/statistics",walks.getUserWalksStatistics); 
-
+usersRouter.get("/:email/walks/statistics",walks.getUserWalksStatistics); 
 usersRouter.get("/id/:id", users.getOneById);
  
 module.exports = usersRouter;
