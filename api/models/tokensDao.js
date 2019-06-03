@@ -44,7 +44,7 @@ exports.login = function(email, password){
         if (usr){
             return bcrypt.compare(password, usr.password).then(res=>{
                 if (res){
-                    return Tokens.findOne({'user': ObjectId(usr._id)}).then(tkn=>{
+                    return Tokens.findOne({'user': ObjectId(usr._id)}).populate({ path: 'user', select: 'email alias role' }).then(tkn=>{
                         if (tkn) return tkn;
                         else return 'Token doesn\'t found'
                     }).catch(errT=>{
