@@ -32,9 +32,7 @@ usersRouter.get("/id/:id", users.getOneById);
 //Rutas de Entrenamientos 
 
 usersRouter.post("/:email/trainnings/:trainningid",users.completeTrainning); 
-usersRouter.get("/:email/trainnings/",users.getCompletedTrainnings);
-usersRouter.get("/:email/statistics/",users.getCompletedTrainnings);
-
+usersRouter.get("/:email/trainnings",users.getCompletedTrainnings);
 
 
 

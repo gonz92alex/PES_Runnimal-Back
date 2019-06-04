@@ -46,6 +46,17 @@ exports.getRankingByFriends = function(userEmail){
   
 }
 
+exports.numCompletedTrainningsByUser = function(usermail){
+   return this.completedTrainningsByUser(usermail).then(ctraings => {
+        var totaltraings = 0;    
+    ctraings.forEach(function(traing){
+        totaltraings += traing.timescompleted; 
+        }); 
+        return totaltraings; 
+    });
+}
+
+
 exports.completetrainning = function(email, trainningid){
     return this.getOne(email).then(user => {   
         return user._id; 
@@ -73,10 +84,7 @@ exports.completedTrainningsByUser = function (email){
    return this.getOne(email).then(user =>{
     return CompletedTrainnings.find({user: user._id}); 
     }); 
-   
 }
-
-
 
 exports.createUser = function(alias, email, password, role = "admin") {
     alias = alias.trim();
