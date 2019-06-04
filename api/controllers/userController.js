@@ -135,3 +135,14 @@ exports.deleteOne = function(req,res) {
         return res.status(400).send(err);
     });
 };
+
+exports.completeTrainning = function (req, res){
+    var email = req.params.email; 
+    var trainid = req.params.trainningid;    
+    return Users.completetrainning(email, trainid).then(ctraing => {
+        if(!ctraing) return res.status(500).send("Error, no se ha podido completar el entrenamiento."); 
+        return res.status(200).json(ctraing); 
+    }).catch(err => {
+        return res.status(500).send({'error':err}); 
+    }); 
+}

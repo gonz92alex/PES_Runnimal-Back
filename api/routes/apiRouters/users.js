@@ -26,5 +26,6 @@ usersRouter.get("/:email/ranking", users.filteredRanking);
 usersRouter.get("/:email/walks",walks.getUserWalks); 
 usersRouter.get("/:email/walks/statistics",walks.getUserWalksStatistics); 
 usersRouter.get("/id/:id", users.getOneById);
- 
+usersRouter.post("/:email/trainnings/:trainningid",users.completeTrainning); 
+
 module.exports = usersRouter;

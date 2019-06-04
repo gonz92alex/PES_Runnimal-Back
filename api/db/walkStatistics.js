@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 
-
 var walksStatistics = new mongoose.Schema({
     user: {type: mongoose.Schema.Types.ObjectId, ref: 'users'},
     walksNumber: {type: Number},

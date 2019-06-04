@@ -1,6 +1,7 @@
 'use strict';
 var Users = require('../db/users');
 var Friends = require('./usersRelationships'); 
+var CompletedTrainnings = require('../db/completedtrainnings'); 
 
 exports.getAll = function() {
     return Users.find();
@@ -44,6 +45,35 @@ exports.getRankingByFriends = function(userEmail){
 
   
 }
+
+exports.completetrainning = function(email, trainningid){
+    return this.getOne(email).then(user => {   
+        return user._id; 
+    }).then(userid => {
+
+    return CompletedTrainnings.findOne({user: userid, trainning: trainningid}).then(completedtrainning => {
+            if(completedtrainning){
+                this.addPoints(email, 10); 
+                completedtrainning.timescompleted++; 
+                return completedtrainning.save(); 
+            } else {
+                this.addPoints(email, 50); 
+                var ctraing = new CompletedTrainnings({
+                    user: userid, 
+                    trainning: trainningid,
+                    timescompleted: 1
+                        });
+                return ctraing.save(); 
+                }
+        });
+    }); 
+}
+
+exports.completedTrainningsByUser = function (email){
+    return CompletedTrainnings.find({user: userid}); 
+}
+
+
 
 exports.createUser = function(alias, email, password, role = "admin") {
     alias = alias.trim();
