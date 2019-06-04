@@ -42,7 +42,7 @@ exports.updateUserWalkStatistics = function (useremail, totaldistance, totaldura
 exports.createOrUpdateUserWalksStatistics = function(usermail){
     return this.getUserWalksStatistics(usermail).then(statistics => {        
         if(statistics){
-            //TODO Actualizo las estadísticas
+            //Actualizo las estadísticas
             return this.getWalksByUserMail(usermail).then(walks => {
                 var walksnumber = 0; 
                 var totalduration = 0;
@@ -84,8 +84,6 @@ exports.createOrUpdateUserWalksStatistics = function(usermail){
 
 }
 
-
-
 exports.getOne = function(id){
     return Walks.findById(id); 
 };
@@ -109,26 +107,22 @@ exports.deleteWalk = function(id){
 exports.createWalk = function(useremail,title, duration,distance, 
     created,begindate,
     enddate, walkpoints) {
-
-useremail = useremail.trim(); 
-return Users.getOne(useremail).then(function (user){	
-    if(!user) throw "Error, no existe el usuario";
-    var newWalk = new Walks({
-    user: user._id,
-    title: title,
-    duration: duration,
-    start: begindate,
-    distance: distance, 
-    end: enddate,
-    route: walkpoints
-})
-console.log("Un nuevo paseo va a ser creado");
-console.log(newWalk);
-return newWalk.save(); 
-
-});
-
-
+    useremail = useremail.trim(); 
+    return Users.getOne(useremail).then(function (user){	
+        if(!user) throw "Error, no existe el usuario";
+        var newWalk = new Walks({
+        user: user._id,
+        title: title,
+        duration: duration,
+        start: begindate,
+        distance: distance, 
+        end: enddate,
+        route: walkpoints
+    })
+    console.log("Un nuevo paseo va a ser creado");
+    console.log(newWalk);
+    return newWalk.save(); 
+    });
 };
 
 

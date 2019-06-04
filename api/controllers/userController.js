@@ -135,3 +135,36 @@ exports.deleteOne = function(req,res) {
         return res.status(400).send(err);
     });
 };
+
+exports.completeTrainning = function (req, res){
+    var email = req.params.email; 
+    var trainid = req.params.trainningid;    
+    return Users.completetrainning(email, trainid).then(ctraing => {
+        if(!ctraing) return res.status(500).send("Error, no se ha podido completar el entrenamiento."); 
+        return res.status(200).json(ctraing); 
+    }).catch(err => {
+        return res.status(500).send({'error':err}); 
+    }); 
+}
+
+exports.getCompletedTrainnings = function (req, res ){
+    var email = req.params.email; 
+    var action = req.query.action; 
+
+        if(action == "statistics"){
+            return Users.numCompletedTrainningsByUser(email).then(num =>{
+                return res.status(200).json({'user':email,'completedTrainnings':num})
+            })
+        } else {
+     
+
+
+        return Users.completedTrainningsByUser(email).then(ctraings => {
+        if(ctraings.length <= 0) return res.status(400).send("El usuario " + 
+                                                            email + " no ha completado ningún entrenamiento"); 
+        return res.status(200).json(ctraings); 
+    }).catch(err => {
+        return res.status(500).send({'error':err}); 
+    })
+}
+}
