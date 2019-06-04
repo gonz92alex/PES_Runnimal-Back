@@ -3,12 +3,13 @@ var middleware = require('../middleware');
 var bodyParser = require('body-parser');
 var router = express.Router();
 
+
 router.use(bodyParser.urlencoded({extended: true}));
 router.use(bodyParser.json());
 
 //##################AUTH###################
-var loginRouter = require('./apiRouters/login');
-router.use("/login", loginRouter);
+var loginRouter = require('./apiRouters/auth');
+router.use("/auth", loginRouter);
 
 //#############PHOTO################
 var photoRouter = require('./apiRouters/photo');

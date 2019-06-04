@@ -2,6 +2,7 @@ var TokenDao = require('./models/tokensDao');
 
 function loginMiddleware(req, res, next){
     console.log('En el middleware');
+    console.log(req.headers.token); 
     var token = req.headers.token;
     console.log(req.path)
     if (!token) return res.status(401).send('No token provided');

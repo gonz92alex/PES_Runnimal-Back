@@ -11,4 +11,5 @@ var UsersModel = new mongoose.Schema({
     points: Number
 });
 
+
 module.exports = mongoose.model('users',UsersModel);
