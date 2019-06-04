@@ -70,7 +70,10 @@ exports.completetrainning = function(email, trainningid){
 }
 
 exports.completedTrainningsByUser = function (email){
-    return CompletedTrainnings.find({user: userid}); 
+   return this.getOne(email).then(user =>{
+    return CompletedTrainnings.find({user: user._id}); 
+    }); 
+   
 }
 
 

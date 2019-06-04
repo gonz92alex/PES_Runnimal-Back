@@ -146,3 +146,14 @@ exports.completeTrainning = function (req, res){
         return res.status(500).send({'error':err}); 
     }); 
 }
+
+exports.getCompletedTrainnings = function (req, res ){
+    var email = req.params.email; 
+    return Users.completedTrainningsByUser(email).then(ctraings => {
+        if(ctraings.length <= 0) return res.status(400).send("El usuario " + 
+                                                            email + " no ha completado ningún entrenamiento"); 
+        return res.status(200).json(ctraings); 
+    }).catch(err => {
+        return res.status(500).send({'error':err}); 
+    })
+}
