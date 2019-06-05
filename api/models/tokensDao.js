@@ -112,7 +112,7 @@ exports.getOne = function(email, password) {
 
 
 exports.getUser = function(token) {
-    return Tokens.findOne({'token': token, 'duration': {'$lte': new Date().getMilliseconds()}}).populate({ path: 'user', select: 'email alias' })
+    return Tokens.findOne({'token': token}).populate({ path: 'user', select: 'email alias' })
 };
 
 exports.createToken = function(email, password){
