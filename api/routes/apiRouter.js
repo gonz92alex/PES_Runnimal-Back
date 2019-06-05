@@ -16,7 +16,7 @@ var photoRouter = require('./apiRouters/photo');
 router.use("/photo", photoRouter);
 
 //Middleware de login 
-router.use(middleware);
+//router.use(middleware);
 
 //##################USERS#####################
 var usersRouter = require('./apiRouters/users');
