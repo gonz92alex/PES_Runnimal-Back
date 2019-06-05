@@ -1,6 +1,7 @@
 var express = require("express");
 var bodyParser = require('body-parser');
 var session = require("express-session");
+var session_middleware = require("./sessionMiddleware");
 
 var router = express.Router();
 
@@ -14,12 +15,15 @@ router.use(session({
 
 var auth = require("../controllers/admin/authController");
 
-router.route("/login")
-	.get(auth.login)
-	.post(auth.loginError);
+router.route("/")
+	.get(auth.renderLogin)
+	.post(auth.login);
 
-router.post("/processLogin", auth.processLogin);
+router.use(session_middleware);
 
+router.route("/logout")
+	.get(auth.logout);
+	
 //##################USERS#####################
 var usersRouter = require('./adminRouters/users');
 router.use("/users", usersRouter);
