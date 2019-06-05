@@ -7,12 +7,23 @@ steps: []*/
 var Trainning = require('../models/trainning');
 
 exports.list = function(req,res) {
-    Trainning.getAll().then(function (trainnings){
-        if (trainnings.length) return res.status(200).json(trainnings);
-        else return res.status(204).send("No trainnings");
-    }).catch(function (err){
-        return res.status(404).send(err);
-    });
+    var language = req.query.lang;
+
+    if(language == null){
+        Trainning.getAll().then(function (trainnings){
+            if (trainnings.length) return res.status(200).json(trainnings);
+            else return res.status(204).send("No trainnings");
+        }).catch(function (err){
+            return res.status(404).send(err);
+        });
+    } else {
+        Trainning.getAllByLanguage(language).then(function(trainnings){
+            if (trainnings.length) return res.status(200).json(trainnings);
+            else return res.status(204).send("No trainnings");
+        }).catch(function (err){
+            return res.status(404).send(err);
+        });
+    }
 };
 
 exports.getOneById = function(req, res){

@@ -8,7 +8,7 @@ trainningsRouter.route("/")
 	.get(trainnings.list)
 	.post(trainnings.new);
 
-trainningsRouter.route("/:id/")
+trainningsRouter.route("/:id")
 	.get(trainnings.view)
 	.post(trainnings.edit);
 

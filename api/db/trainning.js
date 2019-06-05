@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var languages = ["en", "es", "ca"];
+var languages = ["EN", "ES", "CA"];
 
 var trainning_schema = new mongoose.Schema({
 	name: String,

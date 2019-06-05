@@ -48,7 +48,6 @@ exports.new = function(req, res){
 }
 
 exports.edit = function(req, res){
-	console.log("editing trainning");
 	var id = req.body.id;
 	var name = req.body.name;
 	var description = req.body.description;
@@ -62,7 +61,14 @@ exports.edit = function(req, res){
 }
 
 exports.addStep = function(req, res){
-	return res.send("hola")
+	var id = req.params.id;
+	var step = req.body.step;
+
+	Trainnings.addStep(id, step).then(function (trainning){
+		return res.redirect('/admin/trainnings/' + id);
+	}).catch(function(err){
+		return res.send(err);
+	})
 }
 
 exports.actionSteps = function(req, res){
@@ -71,8 +77,8 @@ exports.actionSteps = function(req, res){
 	var step = req.query.step;
 
 	Trainnings.removeStep(id, step).then(function (trainning){
-		return res.redirect('/admin/trainnings/' + id + "?alert=stepRemoved")
+		return res.redirect('/admin/trainnings/' + id + "?alert=stepRemoved");
 	}).catch(function(err){
 		return res.send(err);
-	})
+	});
 }
