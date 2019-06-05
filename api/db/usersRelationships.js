@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var status = ["friend", "pending", "denied"];
+var status = ["FRIEND", "PENDING", "DENIED"];
 
 var friends_schema = new mongoose.Schema({
 	user1: {type: mongoose.Schema.Types.ObjectId, ref: 'users'},

@@ -18,7 +18,7 @@ exports.newFriendRequest = function(user1email, user2email){
 						user1: user1._id,
 						user2: user2._id,
 						date: new Date,
-						type: "pending"
+						type: "PENDING"
 					});
 					return usr.save();
 				} else {
@@ -41,8 +41,8 @@ exports.delete = function(id){
 
 exports.acceptFriendRequest = function(id){
 	return UsersRelationships.findById(id).then(function(userRelationship){
-		if (userRelationship.type == "pending"){
-			userRelationship.type = "friend";
+		if (userRelationship.type == "PENDING"){
+			userRelationship.type = "FRIEND";
 			return userRelationship.save();
 		} else {
 			return userRelationship;
@@ -54,8 +54,8 @@ exports.acceptFriendRequest = function(id){
 
 exports.denyFriendRequest = function(id){
 	return UsersRelationships.findById(id).then(function(userRelationship){
-		if (userRelationship.type == "pending"){
-			userRelationship.type = "denied";
+		if (userRelationship.type == "PENDING"){
+			userRelationship.type = "DENIED";
 			return userRelationship.save();
 		} else {
 			return userRelationship;
@@ -68,8 +68,8 @@ exports.denyFriendRequest = function(id){
 exports.userFriends = function(email){
 	return Users.getOne(email).then(function(user){
 		return UsersRelationships.find({ $or: [
-				{user1: ObjectId(user._id), type: "friend"},
-				{user2: ObjectId(user._id), type: "friend"}
+				{user1: ObjectId(user._id), type: "FRIEND"},
+				{user2: ObjectId(user._id), type: "FRIEND"}
 			]})
 			.populate('user1')
 			.populate('user2');
@@ -97,7 +97,7 @@ exports.areFriends = function(email1, email2){
 
 exports.userFriendRequests = function(email){
 	return Users.getOne(email).then(function(user){
-		return UsersRelationships.find({user2 : ObjectId(user._id), type: "pending"}, '-user2')
+		return UsersRelationships.find({user2 : ObjectId(user._id), type: "PENDING"}, '-user2')
 			.populate('user1');
 	}).catch(function(err){
 
