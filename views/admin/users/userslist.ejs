@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Users</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta charset="utf-8">
+    
+    <% include ../../partials/headers %>
+  </head>
+  <body>
+    <div class="row">
+        <div class="col-12 p-0">
+            <% include ../../partials/adminNavbar %>
+        </div>
+        <div class="col-12 border rounded px-5 py-4">
+            <div class="row">
+                <div class="col-12">
+                <% if (action == "newUser") { %>
+                    <div id="newUserAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+                      <strong>New user created!</strong>
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                <% } else if (action == "deleteUser"){ %>
+                    <div id="deleteUserAlert" class="alert alert-warning alert-dismissible fade show" role="alert">
+                      <strong>User successfully deleted!</strong>
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                <% } %>
+                </div>
+            </div>
+            <div class="row justify-content-between align-items-center">
+                <h1 class="col-12 col-sm-4 pb-4">users</h1>
+                <div class="col-12 col-sm-4">
+                    <button type="button" class="btn btn-success float-right mr-3" data-toggle="modal" data-target="#newUser">
+                        New user
+                    </button>
+                </div>
+            </div>
+            <table class="table table-hover">
+            	<thead>
+            		<tr>
+            			<th>ID</th>
+            			<th>Alias</th>
+            			<th>Email</th>
+            			<th>Role</th>
+            			<th></th>
+            		</tr>
+            	</thead>
+            	<tbody>
+            		<% for(var i=0; i < users.length; i++) { %>
+            		<tr>
+            			<td><%= users[i]._id %></td>
+            			<td><%= users[i].alias %></td>
+            			<td><%= users[i].email %></td>
+            			<td><%= users[i].role %></td>
+            			<td class="mr-2" style="text-align: right;">
+            			    <% var editLink = "../../admin/users/"+users[i]._id %>
+            				<a href="<%= editLink %>" role="button" style="color: black">
+            					<i class="fas fa-edit fa-lg"></i>
+            				</a>
+                            <% var deleteLink = "/admin/users/"+users[i]._id+"?action=delete" %>
+                            <a href="<%= deleteLink %>" role="button" style="color: black">
+                                <i class="fas fa-trash fa-lg mr-2"></i>
+                            </a>
+            			</td>
+            		</tr>
+            		<% } %>
+            	</tbody>
+            </table>
+        </div>
+    </div>
+  </body>
+</html>
+<!-- Modal -->
+<div class="modal fade" id="newUser" tabindex="-1" role="dialog" aria-labelledby="newUserTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">New user</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="editUser" method="POST" action="/admin/users/new" class="container p-0 mt-3">
+            <div class="form-group mx-auto row">
+                <label for="email" class="col-12 col-sm-3 offset-sm-1">Email</label>
+                <input type="email" name="email" placeholder="Email" id="email" class="form-control col-12 col-sm-7" required>
+            </div>
+            <div class="form-group mx-auto row">
+                <label for="alias" class="col-12 col-sm-3 offset-sm-1">Alias</label>
+                <input type="text" name="alias" placeholder="Alias" id="alias" class="form-control col-12 col-sm-7" required>
+            </div>
+            <div class="form-group mx-auto row">
+                <label for="password" class="col-12 col-sm-3 offset-sm-1">Password</label>
+                <input type="password" name="password" placeholder="Password" id="password" class="form-control col-12 col-sm-7" required>
+            </div>
+            <div class="form-group mx-auto row">
+                <label for="role" class="col-12 col-sm-3 offset-sm-1">Role</label>
+                <select id="role" name="role" class="form-control col-12 col-sm-7" required>
+                    <option selected>user</option>
+                    <option>admin</option>
+                </select>
+            </div>
+            <div class="row justify-content-end">
+                <div class="col-12 col-sm-2">
+                    <input type="submit" value="Add" class="btn btn-success mx-2">         
+                </div>
+                <div class="col-12 col-sm-2 p-0">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+                <div class="col-12 col-sm-1"></div>
+            </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>

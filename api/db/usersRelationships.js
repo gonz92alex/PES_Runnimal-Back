@@ -1,12 +1,12 @@
 var mongoose = require('mongoose');
 
-var types = ["friend", "pending", "denied"];
+var status = ["FRIEND", "PENDING", "DENIED"];
 
 var friends_schema = new mongoose.Schema({
-	userId1: {type: mongoose.Schema.Types.ObjectId, ref: 'Users'},
-	userId2: {type: mongoose.Schema.Types.ObjectId, ref: 'Users'},
+	user1: {type: mongoose.Schema.Types.ObjectId, ref: 'users'},
+	user2: {type: mongoose.Schema.Types.ObjectId, ref: 'users'},
 	date: String,
-	type: {type: String, enum: {values: types, message: "type wrong"}}
+	type: {type: String, enum: {values: status, message: "status wrong"}}
 });
 
 var UsersRelationships = mongoose.model("UsersRelationships", friends_schema);

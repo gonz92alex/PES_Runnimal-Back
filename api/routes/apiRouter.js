@@ -1,11 +1,22 @@
 var express = require("express");
-
+var middleware = require('../middleware');
 var bodyParser = require('body-parser');
-
 var router = express.Router();
+
 
 router.use(bodyParser.urlencoded({extended: true}));
 router.use(bodyParser.json());
+
+//##################AUTH###################
+var loginRouter = require('./apiRouters/auth');
+router.use("/auth", loginRouter);
+
+//#############PHOTO################
+var photoRouter = require('./apiRouters/photo');
+router.use("/photo", photoRouter);
+
+//Middleware de login 
+router.use(middleware);
 
 //##################USERS#####################
 var usersRouter = require('./apiRouters/users');
@@ -27,19 +38,16 @@ router.use("/points", pointsRouter);
 var friendsRouter = require('./apiRouters/friends');
 router.use('/friends', friendsRouter);
 
-//#############FRIEND_REQUESTS################
-var photoRouter = require('./apiRouters/photo');
-router.use("/photo", photoRouter);
-
 //##################RANKING###################
 
 var rankingRouter = require('./apiRouters/ranking');
 router.use("/ranking", rankingRouter);
 
-//##################RANKING###################
 
-var loginRouter = require('./apiRouters/login');
-router.use("/login", loginRouter);
+//##################WALKS###################
+
+var walksRouter = require('./apiRouters/walks'); 
+router.use("/walks", walksRouter); 
 
 //##################EXPORTS###################
 

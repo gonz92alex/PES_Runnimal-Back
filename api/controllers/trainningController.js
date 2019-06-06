@@ -4,76 +4,79 @@ steps: []*/
 
 'use strict';
 
-var mongoose = require('mongoose').set('debug',true);
-var Trainning = require('../models/Trainning');
-var ObjectId = require('mongodb').ObjectID;
+var Trainning = require('../models/trainning');
 
 exports.list = function(req,res) {
-    Trainning.find().exec((err,Trainning) => {
-        if (err)
-            res.send(err);
-        else
-            res.json(Trainning);
-    });
+    var language = req.query.lang;
+
+    if(language == null){
+        Trainning.getAll().then(function (trainnings){
+            if (trainnings.length) return res.status(200).json(trainnings);
+            else return res.status(204).send("No trainnings");
+        }).catch(function (err){
+            return res.status(404).send(err);
+        });
+    } else {
+        Trainning.getAllByLanguage(language).then(function(trainnings){
+            if (trainnings.length) return res.status(200).json(trainnings);
+            else return res.status(204).send("No trainnings");
+        }).catch(function (err){
+            return res.status(404).send(err);
+        });
+    }
 };
 
-exports.newTrainning = function(req,res) {
+exports.getOneById = function(req, res){
+    var id = req.params.id;
+
+    Trainning.getOneById(id).then(function (trainning){
+        if (trainning) return res.status(200).json(trainning);
+        else return res.status(204).send("Trainning doesn't exist")
+    }).catch(function (err){
+        return res.status(404).send(err);
+    })
+}
+
+exports.new = function(req, res){
     var name = req.body.name;
     var description = req.body.description;
     var steps = req.body.steps;
 
     if (!name) return res.status(400).send("Bad request, no name provided");
+    if (!description) return res.status(400).send("Bad request, no description provided");
+    if (!steps) return res.status(400).send("Bad request, no steps provided");
 
     name = name.trim();
     description = description.trim();
-    
-    Trainning.findOne({'name': name})
-        .exec((err, result) => {
-        if (result) {
-            return res.json(result);
-        }
-        else {
-            var trainning = new Trainning({
-                name: name,
-                description:description,
-                steps: steps
-            });
-            trainning.save(function(err) {
-                return res.json(trainning);
-            });
-        }
-    });   
-};
 
-exports.getOne = function(req,res) {
+    Trainning.new(name, description, steps).then(function (trainning){
+        return res.status(201).json(trainning);
+    }).catch(function (err){
+        return res.status(404).send(err);
+    });
+}
+
+exports.edit = function(req, res){
     var id = req.params.id;
 
-    if (!id) return res.status(400).send("Bad request, no id provided");
+    var name = req.body.name;
+    var description = req.body.description;
+    var steps = req.body.steps;
 
-    Trainning.findById(id, function (err, trainning) {
-        if(trainning){
-            return res.json(trainning);
-        } else {
-            return res.json(err);
-        }
-    });
-    
-};
+    Trainning.edit(id, name, description, steps).then(function (trainning){
+        return res.status(201).json(trainning);
+    }).catch(function (err){
+        return res.status(404).send(err);
+    })
+}
 
-exports.deleteOne = function(req,res) {
+exports.delete = function(req, res){
     var id = req.params.id;
 
-    if (!id) return res.status(400).send("Bad request, no id provided");
-
-    Trainning.findById(id, function (err, trainning) {
-        if(trainning){
-            Trainning.remove({_id:ObjectId(trainning._id)}, function(err){
-                if (!err) res.send('{"result":"OK"}');
-                else res.send('{"result":"KO"}');
-            });
-        } else {
-            if (err) res.json(err);
-            else res.status(400).send("Trainning doesn't exist");
-        }
-    });
-};
+    Trainning.delete(id).then(function (trainning){
+        if(trainning) return res.status(200).json(trainning);
+        return res.status(204).send("Trainning doesn't exists");
+    }).catch(function (err){
+        return res.status(404).send(err);
+    })
+}

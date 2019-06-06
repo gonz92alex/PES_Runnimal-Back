@@ -9,16 +9,13 @@ naciemiento: Number*/
 
 var Pets = require('../db/pets');
 var Users = require('./users');
-var Owners = require('./owners');
 var ObjectId = require('mongodb').ObjectID;
-
 
 exports.new = function(ownerEmail, name, weight, breed, birth, description, size) {
     name = name.trim();
     description = description.trim();
 
-    return Users.getOne(ownerEmail).then(function (user){
-    	
+    return Users.getOne(ownerEmail).then(function (user){	
         var pet = new Pets({
             name: name,
             weight:weight,
@@ -45,7 +42,7 @@ exports.edit = function (owner, name, weight, description, size, breed, birth) {
 
         return pet.save();
 	}).catch(function (err) {
-		return {'error': err};
+
 	});
 };
 
@@ -91,6 +88,10 @@ exports.delete = function(ownerEmail, petName){
 
     });
 };
+
+exports.deleteById = function(petId) {
+    return Pets.remove({_id: ObjectId(petId)});
+}
 
 exports.getAll = function() {
 	return Pets.find().populate({ path: 'owner', select: 'email alias' })

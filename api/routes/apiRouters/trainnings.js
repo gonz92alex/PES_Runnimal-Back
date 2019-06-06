@@ -6,10 +6,11 @@ var trainningsRouter = express.Router();
 
 trainningsRouter.route("/")
   .get(trainning.list)
-  .post(trainning.newTrainning);
+  .post(trainning.new);
 
 trainningsRouter.route("/:id")
-  .get(trainning.getOne)
-  .delete(trainning.deleteOne);
+  .get(trainning.getOneById)
+  .put(trainning.edit)
+  .delete(trainning.delete);
 
 module.exports = trainningsRouter;

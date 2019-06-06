@@ -1,6 +1,7 @@
 'use strict';
 var Users = require('../db/users');
 var Friends = require('./usersRelationships'); 
+var CompletedTrainnings = require('../db/completedtrainnings'); 
 
 exports.getAll = function() {
     return Users.find();
@@ -20,8 +21,11 @@ exports.getRankingByFriends = function(userEmail){
      return  Friends.userFriends(userEmail).then(function(friends){
         var idSet = [];
         friends.forEach(function(friend){           
-            var userId1 = friend.userId1; 
-            var userId2 = friend.userId2;
+         
+            var userId1 = friend.user1; 
+            var userId2 = friend.user2;
+            console.log(userId1);
+            console.log(userId2);
             idSet.push(userId1);
             idSet.push(userId2);        
         });
@@ -42,7 +46,47 @@ exports.getRankingByFriends = function(userEmail){
   
 }
 
-exports.createUser = function(alias, email, password) {
+exports.numCompletedTrainningsByUser = function(usermail){
+   return this.completedTrainningsByUser(usermail).then(ctraings => {
+        var totaltraings = 0;    
+    ctraings.forEach(function(traing){
+        totaltraings += traing.timescompleted; 
+        }); 
+        return totaltraings; 
+    });
+}
+
+
+exports.completetrainning = function(email, trainningid){
+    return this.getOne(email).then(user => {   
+        return user._id; 
+    }).then(userid => {
+
+    return CompletedTrainnings.findOne({user: userid, trainning: trainningid}).then(completedtrainning => {
+            if(completedtrainning){
+                this.addPoints(email, 10); 
+                completedtrainning.timescompleted++; 
+                return completedtrainning.save(); 
+            } else {
+                this.addPoints(email, 50); 
+                var ctraing = new CompletedTrainnings({
+                    user: userid, 
+                    trainning: trainningid,
+                    timescompleted: 1
+                        });
+                return ctraing.save(); 
+                }
+        });
+    }); 
+}
+
+exports.completedTrainningsByUser = function (email){
+   return this.getOne(email).then(user =>{
+    return CompletedTrainnings.find({user: user._id}); 
+    }); 
+}
+
+exports.createUser = function(alias, email, password, role = "admin") {
     alias = alias.trim();
     email = email.trim();
     password = password.trim();
@@ -54,7 +98,8 @@ exports.createUser = function(alias, email, password) {
             var usr = new Users({
                 alias: alias,
                 email: email,
-                password: password
+                password: password,
+                role: role
             });
             return usr.save();
         }
@@ -66,6 +111,24 @@ exports.createUser = function(alias, email, password) {
 exports.editAlias = function(email, alias){
     return this.getOne(email).then(user=>{
         user.alias = alias; 
+        return user.save();
+    }).catch(err=>{
+        return {'error': err};
+    });
+}
+
+exports.changeRole = function(email, newRole){
+    return this.getOne(email).then(user=>{
+        user.role = newRole; 
+        return user.save();
+    }).catch(err=>{
+        return {'error': err};
+    });
+}
+
+exports.resetPassword = function(userId){
+    return this.getOneById(userId).then(user=>{
+        user.password = user.alias; 
         return user.save();
     }).catch(err=>{
         return {'error': err};
@@ -136,3 +199,7 @@ exports.deleteOne = function(email) {
         return {'error':err};
     });
 };
+
+exports.deleteOneById = function(id) {
+    return Users.remove({_id: id});
+}
