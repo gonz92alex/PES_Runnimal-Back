@@ -7,6 +7,10 @@ exports.getAll = function() {
 	return Trainning.find();
 }
 
+exports.getAllByLanguage = function(language){
+	return Trainning.find({language : language});
+}
+
 exports.new = function(name, description, language) {
 	var trainning = new Trainning({
         name: name,
@@ -29,6 +33,13 @@ exports.edit = function(id, name, description, language) {
 	});
 }
 
+exports.addStep = function(id, newStep){
+	return this.getOneById(id).then(function (trainning){
+		trainning.steps.push(newStep);
+		return trainning.save();
+	})
+}
+
 exports.removeStep = function(id, step){
 	return this.getOneById(id).then(function (trainning){
 		var index = trainning.steps.indexOf(step);
@@ -41,7 +52,6 @@ exports.removeStep = function(id, step){
 	}).catch(function (err){
 
 	});
-
 }
 
 exports.getOneById = function(id){

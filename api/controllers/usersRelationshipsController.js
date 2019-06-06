@@ -23,8 +23,7 @@ exports.userFriends = function(req, res){
 	var email = req.params.email;
 
 	UsersRelationships.userFriends(email).then(function (requests){
-		if(requests.length) return res.status(200).json(requests);
-		else return res.status(204).json(requests);
+		return res.status(200).json(requests);
 	}).catch(function (err){
 		return res.send(err);
 	})

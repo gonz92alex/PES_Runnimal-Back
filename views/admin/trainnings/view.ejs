@@ -40,7 +40,7 @@
                         <input type="text" name="id" value="<%= trainning._id %>" id="id" class="form-control col-12 col-sm-4" readonly>
                         <label for="language" class="col-12 col-sm-2 offset-sm-1">Language</label>
                         <select id="language" class="form-control col-12 col-sm-2" name="language">
-                        <% var languages = ["en", "es", "ca"]; %>
+                        <% var languages = ["EN", "ES", "CA"]; %>
                         <% for(var i = 0; i < languages.length; i++){
                             if(trainning.language == languages[i]){ %>
                                 <option selected><%= languages[i] %></option>
@@ -96,7 +96,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <form name="addStep" method="POST" action="/admin/trainnings/steps" class="container p-0 mt-3">
+        <% var newStepTrainningLink = "/admin/trainnings/"+trainning._id+"/steps"; %>
+        <form name="addStep" method="POST" action="<%= newStepTrainningLink %>" class="container p-0 mt-3">
             <input type="hidden" name="userId" id="userId" value="<%= trainning.id %>" >
             <div class="form-group mx-auto row">
                 <input type="text" name="step" id="step" placeholder="New step" class="form-control col-12" required>
@@ -112,6 +113,7 @@
                 </div>
             </div>
         </form> 
+        
       </div>
     </div>
   </div>

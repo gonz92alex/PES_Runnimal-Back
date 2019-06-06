@@ -111,9 +111,9 @@ exports.getOne = function(req,res) {
     email = email.trim();
     Users.getOne(email).then((user) => {
         if (user) res.json(user);
-        else res.status(404).send("User doesn't exists");
+        else return res.status(404).send("User doesn't exists");
     }).catch(err=>{
-        res.status(400).send(err);
+        return res.status(400).send(err);
     });
 };
 
@@ -121,7 +121,7 @@ exports.getOneById = function(req, res){
     var id = req.params.id;
     if (!id) return res.status(400).send("Bad request, no id provided");
 
-    Users.getOneById(id).then(result => {
+    return Users.getOneById(id).then(result => {
         return res.json(result);
     }).catch(err => {
         return res.status(400).send(err);
@@ -139,3 +139,36 @@ exports.deleteOne = function(req,res) {
         return res.status(400).send(err);
     });
 };
+
+exports.completeTrainning = function (req, res){
+    var email = req.params.email; 
+    var trainid = req.params.trainningid;    
+    return Users.completetrainning(email, trainid).then(ctraing => {
+        if(!ctraing) return res.status(500).send("Error, no se ha podido completar el entrenamiento."); 
+        return res.status(200).json(ctraing); 
+    }).catch(err => {
+        return res.status(500).send({'error':err}); 
+    }); 
+}
+
+exports.getCompletedTrainnings = function (req, res ){
+    var email = req.params.email; 
+    var action = req.query.action; 
+
+        if(action == "statistics"){
+            return Users.numCompletedTrainningsByUser(email).then(num =>{
+                return res.status(200).json({'user':email,'completedTrainnings':num})
+            })
+        } else {
+     
+
+
+        return Users.completedTrainningsByUser(email).then(ctraings => {
+        if(ctraings.length <= 0) return res.status(400).send("El usuario " + 
+                                                            email + " no ha completado ningún entrenamiento"); 
+        return res.status(200).json(ctraings); 
+    }).catch(err => {
+        return res.status(500).send({'error':err}); 
+    })
+}
+}
