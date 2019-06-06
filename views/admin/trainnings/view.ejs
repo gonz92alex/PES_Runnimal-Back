@@ -59,26 +59,30 @@
                         <textarea class="form-control col-12 col-sm-9" name="description"  id="description" rows="2"><%= trainning.description %></textarea>
                     </div>
                     <div class="form-group mx-auto row">
-                        <label class="col-12 col-sm-2">Steps</label>
-                        <div class="col-9 p-0">
-                            <% for(var i = 0; i < trainning.steps.length; i++){ %>    
-                                <button type="button" class="btn btn-outline-secondary" disabled>
-                                    <%= trainning.steps[i] %>
-                                    <% var removeStepLink = "/admin/trainnings/" + trainning.id + "/steps?action=removeStep&step=" + trainning.steps[i];%>
-                                    <a href="<%= removeStepLink %>" class="close ml-2"><span aria-hidden="true">&times;</span></a>
-                                </button>
-                            <% } %>
-                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addStepModal">
-                                Add step
-                            </button>
-                        </div>
-                    </div>
-                    <div class="form-group mx-auto row">
                         <div class="col-12 col-sm-2">
                             <input type="submit" value="save" class="btn btn-info">         
                         </div>
                     </div>
                 </form>
+            </div>
+            <div class="form-group mx-auto row">
+                <div class="col-11 mx-auto">
+                    <div class="row">
+                        <label class="col-12">Steps</label>
+                        <div class="col-12 p-0">
+                            <% for(var i = 0; i < trainning.steps.length; i++){ %>    
+                                <button type="button" class="btn btn-outline-secondary m-1 text-justify" disabled>
+                                    <%= trainning.steps[i] %>
+                                    <% var removeStepLink = "/admin/trainnings/" + trainning.id + "/steps?action=removeStep&step=" + trainning.steps[i];%>
+                                    <a href="<%= removeStepLink %>" class="close ml-2"><span aria-hidden="true">&times;</span></a>
+                                </button>
+                            <% } %>
+                            <button type="button" class="btn btn-success m-1" data-toggle="modal" data-target="#addStepModal">
+                                Add step
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -100,7 +104,7 @@
         <form name="addStep" method="POST" action="<%= newStepTrainningLink %>" class="container p-0 mt-3">
             <input type="hidden" name="userId" id="userId" value="<%= trainning.id %>" >
             <div class="form-group mx-auto row">
-                <input type="text" name="step" id="step" placeholder="New step" class="form-control col-12" required>
+                <textarea rows="4" name="step" cols="50" id="step" placeholder="New step" class="form-control col-12"></textarea>
             </div>
             <div class="row justify-content-end">
                 <div class="col-12 col-sm-3 ">
